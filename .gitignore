@@ -1,0 +1,25 @@
+.venv/
+__pycache__/
+.DS_Store
+
+
+/videos
+
+# Generated debug outputs
+calibration/calib_debug/
+tag_pose/*_axes.*
+hand_tracking/*_hands.mp4
+hand_tracking/*_heights.png
+gripper/*_gripper.mp4
+gripper/*_gripper.png
+gripper/*_gripper_corrected.png
+sim/*_sim_*.png
+sim/*_robot.mp4
+sim/*_physics*.mp4
+
+# Downloaded model weights
+hand_tracking/pretrained_models/
+sim/third_party/
+
+# MuJoCo runtime log
+MUJOCO_LOG.TXT

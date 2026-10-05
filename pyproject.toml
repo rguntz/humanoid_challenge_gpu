@@ -1,0 +1,23 @@
+[project]
+name = "humanoid-challenge"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "dill>=0.4.1",
+    "h5py>=3.16.0",
+    "imageio-ffmpeg>=0.6.0",
+    "mujoco>=3.14.0",
+    "opencv-python>=5.0.0.93",
+    "pillow>=12.3.0",
+    "reportlab>=5.0.1",
+    "wilor-mini",
+]
+
+[tool.uv.extra-build-dependencies]
+# chumpy (pulled in by wilor-mini) imports pip in its setup.py. It is never imported
+# at runtime (it breaks with numpy 2): hand_tracking/track_hands.py converts the MANO
+# model to plain numpy instead.
+chumpy = ["pip"]
+
+[tool.uv.sources]
+wilor-mini = { git = "https://github.com/warmshao/WiLoR-mini" }

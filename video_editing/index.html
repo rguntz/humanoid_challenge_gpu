@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Episode Cutter</title>
+<style>
+  :root {
+    --bg: #f6f5f1; --panel: #ffffff; --ink: #1f1e1b; --ink-2: #55544e; --muted: #8f8e86;
+    --line: #e2e1da; --accent: #2a78d6; --accent-ink: #ffffff; --ok: #1b8a5a; --warn: #b7791f;
+    --bad: #c2410c; --seg: #2a78d6; --seg-sel: #eb6834; --track: #ecebe5;
+    --start: #1b8a5a; --end: #c2410c; --cursor: #1f1e1b;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161615; --panel: #1f1f1d; --ink: #f2f1ec; --ink-2: #c3c2b7; --muted: #8f8e86;
+      --line: #34332f; --accent: #3987e5; --seg: #3987e5; --seg-sel: #d95926; --track: #2a2a27;
+      --start: #2fb37a; --end: #e8693a; --cursor: #f2f1ec;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  header { display: flex; align-items: center; gap: 12px; padding: 10px 16px;
+           border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+  header h1 { font-size: 16px; margin: 0 8px 0 0; }
+  select, button, input { font: inherit; color: inherit; }
+  select, input[type=text] { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 8px; }
+  button { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  button:disabled { opacity: .5; cursor: default; }
+  .spacer { flex: 1; }
+  #saved { color: var(--muted); font-size: 12px; }
+  main { display: grid; grid-template-columns: auto 1fr; gap: 16px; padding: 16px 16px 8px; }
+  #player { display: flex; flex-direction: column; gap: 8px; }
+  video { height: calc(100vh - 330px); min-height: 300px; max-width: 46vw; background: #000; border-radius: 8px; }
+  .row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  #time { font-variant-numeric: tabular-nums; font-size: 15px; }
+  .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+  #side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th { text-align: left; color: var(--ink-2); font-weight: 600; font-size: 12px; padding: 6px; border-bottom: 1px solid var(--line); }
+  td { padding: 5px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tr.sel td { background: color-mix(in srgb, var(--seg-sel) 12%, transparent); }
+  tr { cursor: pointer; }
+  td a { color: var(--accent); cursor: pointer; text-decoration: none; padding: 1px 4px; border-radius: 4px; }
+  td a.marker-sel { outline: 2px solid var(--seg-sel); }
+  td input[type=text] { width: 100%; padding: 3px 6px; }
+  .tag { font-size: 12px; padding: 1px 6px; border-radius: 10px; border: 1px solid var(--line); white-space: nowrap; }
+  .tag.ok { color: var(--ok); border-color: var(--ok); }
+  .tag.warn { color: var(--warn); border-color: var(--warn); }
+  .tag.bad { color: var(--bad); border-color: var(--bad); }
+  #timeline-wrap { padding: 0 16px 16px; display: flex; flex-direction: column; gap: 6px; }
+  .track-label { font-size: 12px; color: var(--ink-2); display: flex; justify-content: space-between; }
+  canvas { width: 100%; display: block; border-radius: 8px; cursor: pointer; background: var(--track); }
+  #tl { height: 64px; }
+  #detail { height: 84px; }
+  #pos { font-variant-numeric: tabular-nums; font-size: 14px; padding: 2px 0; }
+  #pos b { font-weight: 600; }
+  .keys { color: var(--ink-2); font-size: 12px; line-height: 1.8; }
+  kbd { font: 11px ui-monospace, monospace; padding: 1px 5px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--bg); }
+  #log { font: 12px ui-monospace, monospace; color: var(--ink-2); white-space: pre-wrap; max-height: 140px; overflow: auto; margin: 8px 0 0; }
+  .empty { color: var(--muted); padding: 12px 6px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } video { max-width: 100%; height: 55vh; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Episode Cutter</h1>
+  <select id="videoSel"></select>
+  <span id="vinfo" class="keys"></span>
+  <span class="spacer"></span>
+  <span id="saved"></span>
+</header>
+
+<main>
+  <section id="player">
+    <video id="v" preload="auto" playsinline></video>
+    <div class="row">
+      <button id="play" title="Space">Play</button>
+      <button data-step="-30" title="Shift+Left">-1 s</button>
+      <button data-step="-1" title="Left">-1 frame</button>
+      <button data-step="1" title="Right">+1 frame</button>
+      <button data-step="30" title="Shift+Right">+1 s</button>
+      <select id="rate"><option>0.25</option><option>0.5</option><option selected>1</option><option>2</option><option>4</option></select>
+    </div>
+    <div id="time"></div>
+  </section>
+
+  <section id="side">
+    <div class="panel">
+      <div class="row">
+        <button class="primary" id="newEp" title="N">New episode here</button>
+        <button id="setStart" title="I">Set start</button>
+        <button id="setEnd" title="O">Set end</button>
+        <button id="preview" title="P">Preview</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button id="delMarker" title="Delete">Delete selected marker</button>
+        <button id="delEp" title="Shift+Delete">Delete episode</button>
+        <span id="selInfo" class="keys"></span>
+      </div>
+      <div id="flash" style="min-height:20px;margin-top:6px;font-weight:600;color:var(--accent)"></div>
+      <p class="keys">
+        <kbd>Space</kbd> play/pause &nbsp; <kbd>←</kbd><kbd>→</kbd> 1 frame &nbsp; <kbd>Shift</kbd>+<kbd>←</kbd><kbd>→</kbd> 1 s
+        &nbsp; <kbd>↑</kbd><kbd>↓</kbd> 10 s &nbsp; <kbd>,</kbd><kbd>.</kbd> previous / next marker<br>
+        <kbd>I</kbd> set start (begins the next episode) &nbsp; <kbd>O</kbd> set end &nbsp; <kbd>N</kbd> always a new episode
+        &nbsp; <kbd>P</kbd> preview &nbsp; <kbd>Delete</kbd> delete selected marker &nbsp; <kbd>Shift</kbd>+<kbd>Delete</kbd> delete episode<br>
+        To move an existing start or end, click its <b>s</b>/<b>e</b> marker first, then press <kbd>I</kbd>/<kbd>O</kbd> at the new frame.
+        Each episode should start with ~1 s still
+        (tag visible, hand flat on the table) and end with the hand back at rest.
+      </p>
+    </div>
+
+    <div class="panel">
+      <table>
+        <thead><tr><th>#</th><th>Start</th><th>End</th><th>Length</th><th>Note</th><th>Status</th></tr></thead>
+        <tbody id="eps"></tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="row">
+        <button class="primary" id="export">Export episodes</button>
+        <label class="keys"><input type="checkbox" id="overwrite"> re-export all</label>
+        <span id="exportStatus" class="keys"></span>
+      </div>
+      <div id="log"></div>
+    </div>
+  </section>
+</main>
+
+<div id="timeline-wrap">
+  <div id="pos"></div>
+  <div class="track-label"><span>Whole video</span><span id="overviewHint"></span></div>
+  <canvas id="tl"></canvas>
+  <div class="track-label"><span>Zoom: ±30 s around the cursor</span><span>s = start, e = end</span></div>
+  <canvas id="detail"></canvas>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const v = $("v");
+const ZOOM_S = 30;          // half-width of the zoomed timeline, seconds
+let info = null;            // {name, fps, frames, duration}
+let data = null;            // {video, next_id, episodes: [{id, start_frame, end_frame, note, exported}]}
+let selected = null;        // selected episode id
+let selMarker = null;       // {id, kind: "start" | "end"}
+let previewEnd = null;      // stop time while previewing
+let saveTimer = null;
+const hits = { tl: [], detail: [] };  // clickable marker boxes per canvas
+
+const fps = () => info.fps;
+const curFrame = () => Math.max(0, Math.floor(v.currentTime * fps() + 1e-3));
+const seekFrame = (f) => { v.currentTime = (Math.max(0, Math.min(info.frames - 1, f)) + 0.5) / fps(); };
+const fmt = (f) => {
+  if (f == null) return "–";
+  const t = f / fps(), m = Math.floor(t / 60), s = t - 60 * m;
+  return `${m}:${s.toFixed(2).padStart(5, "0")}`;
+};
+const firstFrame = (ep) => ep.start_frame ?? ep.end_frame;
+const sorted = () => [...data.episodes].sort((a, b) => firstFrame(a) - firstFrame(b));
+const epById = (id) => data.episodes.find((e) => e.id === id);
+const frameOf = (m) => epById(m.id)?.[m.kind === "start" ? "start_frame" : "end_frame"];
+
+// All markers, in time order: {id, kind, frame}.
+function markers() {
+  const out = [];
+  for (const ep of data.episodes) {
+    if (ep.start_frame != null) out.push({ id: ep.id, kind: "start", frame: ep.start_frame });
+    if (ep.end_frame != null) out.push({ id: ep.id, kind: "end", frame: ep.end_frame });
+  }
+  return out.sort((a, b) => a.frame - b.frame || (a.kind === "end" ? -1 : 1));
+}
+
+function problems(ep) {
+  if (ep.start_frame == null && ep.end_frame == null) return [["bad", "empty"]];
+  if (ep.start_frame == null) return [["warn", "no start"]];
+  if (ep.end_frame == null) return [["warn", "no end"]];
+  const out = [];
+  if (ep.end_frame <= ep.start_frame) out.push(["bad", "end before start"]);
+  for (const o of data.episodes) {
+    if (o.id === ep.id || o.start_frame == null || o.end_frame == null) continue;
+    if (ep.start_frame <= o.end_frame && o.start_frame <= ep.end_frame) out.push(["bad", `overlaps #${o.id}`]);
+  }
+  if ((ep.end_frame - ep.start_frame) / fps() < 2) out.push(["warn", "shorter than 2 s"]);
+  return out;
+}
+
+function status(ep) {
+  const p = problems(ep);
+  if (p.length) return p;
+  const x = ep.exported;
+  if (!x) return [["", "not exported"]];
+  if (x.start_frame === ep.start_frame && x.end_frame === ep.end_frame) return [["ok", "exported"]];
+  return [["warn", "changed since export"]];
+}
+
+function selectMarker(m, seek = true) {
+  selMarker = m;
+  if (m) {
+    selected = m.id;
+    if (seek) seekFrame(frameOf(m));
+  }
+  render();
+}
+
+function render() {
+  const tb = $("eps");
+  tb.innerHTML = "";
+  if (!data.episodes.length) {
+    tb.innerHTML = `<tr><td colspan="6" class="empty">No episodes yet. Go to the start of an episode and press N.</td></tr>`;
+  }
+  for (const ep of sorted()) {
+    const tr = document.createElement("tr");
+    if (ep.id === selected) tr.className = "sel";
+    const len = ep.start_frame != null && ep.end_frame != null
+      ? ((ep.end_frame - ep.start_frame + 1) / fps()).toFixed(1) + " s" : "–";
+    const cell = (kind) => {
+      const f = kind === "start" ? ep.start_frame : ep.end_frame;
+      if (f == null) return "–";
+      const sel = selMarker && selMarker.id === ep.id && selMarker.kind === kind ? "marker-sel" : "";
+      return `<a class="${sel}" data-kind="${kind}">${kind[0]} ${fmt(f)}</a>`;
+    };
+    tr.innerHTML = `<td>${ep.id}</td><td>${cell("start")}</td><td>${cell("end")}</td><td>${len}</td>
+      <td><input type="text" value="${(ep.note || "").replace(/"/g, "&quot;")}" placeholder="note"></td>
+      <td>${status(ep).map(([c, t]) => `<span class="tag ${c}">${t}</span>`).join(" ")}</td>`;
+    tr.addEventListener("click", (e) => {
+      if (e.target.dataset.kind) return selectMarker({ id: ep.id, kind: e.target.dataset.kind });
+      if (e.target.tagName === "INPUT") return;
+      selected = ep.id;
+      selMarker = null;
+      render();
+    });
+    tr.querySelector("input").addEventListener("input", (e) => { ep.note = e.target.value; save(false); });
+    tb.appendChild(tr);
+  }
+  const n = data.episodes.filter((e) => !problems(e).length).length;
+  $("export").textContent = `Export ${n} episode${n === 1 ? "" : "s"}`;
+  $("selInfo").textContent = selMarker
+    ? `selected: ${selMarker.kind} of #${selMarker.id} (${selMarker.kind[0]}${selMarker.id} at ${fmt(frameOf(selMarker))})`
+    : selected ? `selected: episode #${selected}` : "nothing selected";
+  $("delMarker").disabled = !selMarker;
+  $("delEp").disabled = !selected;
+  drawAll();
+}
+
+function save(rerender = true) {
+  $("saved").textContent = "saving…";
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async () => {
+    await fetch(`/api/episodes?video=${encodeURIComponent(info.name)}`, { method: "POST", body: JSON.stringify(data) });
+    $("saved").textContent = `saved to dataset/${info.name.replace(/\.mp4$/, "")}_episodes.json`;
+  }, 300);
+  if (rerender) render();
+}
+
+// Set start: moves a selected start marker, fills a missing start of the selected
+// episode, and otherwise begins a new episode. So Set start -> Set end -> Set start
+// -> Set end ... creates one episode after the other.
+function setStart() {
+  const f = curFrame();
+  let ep = epById(selected);
+  if (selMarker && selMarker.kind === "start" && epById(selMarker.id)) {
+    ep = epById(selMarker.id);
+    ep.start_frame = f;
+    flash(`moved the start of episode #${ep.id} to ${fmt(f)}`);
+  } else if (ep && ep.start_frame == null) {
+    ep.start_frame = f;
+    flash(`set the start of episode #${ep.id} at ${fmt(f)}`);
+  } else {
+    ep = { id: data.next_id++, start_frame: f, end_frame: null, note: "" };
+    data.episodes.push(ep);
+    flash(`episode #${ep.id} started at ${fmt(f)}`);
+  }
+  selected = ep.id;
+  selMarker = { id: ep.id, kind: "start" };
+  save();
+}
+// Set end: moves a selected end marker, or fills the missing end of the selected
+// episode. An end without an episode to attach it to is refused.
+function setEnd() {
+  const f = curFrame();
+  let ep = epById(selected);
+  if (selMarker && selMarker.kind === "end" && epById(selMarker.id)) {
+    ep = epById(selMarker.id);
+    ep.end_frame = f;
+    flash(`moved the end of episode #${ep.id} to ${fmt(f)}`);
+  } else if (ep && ep.end_frame == null) {
+    ep.end_frame = f;
+    flash(`episode #${ep.id} ended at ${fmt(f)}`);
+  } else {
+    flash(ep ? `episode #${ep.id} already has an end: click its e${ep.id} marker to move it, `
+               + "or press Set start to begin a new episode"
+             : "no episode selected: press Set start first");
+    return;
+  }
+  selected = ep.id;
+  selMarker = { id: ep.id, kind: "end" };
+  save();
+}
+function newEpisode() {
+  selected = null;
+  selMarker = null;
+  setStart();
+}
+
+let flashTimer = null;
+function flash(msg) {
+  $("flash").textContent = msg;
+  clearTimeout(flashTimer);
+  flashTimer = setTimeout(() => ($("flash").textContent = ""), 4000);
+}
+function deleteMarker() {
+  if (!selMarker) return;
+  const ep = epById(selMarker.id);
+  if (!ep) return;
+  ep[selMarker.kind === "start" ? "start_frame" : "end_frame"] = null;
+  if (ep.start_frame == null && ep.end_frame == null) data.episodes = data.episodes.filter((e) => e.id !== ep.id);
+  selMarker = null;
+  save();
+}
+function deleteEpisode() {
+  const ep = epById(selected);
+  if (!ep || !confirm(`Delete episode #${ep.id}? (an exported clip file is kept on disk)`)) return;
+  data.episodes = data.episodes.filter((e) => e.id !== ep.id);
+  selected = null;
+  selMarker = null;
+  save();
+}
+function preview() {
+  const ep = epById(selected);
+  if (!ep || ep.start_frame == null || ep.end_frame == null) return;
+  seekFrame(ep.start_frame);
+  previewEnd = (ep.end_frame + 1) / fps();
+  v.play();
+}
+function stepMarker(dir) {
+  const f = curFrame(), ms = markers();
+  const m = dir > 0 ? ms.find((x) => x.frame > f) : [...ms].reverse().find((x) => x.frame < f);
+  if (m) selectMarker({ id: m.id, kind: m.kind });
+}
+
+// Where is the cursor relative to the episodes?
+function positionText() {
+  const f = curFrame();
+  const inside = data.episodes.find((e) => e.start_frame != null && e.end_frame != null &&
+                                         e.start_frame <= f && f <= e.end_frame);
+  let where;
+  if (inside) {
+    where = `inside episode <b>#${inside.id}</b> (s ${fmt(inside.start_frame)} → e ${fmt(inside.end_frame)}),
+             ${((f - inside.start_frame) / fps()).toFixed(2)} s after its start`;
+  } else {
+    const ms = markers();
+    const prev = [...ms].reverse().find((m) => m.frame <= f), next = ms.find((m) => m.frame > f);
+    const lab = (m) => `<b>${m.kind[0]}${m.id}</b> (${fmt(m.frame)})`;
+    where = prev && next ? `between ${lab(prev)} and ${lab(next)}`
+          : prev ? `after ${lab(prev)}` : next ? `before ${lab(next)}` : "no markers yet";
+  }
+  return `t = <b>${fmt(f)}</b> (frame ${f}) — ${where}`;
+}
+
+// Timelines. drawTrack draws frames [f0, f1] of the video on a canvas: episode
+// segments, s/e markers (clickable) and the cursor.
+function drawTrack(id, f0, f1, tickEvery, big) {
+  const c = $(id), dpr = window.devicePixelRatio || 1;
+  const w = c.clientWidth, h = c.clientHeight;
+  c.width = w * dpr; c.height = h * dpr;
+  const g = c.getContext("2d");
+  g.scale(dpr, dpr);
+  g.clearRect(0, 0, w, h);
+  hits[id] = [];
+  if (!info) return;
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n);
+  const x = (f) => ((f - f0) / (f1 - f0)) * w;
+  g.font = "11px -apple-system, sans-serif";
+
+  // time ticks
+  g.fillStyle = css("--muted");
+  const step = tickEvery * fps();
+  for (let f = Math.ceil(f0 / step) * step; f <= f1; f += step) {
+    g.fillRect(x(f), h - 7, 1, 7);
+    g.fillText(fmt(f).replace(/\.\d+$/, ""), x(f) + 3, h - 1);
+  }
+  const top = big ? 22 : 16, bottom = h - 12;
+
+  // episode segments
+  for (const ep of data.episodes) {
+    if (ep.start_frame == null || ep.end_frame == null) continue;
+    g.fillStyle = css(ep.id === selected ? "--seg-sel" : "--seg");
+    g.globalAlpha = 0.35;
+    g.fillRect(x(ep.start_frame), top, Math.max(1, x(ep.end_frame) - x(ep.start_frame)), bottom - top);
+    g.globalAlpha = 1;
+  }
+
+  // s / e markers
+  for (const m of markers()) {
+    if (m.frame < f0 || m.frame > f1) continue;
+    const px = x(m.frame);
+    const isSel = selMarker && selMarker.id === m.id && selMarker.kind === m.kind;
+    g.fillStyle = isSel ? css("--seg-sel") : css(m.kind === "start" ? "--start" : "--end");
+    g.fillRect(px - (isSel ? 2 : 1), top - 4, isSel ? 4 : 2, bottom - top + 4);
+    const label = `${m.kind[0]}${m.id}`;
+    g.font = `${isSel ? "bold " : ""}${big ? 13 : 11}px -apple-system, sans-serif`;
+    const tw = g.measureText(label).width;
+    const lx = m.kind === "start" ? px + 3 : px - tw - 3;  // s labels right of the line, e labels left
+    g.fillText(label, lx, top - 6 + (big ? 0 : 2));
+    hits[id].push({ x0: Math.min(px - 5, lx), x1: Math.max(px + 5, lx + tw), m });
+  }
+
+  // cursor
+  const cx = x(curFrame());
+  g.fillStyle = css("--cursor");
+  g.fillRect(cx - 1, 0, 2, h);
+  g.beginPath(); g.moveTo(cx - 5, 0); g.lineTo(cx + 5, 0); g.lineTo(cx, 6); g.fill();
+}
+
+function drawAll() {
+  if (!info) return;
+  drawTrack("tl", 0, info.frames - 1, 60, false);
+  const f = curFrame(), half = ZOOM_S * fps();
+  const f0 = Math.max(0, Math.min(f - half, info.frames - 1 - 2 * half));
+  drawTrack("detail", f0, f0 + 2 * half, 5, true);
+  $("pos").innerHTML = positionText();
+}
+
+function trackClick(id, e, f0, f1) {
+  const r = e.target.getBoundingClientRect(), px = e.clientX - r.left;
+  const hit = hits[id].find((h) => px >= h.x0 && px <= h.x1);
+  if (hit) return selectMarker({ id: hit.m.id, kind: hit.m.kind });
+  v.pause();
+  seekFrame(Math.round(f0 + (px / r.width) * (f1 - f0)));
+}
+$("tl").addEventListener("click", (e) => trackClick("tl", e, 0, info.frames - 1));
+$("detail").addEventListener("click", (e) => {
+  const f = curFrame(), half = ZOOM_S * fps();
+  const f0 = Math.max(0, Math.min(f - half, info.frames - 1 - 2 * half));
+  trackClick("detail", e, f0, f0 + 2 * half);
+});
+
+function updateTime() {
+  if (!info) return;
+  const f = curFrame();
+  $("time").textContent = `${fmt(f)}   frame ${f} / ${info.frames - 1}`;
+  if (previewEnd != null && v.currentTime >= previewEnd) { v.pause(); previewEnd = null; }
+  $("play").textContent = v.paused ? "Play" : "Pause";
+  drawAll();
+}
+v.addEventListener("timeupdate", updateTime);
+v.addEventListener("seeked", updateTime);
+v.addEventListener("play", updateTime);
+v.addEventListener("pause", updateTime);
+(function tick() { if (!v.paused) updateTime(); requestAnimationFrame(tick); })();
+
+$("play").onclick = () => (v.paused ? v.play() : v.pause());
+document.querySelectorAll("[data-step]").forEach((b) => (b.onclick = () => { v.pause(); seekFrame(curFrame() + +b.dataset.step); }));
+$("rate").onchange = (e) => (v.playbackRate = +e.target.value);
+$("newEp").onclick = newEpisode;
+$("setStart").onclick = setStart;
+$("setEnd").onclick = setEnd;
+$("preview").onclick = preview;
+$("delMarker").onclick = deleteMarker;
+$("delEp").onclick = deleteEpisode;
+
+document.addEventListener("keydown", (e) => {
+  if (!info || e.target.tagName === "INPUT" || e.metaKey || e.ctrlKey) return;
+  const step = (n) => { e.preventDefault(); v.pause(); seekFrame(curFrame() + n); };
+  switch (e.key) {
+    case " ": e.preventDefault(); v.paused ? v.play() : v.pause(); break;
+    case "ArrowLeft": step(e.shiftKey ? -Math.round(fps()) : -1); break;
+    case "ArrowRight": step(e.shiftKey ? Math.round(fps()) : 1); break;
+    case "ArrowUp": step(Math.round(10 * fps())); break;
+    case "ArrowDown": step(-Math.round(10 * fps())); break;
+    case ",": v.pause(); stepMarker(-1); break;
+    case ".": v.pause(); stepMarker(1); break;
+    case "n": case "N": newEpisode(); break;
+    case "i": case "I": setStart(); break;
+    case "o": case "O": setEnd(); break;
+    case "p": case "P": preview(); break;
+    case "Delete": case "Backspace": e.preventDefault(); e.shiftKey ? deleteEpisode() : deleteMarker(); break;
+  }
+});
+
+// Export: cut on the server, poll progress.
+$("export").onclick = async () => {
+  await fetch(`/api/episodes?video=${encodeURIComponent(info.name)}`, { method: "POST", body: JSON.stringify(data) });
+  const r = await fetch(`/api/export?video=${encodeURIComponent(info.name)}`,
+                        { method: "POST", body: JSON.stringify({ overwrite: $("overwrite").checked }) });
+  if (!r.ok) { $("exportStatus").textContent = (await r.json()).error; return; }
+  $("export").disabled = true;
+  const poll = async () => {
+    const s = await (await fetch("/api/export_status")).json();
+    $("exportStatus").textContent = s.running
+      ? `cutting ${s.current || ""} (${s.done}/${s.total})`
+      : `done: ${s.total} clip${s.total === 1 ? "" : "s"} written to videos/task/dataset/` + (s.total ? "" : " (all up to date)");
+    $("log").textContent = s.log.join("\n");
+    if (s.running) return setTimeout(poll, 500);
+    $("export").disabled = false;
+    data = await (await fetch(`/api/episodes?video=${encodeURIComponent(info.name)}`)).json();
+    render();
+  };
+  setTimeout(poll, 300);
+};
+
+async function loadVideo(name) {
+  info = videos.find((x) => x.name === name);
+  data = await (await fetch(`/api/episodes?video=${encodeURIComponent(name)}`)).json();
+  selected = null;
+  selMarker = null;
+  v.src = `/video/${encodeURIComponent(name)}`;
+  $("vinfo").textContent = `${(info.duration / 60).toFixed(1)} min · ${info.fps.toFixed(2)} fps · ${info.frames} frames · ${info.size_mb} MB`;
+  try { localStorage.setItem("episodeCutterVideo", name); } catch (_) {}
+  render();
+}
+
+let videos = [];
+(async () => {
+  videos = await (await fetch("/api/videos")).json();
+  const sel = $("videoSel");
+  for (const x of videos) sel.add(new Option(`${x.name}  (${(x.duration / 60).toFixed(1)} min)`, x.name));
+  let last = null;
+  try { last = localStorage.getItem("episodeCutterVideo"); } catch (_) {}
+  const longest = [...videos].sort((a, b) => b.duration - a.duration)[0];
+  sel.value = videos.some((x) => x.name === last) ? last : longest?.name;
+  sel.onchange = () => loadVideo(sel.value);
+  if (sel.value) loadVideo(sel.value);
+  window.addEventListener("resize", drawAll);
+})();
+v.addEventListener("error", () => {
+  $("time").textContent = "This browser cannot play the video (HEVC). Use Chrome or Safari on macOS.";
+});
+</script>
+</body>
+</html>
