@@ -1,0 +1,3 @@
+# @package _here_
+# State-only observations: no cameras, low-dim obs only.
+camera_keys: []

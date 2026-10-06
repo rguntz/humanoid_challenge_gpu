@@ -1,0 +1,10 @@
+# @package _here_
+# Chunked actions, Ta=16 (chunk-size ablation point - see conf/agent/chunking/chunking.yaml
+# for Ta=8, conf/agent/chunking/ta32.yaml for Ta=32). Ta=16 is the exact
+# length xqc/agents/common/network.py's ChiUNet was numerically
+# parity-tested against the PyTorch reference at dim_mult=[1,2,2].
+# ChiUNet also hard-asserts Ta must be a power of 2 - only 8/16/32/... are
+# valid chunk lengths, not arbitrary values.
+To: 2
+Ta: 16
+execution_horizon: 16

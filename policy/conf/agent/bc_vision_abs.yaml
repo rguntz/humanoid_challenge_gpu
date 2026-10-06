@@ -1,0 +1,27 @@
+defaults:
+  - base_agent
+  - /actor@_here_: bc_vision # chunked MLP behaviour cloning, vision (conf/actor/bc_vision.yaml)
+  - _self_
+
+# A simple chunked BC policy to check the whole pipeline (dataset, training,
+# evaluation in the env) before training Diffusion Policy (agent=dp_vision_abs).
+# Same data, observations and actions as dp_vision_abs.yaml.
+
+# Behaviour-cloning pretraining of the actor only: no critic.
+critic_name: null
+abs_action: true
+
+# Robot-base-frame dataset written by policy/make_dataset.py (its layout/ group and
+# env_scene.xml also define the evaluation env, see xqc/envs/pick_place.py).
+offline_data_path: ${repo_root:}/videos/task/dataset_sim/policy/pick_place_bottle_base.hdf5
+# null = every demo in the dataset (policy/train.py counts them).
+n_demos: null
+
+# One camera (see dp_vision_abs.yaml).
+camera_keys: [agentview_image]
+# The demos' images are 128 x 128; the random crop keeps ~90 % of the image.
+crop_shape: [116, 116]
+
+# conf/actor/bc.yaml sets these for xqcfd's robomimic runs: log to the project in
+# conf/config.yaml instead, and keep eval settings at the top level (conf/agent/eval/).
+wandb_project_name: null

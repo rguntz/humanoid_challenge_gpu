@@ -1,0 +1,56 @@
+defaults:
+  - eval@_global_: default # eval cadence/parallelism/video (conf/agent/eval/default.yaml) - shared here so every mf_<critic>[_vision].yaml gets it for free via `- base_agent`, instead of repeating this line in each one
+  - _self_
+
+# Base config for the "combined" agent layer (ChunkedPolicyLearner-based
+# actor + optional critic together - see conversation history for the
+# conf/agent vs conf/actor vs conf/critic split). Every field here is
+# genuinely agent/recipe-level, not actor- or critic-architecture-specific -
+# everything actor-architecture-specific lives in conf/actor/*.yaml
+# (composed in via `actor@_here_: <name>`), everything critic-architecture-
+# specific lives in conf/critic/*.yaml (composed in via
+# `critic@critic_kwargs: <name>`).
+#
+# critic_name/critic_kwargs: plugs a critic into ChunkedPolicyLearner - one
+# of "mlp"/"xqc_style"/"transformer", or null (no critic - pure BC actor
+# training, e.g. during the pretraining phase before max_steps>0 kicks in).
+# See xqc/agents/chunking/chunked_learner.py's own __init__ docstring.
+critic_name: null
+critic_kwargs: {}
+
+# reset_freq/reward_normalization: recipe-level online-training knobs, read
+# directly off cfg.agent.* by train_parallel_chunking.py's own loop -
+# unrelated to any specific actor or critic architecture.
+reset_freq: 0 # choices: 0 (no reset), 250_000 (default)
+reward_normalization: true
+
+# Mix offline data into the critic's own training batch - only meaningful
+# once a critic exists (see conversation history). Shared here rather than
+# set per mf_<critic>[_vision].yaml so every critic variant trains against
+# the exact same offline/online mix - an apples-to-apples comparison
+# knob, not something that should vary per critic architecture.
+offline_data_ratio: 1.0
+
+# n_demos: dataset-loading knob shared by both actor and critic (both read
+# from the SAME loaded dataset - see conversation history on the IL/RL
+# dataset unification) - not modality-dependent (unlike offline_data_path,
+# see conf/agent/vision.yaml/state.yaml), so it lives here rather than
+# duplicated per modality.
+n_demos: 200
+
+# pretrain_use_sarsa: selects the critic's own TD target during OFFLINE
+# pre_train=True steps only - chunked-SARSA (true, batch.next_actions, the
+# real recorded next action - matches the previous hard-coded behavior) vs
+# actor-bootstrap (false, the actor's own predicted next action, the same
+# bootstrap_next_actions path online (pre_train=False) always uses
+# unconditionally and still does regardless of this flag - see
+# chunked_learner.py's own _update). Only meaningful once a critic exists
+# (critic_name is not null).
+pretrain_use_sarsa: true
+
+# actor_pre_training_steps/critic_pre_training_steps moved to
+# conf/actor/base_actor.yaml/conf/critic/base_critic.yaml respectively -
+# see conversation history: the actor and critic can now pretrain for
+# genuinely different step counts (typically actor > critic - the critic
+# freezes once it hits its own count while the actor keeps going), so this
+# is no longer one shared agent-level value.

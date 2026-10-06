@@ -1,0 +1,40 @@
+defaults:
+  - chunking@_here_: chunking # choices: single, chunking (conf/agent/chunking/)
+  - obs@_here_: vision # choices: state, vision (conf/agent/obs/)
+  - training@_here_: vision # choices: state, vision (conf/agent/training/) - shared training/architecture config, see that file's own header comment
+  - base_actor@_here_ # shared actor-architecture defaults (conf/actor/base_actor.yaml)
+  - _self_
+
+# Diffusion Policy BC policy (DPLearner, xqc/agents/dp/): a DDPM-trained,
+# DDPM- or DDIM-sampled generative denoising policy over chunked actions -
+# see xqc/agents/dp/diffusion_policy.py's module docstring for the port from
+# the reference implementation at /home/rguntz/workspace/diffusion_policy.
+# Only BC pretraining is implemented - online RL fine-tuning raises
+# NotImplementedError on purpose. Run with max_steps=0 to stop right after
+# pretraining instead of hitting that error.
+#
+# DP is the fidelity reference conf/agent/training/vision.yaml (the shared
+# config every other agent here also uses) was derived from - see that
+# file's own header comment. Nothing below is DP-specific except the DDPM
+# training/inference block.
+name: DP
+
+# DDPM training (xqc/agents/dp/diffusion_policy.py) - matches the reference
+# implementation's own image-config defaults (cosine/squaredcos_cap_v2
+# schedule, 100 training timesteps, clip_sample=True).
+num_train_timesteps: 100
+beta_schedule: squaredcos_cap_v2
+beta_start: 1e-4
+beta_end: 0.02
+clip_sample: true
+
+# Inference: "ddpm" (default) runs the full num_train_timesteps-step
+# ancestral chain (stochastic, matches the reference's plain DDPMScheduler
+# config); "ddim" runs num_inference_steps deterministic steps instead
+# (matches the reference's separate DDIM config, 8 steps by default there -
+# num_inference_steps is only read when sampler=ddim).
+# Here: DDIM with 10 steps (10x faster inference than the 100-step DDPM chain;
+# training is unchanged, DDIM samples from the same DDPM-trained network).
+# num_train_timesteps (100) must be a multiple of num_inference_steps.
+sampler: ddim
+num_inference_steps: 10

@@ -97,8 +97,9 @@ the container, and it no longer touches the gripper. It does not need to be upri
   `[time, qpos, qvel]`), and the scene XML in each demo's `model_file` attribute.
 - `mask/train`, `mask/valid`: 90 / 10 split.
 
-The environment is our MuJoCo scene, not a robosuite env: train with robomimic's
-rollouts disabled (`experiment.rollout.enabled = false`).
+The environment is our MuJoCo scene, not a robosuite env. To train and evaluate a
+policy in it, see [Training a policy](#training-a-policy-policy) below (with robomimic
+itself, disable its rollouts: `experiment.rollout.enabled = false`).
 
 ### Running it on a Linux machine with an NVIDIA GPU
 
@@ -161,3 +162,98 @@ restarted at any time, finished episodes are skipped.
 
 Note: WiLoR-mini downloads the MANO hand model from a third-party mirror; MANO is
 licensed for non-commercial research (registration at mano.is.tue.mpg.de).
+
+## Training a policy (policy)
+
+Chunked imitation-learning policies (a simple chunked BC, flow matching and Diffusion Policy),
+trained on the robomimic dataset above and evaluated in the same MuJoCo simulation.
+The learning code in `policy/xqc/` comes from the xqcfd project (JAX / Flax), with
+its agent, dataset windowing (observation history `To`, action chunk `Ta`, executed
+`execution_horizon` steps at a time), normalisation, EMA and evaluation loop.
+
+**1. Convert the dataset** to the robot-base frame (once, after `run_dataset.py`):
+
+```sh
+uv run policy/make_dataset.py
+```
+
+Each episode's scene is in the tag frame, with the robot base placed behind that
+episode's workspace, so the same arm pose has different coordinates in different
+episodes. The conversion expresses everything relative to the robot base instead.
+It writes to `videos/task/dataset_sim/policy/`:
+
+| Path | Content |
+|---|---|
+| `pick_place_bottle_base.hdf5` | the training dataset (robomimic layout) |
+| `env_scene.xml`, `tag_texture.png` | the scene the evaluation env runs |
+
+In `pick_place_bottle_base.hdf5`:
+
+- `obs/`: `robot0_eef_pos`, `robot0_eef_quat` (xyzw), `robot0_gripper_qpos`, `object`
+  in the robot-base frame, and `agentview_image` (unchanged).
+- `actions` (N, 7): the absolute end-effector target (`actions_abs`) in the base
+  frame: position, rotation axis-angle, gripper (-1 open, +1 close).
+- `layout/`: one row per demo with its start state in the base frame (joint
+  positions, bottle and container x/y, table and tag placement), from which the
+  env draws its initial states.
+
+Each demo is also cut 8 steps (about 0.5 s) after its first success (bottle
+released in the container): the recordings go on until the demonstrator's hand is
+back at rest, about 3 s and 30 cm of pull-back per demo (28 % of all steps), which
+the policy never executes (an evaluation episode ends on success) and which would
+otherwise leak into every action chunk around the release. `--steps-after-success N`
+changes the 8 (`-1` keeps everything).
+
+It prints a check: the first step of every demo, re-observed from its saved MuJoCo
+state with the env's own code, must match the converted observation (~1e-7).
+
+**2. Train** (from the repository root):
+
+```sh
+uv run policy/train.py agent=bc_vision_abs     # chunked BC: quick check of the whole pipeline
+uv run policy/train.py agent=fm_vision_abs     # flow matching: same network as DP, 10 Euler steps to sample
+uv run policy/train.py                         # Diffusion Policy (agent=dp_vision_abs, the default)
+```
+
+All use the agentview camera plus the robot state (no ground-truth object pose),
+absolute end-effector actions, and train the actor only by behaviour cloning
+(`critic_name: null`, `max_steps: 0`; the online-RL loop of the script is kept for
+later). Settings are Hydra configs in `policy/conf/` and can be overridden on the
+command line, for example:
+
+```sh
+CUDA_VISIBLE_DEVICES=2 uv run policy/train.py agent=bc_vision_abs \
+    agent.actor_pre_training_steps=100000 eval_interval=5000 \
+    wandb.mode=offline
+```
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `agent` | `dp_vision_abs` | `dp_vision_abs`, `fm_vision_abs` or `bc_vision_abs` |
+| `agent.actor_pre_training_steps` | 100000 | gradient steps |
+| `eval_interval` | 10000 | steps between evaluations |
+| `eval_num_seeds` × `eval_episodes` | 10 × 5 | parallel env processes × episodes each |
+| `save_dir` | `checkpoints/<agent>/<date>_<time>/` | a new folder per launch: checkpoints, one per evaluation (last 3 kept) + `best`, and the eval videos |
+| `wandb.mode` | online | `offline` or `disabled` to not upload |
+| `eval_video` | true | record eval episodes; saved as mp4 in `<save_dir>/eval_videos/step_<N>/env<i>.mp4` (`eval_video_local`), not uploaded to wandb unless `eval_video_wandb=true` |
+| `val_ratio` | 0.02 | share of demos held out for `val_loss` / `val_action_mse` |
+
+**Evaluation env** (`policy/xqc/envs/pick_place.py`): the same simulation as the
+demos (position actuators tracking interpolated joint targets at 15 Hz, gripper
+fully closed or open, same success test). Each action goes through the same IK as
+the demos (`sim/replay_hand.py`). An episode ends on success (bottle released in
+the container) or after 1.5 x the longest demo. Each reset draws a new start state
+from what the demos cover, in the base frame:
+
+- robot: the start joint positions of a random demo;
+- bottle and container: random points in the regions (convex hulls) covered by the
+  demos' bottle and container positions, at least as far apart as the closest pair
+  in the demos;
+- table and tag: where a random demo had them (they show in the camera image).
+
+Replaying the recorded actions of every demo from its own start state in this env
+puts the bottle in the box for all 59 demos.
+
+The training dependencies (JAX 0.4.30 with CUDA 12, Flax, Optax, Orbax,
+TensorFlow Probability, Hydra, wandb) are in `pyproject.toml`, so `uv sync` installs
+them too.

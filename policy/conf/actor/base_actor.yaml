@@ -1,0 +1,236 @@
+# @package _here_
+# Shared training/architecture config for every ChunkedPolicyLearner-based
+# agent (xqc/agents/common/chunked_learner.py), common to BOTH vision.yaml
+# and state.yaml - see conversation history: those two files were
+# byte-for-byte identical except batch_size/model_dim/emb_dim (plus
+# state.yaml's own extra lowdim_normalizer field), so everything shared
+# lives here once; vision.yaml/state.yaml each compose this then override
+# just their own differing fields.
+#
+# Only put a field here if it is NOT specific to one agent's own algorithm
+# (loss/sampler) - e.g. DP's num_train_timesteps, MIP's t_two_step, NF's
+# num_layers stay in each agent's own yaml.
+
+# Ta/dim_mult moved to conf/actor/chunking/{chunking,single}.yaml (explicit
+# request - see conversation history): both used to live here, composed
+# AFTER chunking@_here_ in every agent's own defaults list, which meant
+# THIS file's own values always won regardless of which chunking preset
+# was selected - harmless while every agent always selected "chunking"
+# (this file's old Ta=16/dim_mult=[1,2,2] happened to just re-state that
+# preset's own intended values), but silently broke "single" (Ta=1):
+# chunking/single.yaml's own Ta=1/dim_mult=[1] got clobbered right back to
+# 16/[1,2,2] by this file's later composition (confirmed via `--cfg job`
+# with chunking@_here_=single actually selected - Ta and dim_mult both
+# came back at their old chunked values). Each chunking preset now owns
+# its own Ta/dim_mult outright, so whichever one is selected actually
+# sticks - see xqc/agents/common/network.py's own ChiUNet docstring for why
+# dim_mult must change together with Ta (dim_mult=[1] is the only value
+# that doesn't break Ta=1's skip-connection shapes).
+
+# ChiUNet backbone (xqc/agents/common/network.py) - kernel_size/
+# cond_predict_scale/n_groups are genuinely regime-independent (unlike Ta/
+# dim_mult above, these don't need to differ between "chunking" and
+# "single" - a GroupNorm group count or conv kernel width has no
+# relationship to how many action timesteps are being predicted), so they
+# stay here. n_groups=8 matches the reference's own ConditionalUnet1D
+# n_groups field exactly (a literal GroupNorm group count, not adaptive -
+# see xqc/agents/common/network.py's group_norm docstring).
+kernel_size: 5
+cond_predict_scale: true
+n_groups: 8
+
+# use_stationary_unet (explicit request - see conversation history):
+# MF-only for now, like wasserstein_regularization below - setting this for
+# any other actor type is a no-op (silently ignored, absorbed into that
+# actor's own **kwargs catch-all) rather than a hard error, since
+# xqc/agents/actors/{dp,fm,mip,mip_flow,af}/*.py don't read it at all yet -
+# only xqc/agents/actors/mf/mean_flow.py's own MeanFlow does (see its own
+# module-level field comment). false (default) is today's ChiUNet backbone,
+# unchanged. true swaps in xqc/agents/common/chiunet_stationary.py's own
+# StationaryChiUNet instead - same down/mid/up path, but the final
+# action-chunk readout goes through a bounded random-Fourier-feature head
+# (bounded/reverts-to-zero far from training data) instead of a plain conv -
+# see that file's own module docstring for the full mechanism and
+# xqc/networks/hetstat.py's own StationaryFeatures/HetStatMeanHead, which it
+# calls directly.
+use_stationary_unet: false
+
+# bottleneck_dim/feature_dimension: StationaryChiUNet's own two
+# hyperparameters (see its own field comments for exactly how each is
+# used) - explicit request: kept here, in yaml, rather than left to
+# StationaryChiUNet's own Python-level defaults, specifically so the ACTUAL
+# values a run trains with are always visible in config, not hidden behind
+# an unread default somewhere in xqc/agents/common/chiunet_stationary.py.
+# Only meaningful when use_stationary_unet=true above (harmlessly unused,
+# still explicit, otherwise). bottleneck_dim=24: the width StationaryChiUNet
+# linearly projects the whole flattened (Ta * model_dim) action-chunk
+# feature down to before the random Fourier projection - deliberately low
+# (an explicit request from your supervisor, distinct from
+# xqc/networks/hetstat.py's own StationaryFeatures, which has no such
+# bottleneck at all - see chiunet_stationary.py's own module docstring).
+# feature_dimension=128: the width of the resulting random-Fourier-feature
+# vector itself (matches xqc/networks/hetstat.py's own StationaryFeatures
+# field name/default exactly). Set bottleneck_dim: null to skip the
+# projection entirely - StationaryFeatures then reads the un-projected
+# flattened (Ta * model_dim) feature directly (it sizes its own random
+# projection off whatever input dim it's given).
+bottleneck_dim: 24
+feature_dimension: 128
+
+# stationary_activation: the fixed periodic basis function StationaryChiUNet's
+# random-Fourier-feature head runs on top of the random projection (see
+# xqc/agents/common/chiunet_stationary.py's own _STATIONARY_ACTIVATIONS) -
+# only meaningful when use_stationary_unet=true above, same as
+# bottleneck_dim/feature_dimension. "sin_cos" (default) matches
+# conf/agent/xqcfd.yaml exactly (that config never overrides
+# StationaryHeteroskedasticNormalTanhDistribution's own stationary_activation
+# field, so it trains with xqc/networks/hetstat.py's own default,
+# sin_cos_activation) - explicit request, picked over the other option here
+# specifically to match that already-validated reference. "periodic_relu" is
+# the only other choice (stationarity/models.py's own StationaryMLP/
+# StationaryVelocityHeadMLP pick for the toy MeanFlow comparison).
+stationary_activation: sin_cos
+
+# w_mean_stddev: StationaryChiUNet's own final-readout init stddev, only
+# meaningful when use_stationary_unet=true above - explicit request: this
+# readout (xqc/networks/hetstat.py's own HetStatMeanHead_mf, NOT
+# HetStatMeanHead) is small-random init, matching stationarity/models.py's
+# own StationaryMLP w_mean field/default exactly - the actual choice
+# validated for the MeanFlow row of the toy stationarity comparison
+# (compare_stationarity.py's own run_mean_flow), NOT xqc/networks/hetstat.py's
+# own HetStatMeanHead (used by the XQCFD actor, a different, non-MeanFlow
+# reference), which reads at exact zero instead - see HetStatMeanHead_mf's
+# own docstring for the full reasoning.
+w_mean_stddev: 0.001
+
+# stationary_mode: "concat" (default) or "independent", only meaningful
+# when use_stationary_unet=true above - explicit request: "concat"
+# flattens the whole (B, Ta, model_dim) action-chunk feature into one
+# shared bottleneck/RFF/readout before the stationary tail (one joint
+# stationary summary for the whole chunk) - today's behavior, unchanged.
+# "independent" instead applies that same bottleneck/RFF/readout
+# separately to each of the Ta timesteps (uncorrelated across the chunk) -
+# see xqc/agents/common/chiunet_stationary.py's own stationary_mode field
+# comment for the full mechanism.
+stationary_mode: concat
+
+# log_ls_init: StationaryFeatures' own trainable per-bottleneck-dim
+# log-lengthscale init value (xqc/networks/hetstat.py) - only meaningful
+# when use_stationary_unet=true above, same as bottleneck_dim/
+# feature_dimension/w_mean_stddev/stationary_mode. -5.0 matches
+# StationaryFeatures' own Python-level default exactly (today's behavior,
+# unchanged) - the toy comparison (stationarity/compare_stationarity_mf.py's
+# --unet_log_ls_init, stationarity/models.py's own StationaryMLP.log_ls_init)
+# tried -2 as an alternative worth comparing in production too - see
+# scripts/isambard/mf_chunked_stationary_unet_abs_4seeds_logls-2.sbatch.
+log_ls_init: -5.0
+
+# stationary_features_variant: "default" (StationaryFeatures) or "mf"
+# (StationaryFeatures_mf), xqc/networks/hetstat.py - only meaningful when
+# use_stationary_unet=true above, same as bottleneck_dim/feature_dimension/
+# w_mean_stddev/stationary_mode/log_ls_init. "default" (unchanged) uses a
+# pi/4 phase-shift constant tuned for stationary_activation's sin_cos
+# option. "mf" uses pi/2 instead, tuned for the periodic_relu option -
+# matching stationarity/models.py's own toy-validated MeanFlow stationary-
+# readout construction exactly (periodic_relu_activation is specifically
+# built to be exact under the jax.jvp MeanFlow differentiates through here,
+# see StationaryFeatures_mf's own docstring - sin_cos_activation was only
+# ever validated for StationaryHeteroskedasticNormalTanhDistribution's
+# non-jvp use, a different actor). Independent of stationary_activation
+# above (which activation function either variant actually runs) - to
+# reproduce what the toy validated, set BOTH
+# stationary_features_variant=mf AND stationary_activation=periodic_relu
+# together; "mf" alone, still paired with the default sin_cos activation,
+# is an untested combination (see StationaryFeatures_mf's own docstring).
+stationary_features_variant: default
+
+# Observation-encoder stage (xqc/agents/common/obs_encoder.py) - always
+# IdentityObsEncoder for every agent here (no learned compression stage,
+# matching the reference exactly - see obs_encoder.py's IdentityObsEncoder
+# docstring). num_encoder_layers is unused, kept accepted so switching
+# agents doesn't require editing this file.
+num_encoder_layers: 2
+
+# eef_pos_dim/eef_quat_dim: the fixed ROBOSUITE_OBS_KEYS layout
+# (robot0_eef_pos(3) ++ robot0_eef_quat(4) ++ ...) - genuinely dual-use,
+# unlike the vision-only constants moved to vision.yaml (see conversation
+# history): used to identify the quaternion slice for BOTH
+# ChunkedOfflineImageDataset's own identity-normalization exception AND
+# (when lowdim_normalizer=per_dim_range) the lowdim path's own equivalent.
+eef_pos_dim: 3
+eef_quat_dim: 4
+
+# Optimization. lr/weight_decay/beta1/beta2 match the reference exactly -
+# identical between the reference's own image and lowdim task configs.
+# grad_clip_norm=null matches the reference exactly too - it never clips
+# gradients at all (optax.identity() swaps in for
+# optax.clip_by_global_norm() when this is null - see
+# ChunkedPolicyLearner.__init__).
+lr: 1e-4
+weight_decay: 1e-6
+beta1: 0.95
+beta2: 0.999
+grad_clip_norm: null
+
+# lr_schedule=cosine_warmup (optax.warmup_cosine_decay_schedule, 500-step
+# warmup, decaying to 0 over pre_training_steps) matches the reference.
+lr_schedule: cosine_warmup
+lr_warmup_steps: 500
+
+# ema_schedule=warmup (the reference's own diffusers-style EMAModel decay
+# formula, asymptoting to ema_max_value) matches the reference exactly (see
+# xqc/agents/common/ema.py).
+ema_rate: 0.995
+ema_schedule: warmup
+ema_power: 0.75
+ema_max_value: 0.9999
+
+# How many BC steps the actor trains for before the online loop begins
+# (train_parallel_chunking.py's own lr_schedule decay_steps too - see
+# ChunkedPolicyLearner.__init__). Independent of the critic's own
+# critic_pre_training_steps (conf/critic/base_critic.yaml) - typically
+# larger, since the critic usually needs far fewer offline steps to
+# converge and just freezes (stops updating) once it hits its own count
+# while the actor keeps training - see conversation history.
+actor_pre_training_steps: 100_000
+
+# No critic in any agent sharing this file, so the gradient/Hessian
+# diagnostics XQCLearner exposes don't apply - train_parallel.py skips that
+# logging when this is false.
+log_gradient_metrics: false
+
+# Online-RL-only Wasserstein-2 upper-bound regularizer toward the frozen
+# BC-pretrained prior (prior_network/prior_vision/prior_obs_encoder) - the
+# generative-actor equivalent of xqc/agents/xqc/actor.py's own
+# kl_regularization, using a fixed coefficient (no learned auto-tuned
+# temperature here, unlike that reference - see xqc/agents/chunking/
+# actor.py's own update_actor docstring for the full math/rationale).
+# null/0 (default) = off. MF-only for now - setting this for any other
+# actor type crashes loudly at construction (see conversation history).
+wasserstein_regularization:
+
+# wasserstein_offline_only (explicit request - see xqc/agents/chunking/
+# actor.py's own update_actor docstring for the full rationale): false
+# (default) regularizes the actor toward prior_network on every sample in
+# the mixed online+offline critic_batch, same as always. true restricts the
+# distillation pull to offline-buffer rows only - pulling the actor toward
+# its frozen BC prior at an ONLINE (possibly off-the-BC-manifold) state
+# risks asking that frozen prior to extrapolate/hallucinate an action for a
+# state it never actually saw during BC pretraining, which is not a
+# trustworthy target to regularize against. Only meaningful when
+# wasserstein_regularization is actually on; requires
+# agent.offline_data_ratio > 0.0 (fails fast at construction otherwise -
+# see chunked_learner.py's own ChunkedPolicyLearner.__init__).
+wasserstein_offline_only: false
+
+# actor_weight (explicit request - debugging ablation, see
+# xqc/agents/chunking/actor.py's own update_actor docstring): scales ONLY
+# the Q-maximization term of the actor loss - actor_loss = actor_weight *
+# (-q_values...) + wasserstein_regularization * wasserstein_penalty.
+# Default 1.0 reproduces today's behavior exactly (no ablation). 0.0
+# (paired with wasserstein_regularization on) removes the RL objective
+# entirely, isolating pure distillation-toward-prior - a sanity check on
+# whether the distillation mechanism itself works (does success stay near
+# its BC starting point, does train/online/offline_prior_mse actually
+# converge toward 0) independent of whatever the Q-term does.
+actor_weight: 1.0

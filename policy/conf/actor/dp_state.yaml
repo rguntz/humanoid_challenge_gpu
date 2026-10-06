@@ -1,0 +1,14 @@
+defaults:
+  - dp
+  - override obs@_here_: state # choices: state, vision (conf/agent/obs/) - STATE, unlike conf/agent/dp.yaml's vision default
+  - override training@_here_: state # choices: state, vision (conf/agent/training/) - STATE, matches the reference's own lowdim-task config
+  - _self_
+
+# State-observation variant of conf/agent/dp.yaml - see its own comments for
+# the DDPM training/inference block (unchanged here, no policy-specific
+# reference config to diverge on). Only obs@_here_/training@_here_ differ
+# (state instead of vision), pointing at conf/agent/training/state.yaml
+# instead of vision.yaml (the reference's own lowdim-task config, not its
+# image-task one - see that file's own header comment for the params-count
+# verification against the reference's ConditionalUnet1D).
+name: DP

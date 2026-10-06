@@ -11,6 +11,19 @@ dependencies = [
     "pillow>=12.3.0",
     "reportlab>=5.0.1",
     "wilor-mini",
+    # Policy training (policy/): the JAX stack pinned to the versions the xqc
+    # code was developed and tested with.
+    "jax[cuda12]==0.4.30",
+    "flax==0.8.4",
+    "optax==0.2.3",
+    "orbax-checkpoint==0.6.4",
+    "tensorflow-probability==0.24.0",
+    "gymnasium>=1.0",
+    "hydra-core>=1.3",
+    "omegaconf>=2.3",
+    "wandb>=0.16",
+    "termcolor>=2.4",
+    "tqdm>=4.66",
 ]
 
 [tool.uv.extra-build-dependencies]

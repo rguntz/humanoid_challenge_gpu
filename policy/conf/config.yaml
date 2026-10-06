@@ -1,0 +1,141 @@
+defaults:
+  - _self_
+  - agent: dp_vision_abs
+  - env: PickPlaceBottle # the pick-and-place task (xqc/envs/pick_place.py)
+
+# Top-level params (training, logging)
+seed: 0
+num_seeds: 1
+# eval_num_seeds (explicit request - see conversation history):
+# train_parallel_chunking.py's own eval_env construction used to share
+# num_seeds with the training env unconditionally - harmless for a
+# max_steps=0 pure-offline run (see scripts/isambard/
+# dp_state_abs_4seeds_evalcfg10x5.sbatch's own num_seeds=10 eval_episodes=5,
+# no online RL to conflict with), but online RL (max_steps>0,
+# ChunkedPolicyLearner-based agents specifically) forces num_seeds=1 (the
+# online replay buffer has no vmap/multi-seed support), which previously
+# ALSO forced eval down to 1 parallel replica (eval_episodes=5 alone, not
+# eval_episodes=5 * num_seeds=10=50) - this is the first time this session
+# multi-seed eval was wanted ALONGSIDE online RL. Defaults to ${num_seeds}
+# (unset = today's exact behavior, eval and training share one value) -
+# override this alone (leaving num_seeds=1 for the online buffer) to widen
+# ONLY eval's own parallelism.
+eval_num_seeds: ${num_seeds}
+start_training: 5_000
+# start_training_critic/start_training_actor (explicit request - see
+# conversation history): train_parallel_chunking.py's own online-loop
+# equivalent of start_training, split in two so a run can delay the
+# ACTOR's first online gradient step independently of (and later than) the
+# CRITIC's own - e.g. to isolate whether the critic's online fine-tuning
+# regime is a smooth continuation of offline training when the actor isn't
+# also drifting at the same time. Defaults to start_training itself via
+# interpolation (so overriding start_training alone still changes both, and
+# a chunked run that never touches this feature behaves exactly like
+# before) - override start_training_actor (or both) directly to diverge
+# them. train_parallel.py (non-chunked XQCLearner - no actor/critic update
+# split exists there) reads plain start_training only, untouched by this.
+start_training_critic: ${start_training}
+start_training_actor: ${start_training}
+# rollout_warmup_steps (explicit request - see conversation history):
+# train_parallel_chunking.py's own online loop's first rollout_warmup_steps
+# iterations right at the offline->online transition still sample actions
+# from the (already BC-pretrained) policy and step the env exactly as
+# normal - including train/online/success_rate_last50's own tracking,
+# already unconditional - but do NOT insert into replay_buffer and do NOT
+# take any gradient step (start_training_critic/start_training_actor's own
+# +start_step offset is floored at this value too, so fine-tuning can never
+# start before the buffer has any real online data in it). Purpose: let
+# success_rate_last50 actually converge to a real post-offline-pretraining
+# baseline (not still diluted by the first <50 episodes right at the
+# transition) before fine-tuning starts changing the policy underneath it.
+# Default 0 reproduces today's behavior exactly (no warmup window at all -
+# insertion/updates begin as soon as start_training_critic/
+# start_training_actor themselves allow).
+rollout_warmup_steps: 0
+# Online RL steps after the offline pretraining. 0 = actor BC pretraining only
+# (agent.actor_pre_training_steps steps; the online loop does not run).
+max_steps: 0
+replay_buffer_size: 300_000
+
+batch_size: 256
+updates_per_step: 2
+# Held-out episode fraction for ChunkedPolicyLearner-based agents'
+# train/val split (xqc/replay_buffer/chunked_qc_buffer.py's
+# load_robomimic_flat, called from train_parallel_chunking.py) - unused by
+# XQCLearner (xqc/xqcfd/crossq/crossq_wn), which has no val split at all.
+# Override on the CLI (e.g. for a direct comparison against a
+# train_critic_sarsa.py run using a different val_ratio - see conversation
+# history) rather than editing this default.
+val_ratio: 0.02
+# Fixed discount override (e.g. discount=0.99) - null (default) uses
+# train_parallel_chunking.py's own heuristic (xqc.utils.get_discount,
+# episode-length-based) instead. Override for an apples-to-apples
+# comparison against a train_critic_sarsa.py run, which uses a fixed
+# data.discount instead of the heuristic - see conversation history.
+discount:
+n_steps: 1
+log_interval_condition_number:
+# eval_interval/eval_episodes/eval_at_start/eval_video*/log_interval moved
+# to conf/agent/eval/default.yaml (ChunkedPolicyLearner-family agents) and
+# conf/agent/eval/xqc_default.yaml (XQCLearner-family: xqc/xqcfd/crossq/
+# crossq_wn) - every `agent=` choice now sets these itself via its own
+# xqc_base_agent/base_agent composition, so there's no longer a shared
+# fallback needed here - see conversation history.
+#
+# eval_verbose stays here (not bundled into either eval file above) since
+# neither agent family's own eval file sets it either - a genuine shared
+# default, not per-family. Print each episode's success/failure and the
+# running cumulative success rate as the eval rollout progresses, instead
+# of only the final averaged number after all eval_episodes finish -
+# useful when eval_episodes is raised for a real statistical check, so you
+# don't have to wait for the whole eval to see whether something looks off.
+eval_verbose: false
+
+# Checkpoint directory: a checkpoint at every eval (named by step) plus a
+# running "best" checkpoint by eval return, and the eval videos
+# (eval_videos/step_<N>/). Default: a new folder per launch,
+# checkpoints/<agent>/<date>_<time>/ at the repository root, so reruns never
+# overwrite earlier ones. Set save_dir=... to choose it, or save_dir=null to
+# save no checkpoints.
+save_dir: ${repo_root:}/checkpoints/${agent.name}/${now:%Y-%m-%d_%H-%M-%S}
+
+# Checkpoint pruning: only the N most-recent step_<N> checkpoints under
+# save_dir are kept after each eval (older ones deleted); "best" is never
+# pruned. A long run can otherwise accumulate one full checkpoint (params +
+# Adam m/v + EMA) per eval indefinitely. Set to null/empty to keep every
+# checkpoint forever instead.
+checkpoint_keep_last_n: 3
+
+# Resume pre-training from a checkpoint saved via save_dir (e.g.
+# .../step_50000): loads agent state (params/opt_state/EMA/normalization
+# stats) from resume_from, then the pre-training loop starts at
+# resume_step + 1 instead of 1, so the run does
+# (agent.pre_training_steps - resume_step) more steps and lands on the same
+# total instead of redoing steps already completed. resume_step must match
+# the step count baked into resume_from's checkpoint (i.e. the N in
+# step_N) - only takes effect for agents that implement .load(); a no-op
+# otherwise.
+resume_from:
+resume_step: 0
+
+# Debug-only: skip the agent.update() call in the online loop (rollout,
+# buffer insert, and eval still run normally) - isolates whether env
+# stepping/action sampling reproduces a resumed checkpoint's own policy
+# performance from whether the update path (gradients/critic) is correct,
+# by letting the two be validated in separate runs instead of conflated.
+debug_skip_agent_update: false
+
+wandb:
+  project_name: humanoid_challenge
+  entity: # unset = the logged-in account's default entity
+  mode: online
+  name: # optional override; defaults to "{agent.name}_{env.name}" if unset
+
+hydra:
+  job:
+    env_set:
+      XLA_PYTHON_CLIENT_PREALLOCATE: "false"
+      MUJOCO_GL: "egl"
+      MUJOCO_EGL_DEVICE_ID: "${egl_device_id:}"
+      MKL_SERVICE_FORCE_INTEL: "0"
+      WANDB_DIR: "/tmp"
