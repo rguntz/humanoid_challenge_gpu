@@ -171,10 +171,32 @@ The learning code in `policy/xqc/` comes from the xqcfd project (JAX / Flax), wi
 its agent, dataset windowing (observation history `To`, action chunk `Ta`, executed
 `execution_horizon` steps at a time), normalisation, EMA and evaluation loop.
 
+**0. Download the Panda model** (if you skipped the pipeline and only have the policy
+dataset already, e.g. `videos/task/dataset_sim/policy/` was copied over): the
+evaluation env needs the Franka Panda mesh assets in `sim/third_party/`, which the
+pipeline would normally fetch on its first run. You can download them standalone:
+
+```sh
+uv run python -c "import sys; sys.path.insert(0, 'sim'); from build_scene import ensure_panda; ensure_panda()"
+```
+
+This sparse-clones only the `franka_emika_panda/` folder from
+[mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie) into
+`sim/third_party/`. Internet access required; the download is ~10 MB.
+
 **1. Convert the dataset** to the robot-base frame (once, after `run_dataset.py`):
 
 ```sh
 uv run policy/make_dataset.py
+
+# smooth teleoperation jitter + verify success in sim
+uv run policy/make_dataset.py --smooth-trajectory --save-videos
+
+# just save per-demo videos of the original dataset
+uv run policy/make_dataset.py --save-videos
+
+# tune smoothing aggressiveness (lower sigma = gentler)
+uv run policy/make_dataset.py --smooth-trajectory --smooth-sigma 0.8 --save-videos
 ```
 
 Each episode's scene is in the tag frame, with the robot base placed behind that
@@ -211,8 +233,8 @@ state with the env's own code, must match the converted observation (~1e-7).
 
 ```sh
 uv run policy/train.py agent=bc_vision_abs     # chunked BC: quick check of the whole pipeline
-uv run policy/train.py agent=fm_vision_abs     # flow matching: same network as DP, 10 Euler steps to sample
-uv run policy/train.py                         # Diffusion Policy (agent=dp_vision_abs, the default)
+CUDA_VISIBLE_DEVICES=0  uv run policy/train.py agent=fm_vision_abs     # flow matching: same network as DP, 10 Euler steps to sample
+CUDA_VISIBLE_DEVICES=0 uv run policy/train.py                         # Diffusion Policy (agent=dp_vision_abs, the default)
 ```
 
 All use the agentview camera plus the robot state (no ground-truth object pose),
@@ -257,3 +279,42 @@ puts the bottle in the box for all 59 demos.
 The training dependencies (JAX 0.4.30 with CUDA 12, Flax, Optax, Orbax,
 TensorFlow Probability, Hydra, wandb) are in `pyproject.toml`, so `uv sync` installs
 them too.
+
+### Residual RL fine-tuning
+
+After training a base policy (FM recommended), you can fine-tune a step-level
+residual policy on top of it using off-policy RL:
+
+```bash
+CUDA_VISIBLE_DEVICES=1 uv run policy/train_residual.py
+```
+
+The default config (`policy/conf/residual_config.yaml`) already points
+`base_checkpoint` at the latest FM checkpoint. To use a different one:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 uv run policy/train_residual.py \
+    base_checkpoint=checkpoints/FM/2026-10-06_20-32-14/best
+```
+
+**What it does:**
+
+1. Loads the frozen FM base policy and its ResNet vision encoder.
+2. Pre-populates an offline replay buffer by running the base policy on every
+   demo and storing `(obs_window, norm_base, GT_action, reward, next)` transitions.
+3. Runs an online RL loop: at each step the residual MLP predicts a 7D delta
+   on top of the base policy's action; the combined action is sent to the env.
+4. Trains a VMapCritic (C51, 2-ensemble) on mixed offline + online batches,
+   then trains the residual actor to maximise critic Q.
+
+Key hyperparameters (all overridable on the CLI):
+
+| Parameter | Default | Meaning |
+|---|---|---|
+| `total_steps` | 300 000 | total env steps |
+| `learning_starts` | 5 000 | random-noise warmup before updates |
+| `critic_warmup_steps` | 10 000 | critic-only steps before actor updates |
+| `offline_fraction` | 0.5 | fraction of each batch from offline buffer |
+| `residual.action_scale` | 0.1 | max residual magnitude per action dim |
+| `residual.hidden_dims` | [256, 256] | residual MLP hidden layers |
+| `critic.hidden_dims` | [256, 256, 256] | critic MLP hidden layers |

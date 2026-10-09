@@ -37,12 +37,19 @@ import os
 import re
 import shutil
 from pathlib import Path
+from typing import Optional
 
 import h5py
+os.environ.setdefault("MUJOCO_GL", "egl")
+os.environ.setdefault("MUJOCO_EGL_DEVICE_ID", "0")
 import mujoco
 import numpy as np
 
 import task
+
+# sim/ is on sys.path via task.py
+from replay_hand import solve_ik
+from rollout_physics import ARM, GRIPPER_OPEN, GRIPPER_CLOSED
 
 SIM = task.ROOT / "videos" / "task" / "dataset_sim"
 LAYOUT_KEYS = ("robot_qpos", "bottle_xy", "box_xy", "table_center", "table_half", "tag_pos")
@@ -56,7 +63,86 @@ def parse_args():
     p.add_argument("--camera", default="agentview_image", help="image key to keep")
     p.add_argument("--steps-after-success", type=int, default=8,
                    help="keep this many steps after a demo's first success, cut the rest (-1: keep everything)")
+    p.add_argument("--smooth-trajectory", action="store_true",
+                   help="Gaussian-smooth EEF pos+orientation (not gripper); verify success in sim; "
+                        "fall back to original if smoothed trajectory fails")
+    p.add_argument("--smooth-sigma", type=float, default=1.5,
+                   help="Gaussian sigma in timesteps for --smooth-trajectory (default 1.5)")
+    p.add_argument("--save-videos", action="store_true",
+                   help="save per-demo mp4 videos to {out-dir}/videos/")
     return p.parse_args()
+
+
+def smooth_actions(actions: np.ndarray, sigma: float) -> np.ndarray:
+    """Gaussian-smooth EEF pos + axis-angle (dims 0–5); leave gripper (dim 6) unchanged."""
+    from scipy.ndimage import gaussian_filter1d
+    out = actions.copy()
+    out[:, :6] = gaussian_filter1d(actions[:, :6].astype(np.float64), sigma=sigma, axis=0).astype(actions.dtype)
+    return out
+
+
+def replay(
+    model: mujoco.MjModel,
+    initial_state: np.ndarray,
+    actions_base: np.ndarray,
+    pb: np.ndarray,
+    Rb: np.ndarray,
+    control_freq: float,
+    render_camera: Optional[str] = None,
+    image_size: Optional[tuple] = None,
+) -> tuple[bool, list]:
+    """Step the simulator with base-frame actions (mirrors PickPlaceBottleEnv.step).
+    Returns (success, frames) where frames is populated only when render_camera is given."""
+    steps_per_ctrl = int(round(1.0 / control_freq / model.opt.timestep))
+    mdata = mujoco.MjData(model)
+    ik_data = mujoco.MjData(model)
+    scene = task.Scene(model)
+    set_state(model, mdata, initial_state)
+    q_home = mdata.qpos[:ARM].copy()
+    q_target = mdata.qpos[:ARM].copy()
+
+    renderer = None
+    render_opt = None
+    frames = []
+    if render_camera and image_size:
+        renderer = mujoco.Renderer(model, *image_size)
+        render_opt = mujoco.MjvOption()
+        render_opt.geomgroup[1] = False
+        render_opt.sitegroup[:] = False
+
+    success = False
+    for t, action in enumerate(actions_base):
+        p, R = task.from_base_pose(action[:3], action[3:6], pb, Rb)
+        ik_data.qpos[:] = mdata.qpos
+        solve_ik(model, ik_data, scene.site, p, R, q_home)
+        q_prev, q_next = q_target, ik_data.qpos[:ARM].copy()
+        mdata.ctrl[ARM] = GRIPPER_CLOSED if action[6] > 0 else GRIPPER_OPEN
+        for s in range(steps_per_ctrl):
+            a = s / steps_per_ctrl
+            mdata.ctrl[:ARM] = (1 - a) * q_prev + a * q_next
+            mujoco.mj_step(model, mdata)
+        q_target = q_next
+        if scene.in_box(mdata)[0]:
+            success = True
+        if renderer and t % 2 == 0:
+            renderer.update_scene(mdata, camera=render_camera.removesuffix("_image"),
+                                  scene_option=render_opt)
+            frames.append(renderer.render().copy())
+
+    if renderer:
+        renderer.close()
+    return success, frames
+
+
+def save_video(frames: list, path: Path, fps: int = 15) -> None:
+    import cv2
+    if not frames:
+        return
+    h, w = frames[0].shape[:2]
+    writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+    for frame in frames:
+        writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+    writer.release()
 
 
 def set_state(model, data, state):
@@ -83,9 +169,15 @@ def main():
     out = out_dir / "pick_place_bottle_base.hdf5"
     episodes = Path(args.episodes)
 
+    video_dir: Optional[Path] = None
+    if args.save_videos:
+        video_dir = out_dir / "videos"
+        video_dir.mkdir(parents=True, exist_ok=True)
+
     layouts = {k: [] for k in LAYOUT_KEYS}
     yaws, kept_steps, all_steps = [], 0, 0
     first_err, later_err = ({k: 0.0 for k in task.LOWDIM_KEYS} for _ in range(2))
+    smooth_ok, smooth_fail = 0, 0
     with h5py.File(args.src, "r") as src, h5py.File(out, "w") as dst:
         names = sorted(src["data"], key=lambda n: int(n.split("_")[1]))
         data_out = dst.create_group("data")
@@ -114,6 +206,33 @@ def main():
             if name == names[0]:
                 write_env_scene(d.attrs["model_file"], episode_dir, out_dir)
 
+            actions_base = task.actions_to_base(d["actions_abs"][:T_keep], pb, Rb)
+
+            # --- Optional trajectory smoothing + verification -------------------
+            frames: list = []
+            if args.smooth_trajectory:
+                control_freq = float(d.attrs["control_freq"])
+                smoothed = smooth_actions(actions_base, sigma=args.smooth_sigma)
+                img_size = d["obs"][args.camera].shape[1:3]
+                render_cam = args.camera if video_dir else None
+                ok, frames = replay(model, states[0], smoothed, pb, Rb,
+                                    control_freq, render_cam, img_size)
+                if ok:
+                    actions_base = smoothed
+                    smooth_ok += 1
+                    print(f"  {name}: smoothing ok", flush=True)
+                else:
+                    smooth_fail += 1
+                    frames = []  # don't save video for failed smooth
+                    print(f"  {name}: smoothing failed, keeping original", flush=True)
+            elif video_dir:
+                # No smoothing: build frames from stored HDF5 images (fast)
+                frames = list(d["obs"][args.camera][:T_keep])
+
+            if video_dir and frames:
+                label = "smooth" if args.smooth_trajectory else "orig"
+                save_video(frames, video_dir / f"{name}_{label}.mp4")
+
             g = data_out.create_group(name)
             for k, v in d.attrs.items():
                 g.attrs[k] = v
@@ -125,7 +244,7 @@ def main():
             img = d["obs"][args.camera]
             g.create_dataset(f"obs/{args.camera}", data=img[:T_keep], compression="gzip", compression_opts=4,
                              chunks=(1,) + img.shape[1:])
-            g.create_dataset("actions", data=task.actions_to_base(d["actions_abs"][:T_keep], pb, Rb))
+            g.create_dataset("actions", data=actions_base)
             dones = np.zeros(T_keep, dtype=d["dones"].dtype)
             dones[-1] = 1
             g.create_dataset("rewards", data=rewards[:T_keep])
@@ -150,6 +269,8 @@ def main():
             src.copy(src["mask"], dst, name="mask")
 
     print(f"{len(names)} demos -> {out}")
+    if args.smooth_trajectory:
+        print(f"smoothing (sigma={args.smooth_sigma}): {smooth_ok} ok, {smooth_fail} failed (kept original)")
     print(f"steps kept: {kept_steps} of {all_steps} ({100 * kept_steps / all_steps:.0f} %), "
           f"cut {args.steps_after_success} steps after the first success")
     print(f"base yaw (deg): {sorted(set(np.round(yaws, 3)))}")

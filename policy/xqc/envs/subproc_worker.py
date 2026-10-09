@@ -55,6 +55,9 @@ def _worker(remote, parent_remote, env_name, seed, action_repeat, render, camera
     # By the time this function actually runs (in the freshly spawned child),
     # xqc.envs.envs is a fully-formed module - the cycle only exists at
     # import-time ordering, not at call-time.
+    import faulthandler, sys
+    faulthandler.enable(file=sys.stderr)
+
     from xqc.envs.envs import make_env
 
     parent_remote.close()
@@ -87,7 +90,6 @@ def _worker(remote, parent_remote, env_name, seed, action_repeat, render, camera
                 # except block below never runs and never sees it either -
                 # this is the only way to see what action was in flight
                 # right before such a crash.
-                print(f"[subproc_worker] about to step with action={data!r}", flush=True)
                 state, reward, terminal, truncate, info = env.step(data)
                 remote.send((state, reward, terminal, truncate, _get_goal(info)))
             elif cmd == "reset":

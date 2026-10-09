@@ -67,7 +67,7 @@ class ParallelEnv:
         random.seed(seed)
 
         benchmark = resolve_env_benchmark(env_names[0])
-        use_subproc = benchmark in _SUBPROC_BENCHMARKS and len(env_names) > 1
+        use_subproc = benchmark in _SUBPROC_BENCHMARKS
 
         if use_subproc:
             self.envs = None
