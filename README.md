@@ -190,17 +190,13 @@ This sparse-clones only the `franka_emika_panda/` folder from
 **1. Convert the dataset** to the robot-base frame (once, after `run_dataset.py`):
 
 ```sh
-uv run policy/make_dataset.py
-
-# smooth teleoperation jitter + verify success in sim
-uv run policy/make_dataset.py --smooth-trajectory --save-videos
-
-# just save per-demo videos of the original dataset
-uv run policy/make_dataset.py --save-videos
-
-# tune smoothing aggressiveness (lower sigma = gentler)
-uv run policy/make_dataset.py --smooth-trajectory --smooth-sigma 0.8 --save-videos
+uv run resfit/pick_place/make_dataset.py
 ```
+
+This writes the robot-base dataset (trajectories smoothed with sigma 0.8, per-demo
+videos), then the two LeRobot datasets `resfit/` trains on, one with absolute and one
+with delta actions, in `videos/task/dataset_sim/lerobot/`. Each is checked by
+replaying it in the simulation; the replays are saved in its `check_videos/` folder.
 
 Each episode's scene is in the tag frame, with the robot base placed behind that
 episode's workspace, so the same arm pose has different coordinates in different
