@@ -106,7 +106,7 @@ itself, disable its rollouts: `experiment.rollout.enabled = false`).
 Hand tracking is the slow step (~0.6 s per frame on a Mac, much faster on CUDA; it
 uses the GPU automatically). Rendering is headless (MuJoCo uses EGL when there is no
 display). Tested setup: Ubuntu-like Linux, x86_64, NVIDIA driver recent enough for
-CUDA 12 (`nvidia-smi` shows "CUDA Version: 12.x" or higher).
+CUDA 12.8 (`nvidia-smi` shows "CUDA Version: 12.8" or higher, i.e. driver 570+).
 
 **1. Copy the project.** The code (this repository) plus the data that is not in git:
 
@@ -116,11 +116,13 @@ videos/task/dataset/*.mp4                 # the episode clips
 videos/task/dataset/*_episodes.json       # the episode list written by the cutter
 ```
 
-**2. System packages** (Ubuntu / Debian; git is needed to install WiLoR-mini from GitHub,
-the libraries by OpenCV and by MuJoCo's headless rendering):
+**2. System packages** (Ubuntu / Debian; git is needed to install WiLoR-mini and
+lerobot from GitHub, the libraries by OpenCV and by MuJoCo's headless rendering, and
+FFmpeg's shared libraries (version 4 to 7) by torchcodec, which decodes the videos of
+the LeRobot datasets used by `resfit/`):
 
 ```sh
-sudo apt update && sudo apt install -y git curl libgl1 libglib2.0-0 libegl1
+sudo apt update && sudo apt install -y git curl libgl1 libglib2.0-0 libegl1 ffmpeg
 ```
 
 **3. Install uv** (it also installs Python 3.12 by itself):
@@ -137,9 +139,10 @@ cd Humanoid_challenge
 uv sync
 ```
 
-This creates `.venv/` with the exact versions of `uv.lock`, including PyTorch 2.5 with
-its CUDA 12 libraries (no separate CUDA install needed). No need to activate it:
-`uv run ...` always uses it.
+This creates `.venv/` with the exact versions of `uv.lock`, including PyTorch 2.8 with
+its CUDA 12.8 libraries (no separate CUDA install needed). No need to activate it:
+`uv run ...` always uses it. Use `uv sync --locked` to make it fail instead of
+updating `uv.lock` if the lock and `pyproject.toml` ever disagree.
 
 **5. Check the GPU and the headless rendering:**
 
@@ -278,7 +281,9 @@ puts the bottle in the box for all 59 demos.
 
 The training dependencies (JAX 0.4.30 with CUDA 12, Flax, Optax, Orbax,
 TensorFlow Probability, Hydra, wandb) are in `pyproject.toml`, so `uv sync` installs
-them too.
+them too. So are those of the residual RL port in `resfit/` (lerobot at a pinned
+commit, torchrl 0.9.2, datasets 3.6); see the comments in `pyproject.toml` for why
+some versions are pinned or overridden.
 
 ### Residual RL fine-tuning
 

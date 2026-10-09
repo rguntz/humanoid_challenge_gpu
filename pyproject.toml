@@ -3,7 +3,7 @@ name = "humanoid-challenge"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
-    "dill>=0.4.1",
+    "dill",
     "h5py>=3.16.0",
     "imageio-ffmpeg>=0.6.0",
     "mujoco>=3.14.0",
@@ -24,7 +24,39 @@ dependencies = [
     "wandb>=0.16",
     "termcolor>=2.4",
     "tqdm>=4.66",
+    # Residual RL (resfit/): the versions of ResFiT's own environment
+    # (resfit/README.md): lerobot at the commit ResFiT was written against (its
+    # pre-0.2 `lerobot.common.*` API), datasets 3.6 (that lerobot breaks with 4.x),
+    # torchrl 0.9.2 and the torch release it is built for.
+    "lerobot",
+    "datasets==3.6.0",
+    "draccus==0.10.0",
+    "diffusers==0.33.1",
+    "torch==2.8.0",
+    "torchvision==0.23.0",
+    "torchcodec==0.7.0",
+    "torchrl==0.9.2",
+    "tensordict==0.9.1",
+    "einops>=0.8",
+    "safetensors>=0.4",
+    "huggingface-hub>=0.27.1",
+    "pyyaml>=6.0",
+    "tabulate>=0.9",
+    "psutil>=5.9",
+    "matplotlib>=3.8",
 ]
+
+[tool.uv]
+# Only resolve for Linux x86_64: the CUDA builds of JAX and torch only exist there.
+environments = ["sys_platform == 'linux' and platform_machine == 'x86_64'"]
+# lerobot pins gymnasium==0.29.1 (its own envs); ResFiT, and policy/, use gymnasium 1.x.
+# wilor-mini caps torch<=2.5 because torch 2.6 made torch.load default to
+# weights_only=True, which its checkpoints and ultralytics' YOLO loader do not
+# support; hand_tracking/track_hands.py restores the old default instead.
+override-dependencies = ["gymnasium>=1.0", "torch==2.8.0"]
+# lerobot (mid-2025) and datasets 3.6 predate these major releases, which break them
+# (e.g. av 19 returns AVRational where lerobot expects a number).
+constraint-dependencies = ["av>=15.1,<16", "pandas<3", "pyarrow<21", "huggingface-hub<1.0"]
 
 [tool.uv.extra-build-dependencies]
 # chumpy (pulled in by wilor-mini) imports pip in its setup.py. It is never imported
@@ -34,3 +66,4 @@ chumpy = ["pip"]
 
 [tool.uv.sources]
 wilor-mini = { git = "https://github.com/warmshao/WiLoR-mini" }
+lerobot = { git = "https://github.com/huggingface/lerobot", rev = "69901b9b6a2300914ca3de0ea14b6fa6e0203bd4" }

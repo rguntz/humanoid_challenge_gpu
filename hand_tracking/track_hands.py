@@ -15,8 +15,14 @@ Usage:
 """
 import argparse
 import json
+import os
 import pickle
 from pathlib import Path
+
+# torch >= 2.6 loads checkpoints with weights_only=True by default, which the WiLoR
+# checkpoint and ultralytics' YOLO hand detector (full pickled models) do not
+# support. Both come from fixed, trusted Hugging Face repos: restore the old default.
+os.environ.setdefault("TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD", "1")
 
 import cv2
 import numpy as np
