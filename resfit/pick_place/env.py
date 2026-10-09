@@ -68,6 +68,7 @@ class PickPlaceBottleEnv(gym.Env):
         mujoco.mj_resetDataKeyframe(self.model, self.data, mujoco.mj_name2id(
             self.model, mujoco.mjtObj.mjOBJ_KEY, "panda/home"))
         self.q_home = self.data.qpos[:task.ARM].copy()
+        self.control_freq = control_freq
         self.steps_per_control = int(round(1.0 / control_freq / self.model.opt.timestep))
 
         geom = lambda n: mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, n)

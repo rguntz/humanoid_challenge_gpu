@@ -35,6 +35,10 @@ BASE_BODY = "panda/link0"
 LOWDIM_KEYS = ("robot0_eef_pos", "robot0_eef_quat", "robot0_gripper_qpos", "object")
 # Image observation key -> MuJoCo camera, as the recorder (sim/rollout_physics.py) renders them.
 CAMERAS = {"agentview_image": "agentview", "robot0_eye_in_hand_image": "panda/wrist"}
+# Image observation key -> LeRobot feature, in the datasets ResFiT trains on and in the
+# observations of the vectorized env (resfit/pick_place/vec_env.py).
+IMAGE_FEATURES = {"agentview_image": "observation.images.agentview",
+                  "robot0_eye_in_hand_image": "observation.images.wrist"}
 
 
 def base_pose(model, data):

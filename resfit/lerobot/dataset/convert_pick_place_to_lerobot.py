@@ -74,6 +74,7 @@ from lerobot.common.datasets.lerobot_dataset import LeRobotDataset  # noqa: E402
 from lerobot.common.datasets.utils import write_info  # noqa: E402
 
 from resfit.pick_place.action_mode import ACTION_MODES, to_absolute, to_delta  # noqa: E402
+from resfit.pick_place.task import IMAGE_FEATURES as IMAGE_KEYS  # noqa: E402
 
 SIM = REPO / "videos" / "task" / "dataset_sim"
 STATE_KEYS = ("robot0_eef_pos", "robot0_eef_quat", "robot0_gripper_qpos")
@@ -84,9 +85,6 @@ ACTION_NAMES = {
     "delta": ["eef_delta_pos_x", "eef_delta_pos_y", "eef_delta_pos_z",
               "eef_delta_rot_x", "eef_delta_rot_y", "eef_delta_rot_z", "gripper"],
 }
-# Source image key (resfit/pick_place/task.py CAMERAS) -> LeRobot feature.
-IMAGE_KEYS = {"agentview_image": "observation.images.agentview",
-              "robot0_eye_in_hand_image": "observation.images.wrist"}
 TASK = "pick up the bottle and place it in the container"
 STEPS_AFTER_SUCCESS = 0  # frames kept after each demo's first success
 HOLD_STEPS = 8  # steps the replay check holds the last target after an episode's last action
