@@ -1,6 +1,6 @@
 """Check the vectorized env (vec_env.py) against the LeRobot datasets.
 
-For the absolute and the delta dataset, every episode's actions are read from the
+For every action mode's dataset, every episode's actions are read from the
 dataset and sent through create_vectorized_env (two simulators in parallel, in their
 own processes, both started from the demo's layout), the way a policy's actions are.
 Required:

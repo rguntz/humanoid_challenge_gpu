@@ -9,13 +9,24 @@ set -euo pipefail
 
 # ---- settings -------------------------------------------------------------------
 GPU="${GPU:-0}"                      # GPU used for training, evaluation rendering included
-ACTION_MODE="${ACTION_MODE:-absolute}"       # absolute | delta: which LeRobot dataset to train on
-POLICY="${POLICY:-act}"
-CHUNK_SIZE="${CHUNK_SIZE:-16}"              # actions predicted per policy call (16 = ~1.1 s at 15 Hz)
-N_ACTION_STEPS="${N_ACTION_STEPS:-8}"           # actions executed from each chunk before the next call
+DATASET="${DATASET:-pick_place_bottle}"       # pick_place_bottle | pick_place_bottle_home (every episode from one home pose)
+ACTION_MODE="${ACTION_MODE:-absolute}"       # absolute | delta | absolute_6d: which LeRobot dataset to train on
+NORMALIZER="${NORMALIZER:-mean_std}"        # mean_std (LeRobot) | per_dim_range (state and actions, see train_bc.py)
+POLICY="${POLICY:-act}"                    # act | mlp (ACT's vision + MLP head) | diffusion | unet_bc | flow_matching
+                                     # (diffusion's Unet) | legacy_bc (the earlier JAX pipeline's plain BC)
+CAMERAS="${CAMERAS:-}"                     # cameras the policy gets: "agentview wrist" | agentview | wrist (empty: all)
+N_OBS_STEPS="${N_OBS_STEPS:-}"                 # To: observation frames (empty: the policy's own; act and mlp: 1)
+CHUNK_SIZE="${CHUNK_SIZE:-16}"              # Ta: actions predicted per policy call (16 = ~1.1 s at 15 Hz)
+N_ACTION_STEPS="${N_ACTION_STEPS:-8}"           # execution horizon: actions executed from each chunk before the next call
 STEPS="${STEPS:-100000}"               # total optimisation steps
 BATCH_SIZE="${BATCH_SIZE:-256}"
-NUM_WORKERS="${NUM_WORKERS:-32}"             # data loading processes (more gives nothing on 64 cores)
+OPTIMIZER="${OPTIMIZER:-adamw}"            # adamw (constant lr) | legacy (betas 0.95/0.999, 500-step warmup + cosine)
+GRAD_CLIP_NORM="${GRAD_CLIP_NORM:-10}"         # 0: no clipping
+EMA="${EMA:-0}"                         # 1: evaluate and save an EMA of the weights (warmup up to 0.9999)
+NUM_WORKERS="${NUM_WORKERS:-12}"             # data loading processes: 12 give a batch every ~50 ms, faster than
+                                     # a training step; each costs ~1 GB of RAM (too many: oomd kills the session)
+RANDOM_SHIFT="${RANDOM_SHIFT:-0}"           # random image shift augmentation, in pixels (0: off; 4 is usual)
+PRECISION="${PRECISION:-bf16}"             # bf16 (mixed precision, ~1.6-1.9x faster) | fp32
 EVAL_FREQ="${EVAL_FREQ:-10000}"            # evaluate, save latest/ (and best/ if better) every N steps
 EVAL_EPISODES="${EVAL_EPISODES:-64}"           # episodes per evaluation (multiple of EVAL_NUM_ENVS)
 EVAL_NUM_ENVS="${EVAL_NUM_ENVS:-16}"           # simulators run in parallel during evaluation
@@ -40,11 +51,17 @@ if [[ -n "$RESUME" ]]; then
     ARGS+=(--resume "$RESUME")
 else
     ARGS+=(
-        --dataset "videos/task/dataset_sim/lerobot/pick_place_bottle_${ACTION_MODE}"
+        --dataset "videos/task/dataset_sim/lerobot/${DATASET}_${ACTION_MODE}"
         --policy "$POLICY"
+        --normalizer "$NORMALIZER"
+        --precision "$PRECISION"
+        --random_shift "$RANDOM_SHIFT"
         --chunk_size "$CHUNK_SIZE"
         --n_action_steps "$N_ACTION_STEPS"
         --batch_size "$BATCH_SIZE"
+        --optimizer "$OPTIMIZER"
+        --grad_clip_norm "$GRAD_CLIP_NORM"
+        --ema "$EMA"
         --num_workers "$NUM_WORKERS"
         --eval_freq "$EVAL_FREQ"
         --eval_episodes "$EVAL_EPISODES"
@@ -54,6 +71,9 @@ else
     )
     [[ -n "$WANDB_ENTITY" ]] && ARGS+=(--wandb_entity "$WANDB_ENTITY")
     [[ -n "$RUN_NAME" ]] && ARGS+=(--run_name "$RUN_NAME")
+    [[ -n "$N_OBS_STEPS" ]] && ARGS+=(--n_obs_steps "$N_OBS_STEPS")
+    # shellcheck disable=SC2206  # one argument per camera
+    [[ -n "$CAMERAS" ]] && ARGS+=(--cameras $CAMERAS)
 fi
 
 # shellcheck disable=SC2086  # EXTRA_ARGS is split on purpose

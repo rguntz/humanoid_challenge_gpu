@@ -12,6 +12,7 @@ import wandb
 
 from resfit.lerobot.policies.act.modeling_act import ACTPolicy
 from resfit.lerobot.policies.diffusion.modeling_diffusion import DiffusionPolicy
+from resfit.lerobot.policies.mlp.modeling_mlp import MLPPolicy
 
 
 def download_policy_from_wandb(
@@ -52,7 +53,7 @@ def download_policy_from_wandb(
 
 
 def load_policy(policy_dir: Path) -> ACTPolicy:
-    """Infer policy type (diffusion / act) from `config.json` and load weights."""
+    """Infer policy type (diffusion / act / mlp) from `config.json` and load weights."""
 
     with (policy_dir / "config.json").open() as f:
         cfg_dict = json.load(f)
@@ -60,9 +61,10 @@ def load_policy(policy_dir: Path) -> ACTPolicy:
     policy_name_field = str(cfg_dict.get("type", "")).lower()
 
     # TODO: improve policy-type inference logic when additional policies are added
-    if "diffusion" in policy_name_field:
-        raise NotImplementedError("Diffusion policy not implemented")
+    if "diffusion" in policy_name_field:  # both objectives (diffusion, regression)
         return DiffusionPolicy.from_pretrained(policy_dir)
+    if policy_name_field == "mlp":
+        return MLPPolicy.from_pretrained(policy_dir)
     if "use_vae" in cfg_dict:
         return ACTPolicy.from_pretrained(policy_dir)
 

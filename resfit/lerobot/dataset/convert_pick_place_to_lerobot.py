@@ -5,14 +5,16 @@ Input: videos/task/dataset_sim/policy/pick_place_bottle_base.hdf5, written by
 resfit/pick_place/make_dataset.py: robomimic layout, observations and absolute actions
 in the robot-base frame, plus the layout/ group the env samples its start states from.
 
-Output, in --out-dir (default videos/task/dataset_sim/lerobot/): two LeRobot datasets,
-pick_place_bottle_absolute/ and pick_place_bottle_delta/, identical except for their
-actions, with one episode per demo at the demos' control rate (15 Hz):
+Output, in --out-dir (default videos/task/dataset_sim/lerobot/): one LeRobot dataset
+per action mode, <name>_<mode>/ (--name, default pick_place_bottle; modes absolute, delta,
+absolute_6d), identical
+except for their actions, with one episode per demo at the demos' control rate (15 Hz):
   observation.state              (9)   eef position (3), eef quaternion x y z w (4),
                                        finger joint positions (2)
   observation.images.agentview   (128, 128, 3) video, the fixed camera across the table
   observation.images.wrist       (128, 128, 3) video, the camera on the robot's wrist
-  action                         (7)   absolute or delta end-effector action
+  action                         (7)   absolute or delta end-effector action, or
+                                 (10)  absolute_6d: absolute, 6D rotation
                                        (see resfit/pick_place/action_mode.py)
   next.done                      (1)   true on the last frame of each episode
   meta/info.json                 "action_mode": the mode the actions are stored in
@@ -28,11 +30,12 @@ an env episode does: ResFiT rewards the last frame of each offline episode
 (reward = done), and the env rewards and ends an episode on its first success.
 
 Checks, on the dataset as written (read back with LeRobotDataset):
-  1. The actions turned back into absolute targets (to_absolute, from the dataset's
-     own observation.state) equal the source's absolute actions.
+  1. The actions turned back into the env's absolute targets (action_mode.to_env,
+     from the dataset's own observation.state) equal the source's absolute actions.
   2. Every episode replayed in the env (resfit/pick_place/env.py), from the demo's
      layout, reaches success. Delta actions are turned into absolute targets from the
-     recorded pose (observation.state), so the replay follows the demo. After the
+     recorded pose (observation.state), so the replay follows the demo; absolute_6d
+     actions go through the 6D -> rotation conversion the env adapter uses. After the
      episode's last action the target is held for up to HOLD_STEPS steps: the env's
      success can come a step after the recording's.
   3. The env's first observation equals the episode's first observation.state, the
@@ -50,8 +53,12 @@ folder, in check_videos/: episode_<i>_replay.mp4 (check 2) and, for the delta
 dataset, episode_<i>_live.mp4 (the replay from the live pose).
 
 resfit/pick_place/make_dataset.py runs this conversion after writing its dataset; run
-this script alone to redo only the LeRobot datasets:
+this script alone to redo only the LeRobot datasets (all, or the given modes):
     uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py
+    uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py --modes absolute_6d
+The datasets that start from a fixed home pose (resfit/pick_place/make_home_dataset.py):
+    uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py \
+        --src videos/task/dataset_sim/policy/pick_place_bottle_home.hdf5 --name pick_place_bottle_home
 """
 import argparse
 import json
@@ -73,7 +80,7 @@ sys.path.insert(0, str(REPO))
 from lerobot.common.datasets.lerobot_dataset import LeRobotDataset  # noqa: E402
 from lerobot.common.datasets.utils import write_info  # noqa: E402
 
-from resfit.pick_place.action_mode import ACTION_MODES, to_absolute, to_delta  # noqa: E402
+from resfit.pick_place.action_mode import ACTION_DIMS, ACTION_MODES, from_absolute, to_env  # noqa: E402
 from resfit.pick_place.task import IMAGE_FEATURES as IMAGE_KEYS  # noqa: E402
 
 SIM = REPO / "videos" / "task" / "dataset_sim"
@@ -84,6 +91,8 @@ ACTION_NAMES = {
     "absolute": ["eef_pos_x", "eef_pos_y", "eef_pos_z", "eef_rot_x", "eef_rot_y", "eef_rot_z", "gripper"],
     "delta": ["eef_delta_pos_x", "eef_delta_pos_y", "eef_delta_pos_z",
               "eef_delta_rot_x", "eef_delta_rot_y", "eef_delta_rot_z", "gripper"],
+    "absolute_6d": ["eef_pos_x", "eef_pos_y", "eef_pos_z", "eef_rot6d_r0x", "eef_rot6d_r0y", "eef_rot6d_r0z",
+                    "eef_rot6d_r1x", "eef_rot6d_r1y", "eef_rot6d_r1z", "gripper"],
 }
 TASK = "pick up the bottle and place it in the container"
 STEPS_AFTER_SUCCESS = 0  # frames kept after each demo's first success
@@ -94,7 +103,10 @@ RENDER_TOLERANCE = 0.02  # env render vs recorded image at reset, mean abs error
 def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--src", default=str(SIM / "policy" / "pick_place_bottle_base.hdf5"))
-    p.add_argument("--out-dir", default=str(SIM / "lerobot"), help="folder the two datasets are written in")
+    p.add_argument("--out-dir", default=str(SIM / "lerobot"), help="folder the datasets are written in")
+    p.add_argument("--name", default="pick_place_bottle", help="datasets are written as <name>_<mode>/")
+    p.add_argument("--modes", nargs="+", default=list(ACTION_MODES), choices=ACTION_MODES,
+                   help="action modes to write (default: all)")
     return p.parse_args()
 
 
@@ -114,7 +126,7 @@ def convert(src, mode, out, repo_id):
             "observation.state": {"dtype": "float32", "shape": (len(STATE_NAMES),), "names": STATE_NAMES},
             **{key: {"dtype": "video", "shape": first["obs"][camera].shape[1:], "names": ["height", "width", "channel"]}
                for camera, key in IMAGE_KEYS.items()},
-            "action": {"dtype": "float32", "shape": (7,), "names": ACTION_NAMES[mode]},
+            "action": {"dtype": "float32", "shape": (ACTION_DIMS[mode],), "names": ACTION_NAMES[mode]},
             "next.done": {"dtype": "bool", "shape": (1,), "names": ["done"]},
         }
         ds = LeRobotDataset.create(repo_id=repo_id, fps=int(fps), root=out, robot_type="panda",
@@ -128,9 +140,7 @@ def convert(src, mode, out, repo_id):
                 raise SystemExit(f"{name} never succeeds")
             T = min(len(rewards), int(np.argmax(rewards > 0)) + 1 + STEPS_AFTER_SUCCESS)
             state = np.concatenate([d["obs"][k][:T] for k in STATE_KEYS], axis=1).astype(np.float32)
-            actions = d["actions"][:T].astype(np.float32)
-            if mode == "delta":
-                actions = to_delta(actions, state[:, 0:3], state[:, 3:7])
+            actions = from_absolute(d["actions"][:T].astype(np.float32), mode, state[:, 0:3], state[:, 3:7])
             images = {key: d["obs"][camera][:T] for camera, key in IMAGE_KEYS.items()}
             for t in range(T):
                 ds.add_frame({"observation.state": state[t], **{k: v[t] for k, v in images.items()},
@@ -165,10 +175,8 @@ def replay(env, layout_row, actions, states, mode, reference, hold_steps, frames
         pos_gap = max(pos_gap, float(np.linalg.norm(live[:3] - states[k, :3])))
         rot_gap = max(rot_gap, float(np.degrees(
             (Rotation.from_quat(live[3:7]) * Rotation.from_quat(states[k, 3:7]).inv()).magnitude())))
-        a = actions[k]
-        if mode == "delta":
-            ref = live if reference == "live" else states[k]
-            a = to_absolute(a, ref[0:3], ref[3:7])
+        ref = live if reference == "live" else states[k]
+        a = to_env(actions[k], mode, ref[0:3], ref[3:7])
         obs, _, _, truncated, info = env.step(a)
         if frames is not None:
             frames.append(env.render())
@@ -204,7 +212,7 @@ def check(src, out, repo_id):
         for ep, i0, i1 in zip(episodes, starts, ends):
             a, s = actions[i0:i1], states[i0:i1]
             source = f["data"][ep["demo"]]
-            a_abs = to_absolute(a, s[:, 0:3], s[:, 3:7]) if mode == "delta" else a
+            a_abs = to_env(a, mode, s[:, 0:3], s[:, 3:7])
             # Compare rotations, not axis-angle vectors (several vectors give one rotation).
             src_abs = source["actions"][:len(a)]
             rot_err = (Rotation.from_rotvec(a_abs[:, 3:6]) * Rotation.from_rotvec(src_abs[:, 3:6]).inv()).magnitude()
@@ -262,10 +270,10 @@ def check(src, out, repo_id):
         raise SystemExit("The decoded video frames do not match the source images.")
 
 
-def convert_all(src, out_dir):
-    """Write and check the absolute and the delta dataset (see the module docstring)."""
-    for mode in ACTION_MODES:
-        name = f"pick_place_bottle_{mode}"
+def convert_all(src, out_dir, modes=ACTION_MODES, name_prefix="pick_place_bottle"):
+    """Write and check one dataset per action mode (see the module docstring)."""
+    for mode in modes:
+        name = f"{name_prefix}_{mode}"
         out, repo_id = Path(out_dir) / name, f"local/{name}"
         print(f"=== {mode} actions -> {out}")
         if out.exists():
@@ -276,7 +284,7 @@ def convert_all(src, out_dir):
 
 def main():
     args = parse_args()
-    convert_all(args.src, args.out_dir)
+    convert_all(args.src, args.out_dir, args.modes, args.name)
 
 
 if __name__ == "__main__":

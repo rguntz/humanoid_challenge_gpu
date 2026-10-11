@@ -103,6 +103,23 @@ class DiffusionConfig(PreTrainedConfig):
         clip_sample_range: The magnitude of the clipping range as described above.
         num_inference_steps: Number of reverse diffusion steps to use at inference time (steps are evenly
             spaced). If not provided, this defaults to be the same as `num_train_timesteps`.
+        objective: How the Unet is trained and sampled. "diffusion": the denoising objective above
+            (noise scheduler, prediction_type, iterative sampling). "regression": plain behaviour
+            cloning with the same Unet and observation encoder: the Unet maps a learned input
+            sequence (horizon, action_dim) to the action chunk in one pass, trained with an MSE
+            loss against the actions; the timestep is fixed to 0 and the noise scheduler is unused.
+            "flow_matching": conditional flow matching (rectified flow, linear path) with the same
+            Unet: trained to predict the velocity (actions - noise) at x_t = (1 - t) noise + t actions,
+            t ~ U(0, 1) given to the Unet as its timestep; sampled by Euler integration from noise,
+            num_inference_steps steps from t = 0 to 1. The noise scheduler is unused.
+            "mlp": no Unet: an MLP (mlp_hidden_dims) maps the observation features of the n_obs_steps
+            frames (the Unet's global conditioning, flattened) to the action chunk, trained with an
+            MSE loss, one pass to sample: the plain BC of the earlier JAX pipeline
+            (policy/xqc/agents/actors/bc/mlp_policy.py).
+        mlp_hidden_dims: Hidden layer sizes of the "mlp" objective's MLP.
+        actions_from_current_step: The predicted chunk starts at the current step (actions t ..
+            t + horizon - 1), as in the earlier JAX pipeline, instead of n_obs_steps - 1 steps
+            before it (Diffusion Policy's alignment, the default).
         do_mask_loss_for_padding: Whether to mask the loss when there are copy-padded actions. See
             `LeRobotDataset` and `load_previous_and_future_frames` for more information. Note, this defaults
             to False as the original Diffusion Policy implementation does the same.
@@ -154,6 +171,9 @@ class DiffusionConfig(PreTrainedConfig):
     num_inference_steps: int | None = None
 
     # Loss computation
+    objective: str = "diffusion"
+    mlp_hidden_dims: tuple[int, ...] = (256, 256)
+    actions_from_current_step: bool = False
     do_mask_loss_for_padding: bool = False
 
     # Training presets
@@ -176,6 +196,11 @@ class DiffusionConfig(PreTrainedConfig):
             raise ValueError(
                 f"`prediction_type` must be one of {supported_prediction_types}. Got {self.prediction_type}."
             )
+        if self.objective not in ("diffusion", "regression", "flow_matching", "mlp"):
+            raise ValueError(
+                f"`objective` must be 'diffusion', 'regression', 'flow_matching' or 'mlp'. Got {self.objective}."
+            )
+        self.mlp_hidden_dims = tuple(self.mlp_hidden_dims)
         supported_noise_schedulers = ["DDPM", "DDIM"]
         if self.noise_scheduler_type not in supported_noise_schedulers:
             raise ValueError(
@@ -183,9 +208,9 @@ class DiffusionConfig(PreTrainedConfig):
             )
 
         # Check that the horizon size and U-Net downsampling is compatible.
-        # U-Net downsamples by 2 with each stage.
+        # U-Net downsamples by 2 with each stage (no Unet with the "mlp" objective).
         downsampling_factor = 2 ** len(self.down_dims)
-        if self.horizon % downsampling_factor != 0:
+        if self.objective != "mlp" and self.horizon % downsampling_factor != 0:
             raise ValueError(
                 "The horizon should be an integer multiple of the downsampling factor (which is determined "
                 f"by `len(down_dims)`). Got {self.horizon=} and {self.down_dims=}"
@@ -232,6 +257,8 @@ class DiffusionConfig(PreTrainedConfig):
 
     @property
     def action_delta_indices(self) -> list:
+        if self.actions_from_current_step:
+            return list(range(self.horizon))
         return list(range(1 - self.n_obs_steps, 1 - self.n_obs_steps + self.horizon))
 
     @property

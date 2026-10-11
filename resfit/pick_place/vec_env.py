@@ -7,10 +7,11 @@ absolute end-effector targets:
   observations  observation.state (9, float32), observation.images.agentview and
                 observation.images.wrist ((3, H, W) float32 in [0, 1]), the
                 dataset's features in the format LeRobotDataset returns them
-  actions       (7,) in the dataset's action mode. Delta actions are turned into
-                absolute targets from the end-effector pose of the current
-                observation (action_mode.to_absolute), the definition the dataset
-                was converted with.
+  actions       (7,) or (10,) in the dataset's action mode, turned into the
+                simulator's absolute targets by action_mode.to_env: delta actions
+                from the end-effector pose of the current observation (the
+                definition the dataset was converted with), absolute_6d actions by
+                turning their 6D rotation back into axis-angle.
   episodes      end on success (terminated, reward 1) or at the env's horizon
                 (truncated); the last step's info has "success" and "episode_steps",
                 as ResFiT's robosuite wrapper gives them.
@@ -30,7 +31,7 @@ import gymnasium as gym
 import numpy as np
 import torch
 
-from resfit.pick_place.action_mode import to_absolute
+from resfit.pick_place.action_mode import ACTION_DIMS, to_env
 from resfit.pick_place.env import CAMERA_KEYS, PickPlaceBottleEnv
 from resfit.pick_place.task import IMAGE_FEATURES
 
@@ -63,7 +64,7 @@ class PickPlaceGymEnv(gym.Env):
         })
         # Nominal, as in ResFiT's robosuite wrapper: only the shape is used; the values
         # are the dataset's actions, scaled by ResFiT from the dataset's statistics.
-        self.action_space = gym.spaces.Box(-1.0, 1.0, (7,), np.float32)
+        self.action_space = gym.spaces.Box(-1.0, 1.0, (ACTION_DIMS[action_mode],), np.float32)
         self._state = None
         self.episode_steps = 0
 
@@ -83,8 +84,7 @@ class PickPlaceGymEnv(gym.Env):
 
     def step(self, action):
         action = np.asarray(action.cpu() if hasattr(action, "cpu") else action, np.float32).reshape(-1)
-        if self.action_mode == "delta":
-            action = to_absolute(action, self._state[0:3], self._state[3:7])
+        action = to_env(action, self.action_mode, self._state[0:3], self._state[3:7])
         state, reward, terminated, truncated, info = self.env.step(action)
         self.episode_steps += 1
         if terminated or truncated:

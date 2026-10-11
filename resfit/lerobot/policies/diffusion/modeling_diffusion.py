@@ -16,6 +16,12 @@
 # limitations under the License.
 """Diffusion Policy as per "Diffusion Policy: Visuomotor Policy Learning via Action Diffusion"
 
+Adapted for this repository: config.objective="regression" trains the same Unet and observation
+encoder by plain behaviour cloning (MSE on the action chunk, one forward pass to sample), and
+"flow_matching" by conditional flow matching (velocity loss, Euler sampling), and "mlp" replaces
+the Unet by an MLP on the observation features (plain BC; see DiffusionConfig); and select_action / reset(env_ids) keep one observation history and action
+queue per environment, for vectorized envs whose episodes end at different steps.
+
 TODO(alexander-soare):
   - Remove reliance on diffusers for DDPMScheduler and LR scheduler.
 """
@@ -39,7 +45,6 @@ from lerobot.common.policies.utils import (
     get_device_from_parameters,
     get_dtype_from_parameters,
     get_output_shape,
-    populate_queues,
 )
 from torch import Tensor, nn
 
@@ -76,8 +81,11 @@ class DiffusionPolicy(PreTrainedPolicy):
         self.normalize_targets = Normalize(config.output_features, config.normalization_mapping, dataset_stats)
         self.unnormalize_outputs = Unnormalize(config.output_features, config.normalization_mapping, dataset_stats)
 
-        # queues are populated during rollout of the policy, they contain the n latest observations and actions
-        self._queues = None
+        # Per environment, during rollouts: the n_obs_steps latest observations and the actions left
+        # to execute (see select_action).
+        self._obs_history = None
+        self._action_queues = []
+        self._fresh_envs = set()
 
         self.diffusion = DiffusionModel(config)
 
@@ -86,16 +94,18 @@ class DiffusionPolicy(PreTrainedPolicy):
     def get_optim_params(self) -> dict:
         return self.diffusion.parameters()
 
-    def reset(self):
-        """Clear observation and action queues. Should be called on `env.reset()`"""
-        self._queues = {
-            "observation.state": deque(maxlen=self.config.n_obs_steps),
-            "action": deque(maxlen=self.config.n_action_steps),
-        }
-        if self.config.image_features:
-            self._queues["observation.images"] = deque(maxlen=self.config.n_obs_steps)
-        if self.config.env_state_feature:
-            self._queues["observation.environment_state"] = deque(maxlen=self.config.n_obs_steps)
+    def reset(self, env_ids: list[int] | None = None):
+        """Clear the observation history and action queue of the given environments (all if
+        None). Should be called on `env.reset()`, for the environments that reset."""
+        if env_ids is None:
+            self._obs_history = None  # (B, n_obs_steps, ...) per key, rebuilt at the next call
+            self._action_queues = []
+            self._fresh_envs = set()
+            return
+        for idx in env_ids:
+            self._fresh_envs.add(idx)
+            if idx < len(self._action_queues):
+                self._action_queues[idx].clear()
 
     @torch.no_grad
     def select_action(self, batch: dict[str, Tensor]) -> Tensor:
@@ -118,25 +128,44 @@ class DiffusionPolicy(PreTrainedPolicy):
         Note that this means we require: `n_action_steps <= horizon - n_obs_steps + 1`. Also, note that
         "horizon" may not the best name to describe what the variable actually means, because this period is
         actually measured from the first observation which (if `n_obs_steps` > 1) happened in the past.
+
+        Each environment of the batch has its own observation history and action queue (an
+        environment reset with reset(env_ids) starts its history again from its next
+        observation), and a new chunk is generated for the environments whose queue is empty.
         """
         batch = self.normalize_inputs(batch)
         if self.config.image_features:
             batch = dict(batch)  # shallow copy so that adding a key doesn't modify the original
             batch["observation.images"] = torch.stack([batch[key] for key in self.config.image_features], dim=-4)
-        # Note: It's important that this happens after stacking the images into a single key.
-        self._queues = populate_queues(self._queues, batch)
+        keys = [k for k in ("observation.state", "observation.images", "observation.environment_state") if k in batch]
+        batch_size = batch["observation.state"].shape[0]
 
-        if len(self._queues["action"]) == 0:
-            # stack n latest observations from the queue
-            batch = {k: torch.stack(list(self._queues[k]), dim=1) for k in batch if k in self._queues}
-            actions = self.diffusion.generate_actions(batch)
+        # Observation history: (B, n_obs_steps, ...); a new or reset environment's history is
+        # filled with copies of its current observation (as populate_queues does).
+        n = self.config.n_obs_steps
+        if self._obs_history is None or self._obs_history["observation.state"].shape[0] != batch_size:
+            self._obs_history = {k: batch[k].unsqueeze(1).repeat_interleave(n, dim=1) for k in keys}
+            self._action_queues = [deque(maxlen=self.config.n_action_steps) for _ in range(batch_size)]
+        else:
+            for k in keys:
+                self._obs_history[k] = torch.cat([self._obs_history[k][:, 1:], batch[k].unsqueeze(1)], dim=1)
+            fresh = [i for i in self._fresh_envs if i < batch_size]
+            for k in keys:
+                self._obs_history[k][fresh] = batch[k][fresh].unsqueeze(1).repeat_interleave(n, dim=1)
+        self._fresh_envs.clear()
 
-            # TODO(rcadene): make above methods return output dictionary?
+        empty = [i for i, q in enumerate(self._action_queues) if len(q) == 0]
+        if empty:
+            actions = self.diffusion.generate_actions(self._obs_history)  # (B, n_action_steps, action_dim)
             actions = self.unnormalize_outputs({"action": actions})["action"]
+            for i in empty:
+                self._action_queues[i].extend(actions[i].unbind(0))
+        return torch.stack([q.popleft() for q in self._action_queues], dim=0)
 
-            self._queues["action"].extend(actions.transpose(0, 1))
-
-        return self._queues["action"].popleft()
+    @torch.no_grad
+    def select_action_normalized(self, batch: dict[str, Tensor]) -> Tensor:
+        actions = self.select_action(batch)
+        return self.normalize_targets({"action": actions})["action"]
 
     def forward(self, batch: dict[str, Tensor]) -> tuple[Tensor, None]:
         """Run the batch through the model and compute the loss for training or validation."""
@@ -181,7 +210,16 @@ class DiffusionModel(nn.Module):
         if self.config.env_state_feature:
             global_cond_dim += self.config.env_state_feature.shape[0]
 
-        self.unet = DiffusionConditionalUnet1d(config, global_cond_dim=global_cond_dim * config.n_obs_steps)
+        if config.objective == "mlp":
+            # Plain BC head on the flattened conditioning of the n_obs_steps frames (no Unet).
+            layers, in_dim = [], global_cond_dim * config.n_obs_steps
+            for hidden in config.mlp_hidden_dims:
+                layers += [nn.Linear(in_dim, hidden), nn.ReLU()]
+                in_dim = hidden
+            layers.append(nn.Linear(in_dim, config.horizon * config.action_feature.shape[0]))
+            self.mlp_head = nn.Sequential(*layers)
+        else:
+            self.unet = DiffusionConditionalUnet1d(config, global_cond_dim=global_cond_dim * config.n_obs_steps)
 
         self.noise_scheduler = _make_noise_scheduler(
             config.noise_scheduler_type,
@@ -199,12 +237,41 @@ class DiffusionModel(nn.Module):
         else:
             self.num_inference_steps = config.num_inference_steps
 
+        if config.objective == "regression":
+            # The Unet's input in place of the noisy trajectory: learned, one vector per step of the
+            # chunk. A constant input would not do: the conditioning is the same at every step and
+            # the convolutions are translation-equivariant, so every step would get (almost) the
+            # same action. Initialized like the diffusion prior, N(0, 1).
+            self.action_queries = nn.Parameter(torch.randn(config.horizon, config.action_feature.shape[0]))
+
     # ========= inference  ============
     def conditional_sample(
         self, batch_size: int, global_cond: Tensor | None = None, generator: torch.Generator | None = None
     ) -> Tensor:
         device = get_device_from_parameters(self)
         dtype = get_dtype_from_parameters(self)
+
+        if self.config.objective in ("regression", "mlp"):
+            sample = self._regress(batch_size, global_cond)
+            if self.config.clip_sample:
+                sample = sample.clamp(-self.config.clip_sample_range, self.config.clip_sample_range)
+            return sample
+
+        if self.config.objective == "flow_matching":
+            # Euler integration of the learned velocity from noise (t = 0) to actions (t = 1).
+            sample = torch.randn(
+                size=(batch_size, self.config.horizon, self.config.action_feature.shape[0]),
+                dtype=dtype,
+                device=device,
+                generator=generator,
+            )
+            dt = 1.0 / self.num_inference_steps
+            for i in range(self.num_inference_steps):
+                t = torch.full(sample.shape[:1], i * dt, dtype=dtype, device=device)
+                sample = sample + dt * self.unet(sample, t, global_cond=global_cond)
+            if self.config.clip_sample:
+                sample = sample.clamp(-self.config.clip_sample_range, self.config.clip_sample_range)
+            return sample
 
         # Sample prior.
         sample = torch.randn(
@@ -227,6 +294,15 @@ class DiffusionModel(nn.Module):
             sample = self.noise_scheduler.step(model_output, t, sample, generator=generator).prev_sample
 
         return sample
+
+    def _regress(self, batch_size: int, global_cond: Tensor) -> Tensor:
+        """Regression objectives, the action chunk (B, horizon, action_dim) in one pass: "regression",
+        the Unet from the learned input at timestep 0; "mlp", the MLP head."""
+        if self.config.objective == "mlp":
+            return self.mlp_head(global_cond).view(batch_size, self.config.horizon, -1)
+        x = self.action_queries.unsqueeze(0).expand(batch_size, -1, -1)
+        timesteps = torch.zeros(batch_size, dtype=torch.long, device=x.device)
+        return self.unet(x, timesteps, global_cond=global_cond)
 
     def _prepare_global_conditioning(self, batch: dict[str, Tensor]) -> Tensor:
         """Encode image features and concatenate them all together along with the state vector."""
@@ -282,7 +358,7 @@ class DiffusionModel(nn.Module):
         actions = self.conditional_sample(batch_size, global_cond=global_cond)
 
         # Extract `n_action_steps` steps worth of actions (from the current observation).
-        start = n_obs_steps - 1
+        start = 0 if self.config.actions_from_current_step else n_obs_steps - 1
         end = start + self.config.n_action_steps
         return actions[:, start:end]
 
@@ -310,6 +386,25 @@ class DiffusionModel(nn.Module):
 
         # Encode image features and concatenate them all together along with the state vector.
         global_cond = self._prepare_global_conditioning(batch)  # (B, global_cond_dim)
+
+        if self.config.objective in ("regression", "mlp"):
+            # Behaviour cloning: MSE between the Unet's action chunk and the actions.
+            loss = F.mse_loss(self._regress(batch["action"].shape[0], global_cond), batch["action"], reduction="none")
+            if self.config.do_mask_loss_for_padding:
+                loss = loss * ~batch["action_is_pad"].unsqueeze(-1)
+            return loss.mean()
+
+        if self.config.objective == "flow_matching":
+            # Velocity of the straight path from noise (t = 0) to the actions (t = 1).
+            actions = batch["action"]
+            noise = torch.randn(actions.shape, device=actions.device)
+            t = torch.rand(actions.shape[0], device=actions.device)
+            x_t = (1.0 - t[:, None, None]) * noise + t[:, None, None] * actions
+            pred = self.unet(x_t, t, global_cond=global_cond)
+            loss = F.mse_loss(pred, actions - noise, reduction="none")
+            if self.config.do_mask_loss_for_padding:
+                loss = loss * ~batch["action_is_pad"].unsqueeze(-1)
+            return loss.mean()
 
         # Forward diffusion.
         trajectory = batch["action"]
