@@ -2,10 +2,13 @@
 # The earlier JAX pipeline's plain BC (policy/train.py, agent=bc_vision_abs), in this training
 # script: its MLP head on Diffusion Policy's encoder (ResNet18 from scratch, GroupNorm, spatial
 # softmax, random crop 116), its cameras, observation/action windows, optimizer and EMA. On the
-# absolute-action dataset with 6D rotations (its abs_action), normalized per dimension, on GPU 3.
+# absolute-action dataset with 6D rotations (its abs_action), normalized per dimension, on GPU 1.
 # Run from anywhere:
 #     bash resfit/lerobot/shell/train_bc_legacy_bc_absolute_6d.sh
-# Other settings: see train_bc.sh.
+# The W&B run (and the run folder, outputs/resfit_bc/<RUN_NAME>) is named below; the date keeps
+# every launch's name new. Other settings: see train_bc.sh.
+WANDB_PROJECT=pick-place-bc \
+RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_legacy_bc_6d_agentview_To2_Ta16_h8_ema" \
 GPU=1 \
 POLICY=legacy_bc \
 DATASET=pick_place_bottle \

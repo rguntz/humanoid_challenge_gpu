@@ -9,7 +9,8 @@ set -euo pipefail
 
 # ---- settings -------------------------------------------------------------------
 GPU="${GPU:-0}"                      # GPU used for training, evaluation rendering included
-DATASET="${DATASET:-pick_place_bottle}"       # pick_place_bottle | pick_place_bottle_home (every episode from one home pose)
+DATASET="${DATASET:-pick_place_bottle}"       # pick_place_bottle | pick_place_bottle_home (one home start) | pick_place_bottle_wristcanon
+                                     # (one grasp orientation) | pick_place_bottle_home_wristcanon: regenerate_dataset.py
 ACTION_MODE="${ACTION_MODE:-absolute}"       # absolute | delta | absolute_6d: which LeRobot dataset to train on
 NORMALIZER="${NORMALIZER:-mean_std}"        # mean_std (LeRobot) | per_dim_range (state and actions, see train_bc.py)
 POLICY="${POLICY:-act}"                    # act | mlp (ACT's vision + MLP head) | diffusion | unet_bc | flow_matching

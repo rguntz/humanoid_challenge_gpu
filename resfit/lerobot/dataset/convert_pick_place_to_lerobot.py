@@ -56,7 +56,8 @@ resfit/pick_place/make_dataset.py runs this conversion after writing its dataset
 this script alone to redo only the LeRobot datasets (all, or the given modes):
     uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py
     uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py --modes absolute_6d
-The datasets that start from a fixed home pose (resfit/pick_place/make_home_dataset.py):
+The regenerated versions (resfit/pick_place/regenerate_dataset.py, which runs this conversion
+itself), e.g. the one that starts from a fixed home pose:
     uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py \
         --src videos/task/dataset_sim/policy/pick_place_bottle_home.hdf5 --name pick_place_bottle_home
 """

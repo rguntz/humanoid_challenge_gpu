@@ -194,9 +194,11 @@ uv run resfit/pick_place/make_dataset.py
 ```
 
 This writes the robot-base dataset (trajectories smoothed with sigma 0.8, per-demo
-videos), then the two LeRobot datasets `resfit/` trains on, one with absolute and one
-with delta actions, in `videos/task/dataset_sim/lerobot/`. Each is checked by
-replaying it in the simulation; the replays are saved in its `check_videos/` folder.
+videos), then the LeRobot datasets `resfit/` trains on, one per action mode (absolute,
+delta, absolute with 6D rotations), in `videos/task/dataset_sim/lerobot/`. Each is
+checked by replaying it in the simulation; the replays are saved in its `check_videos/`
+folder. See [Training with ResFiT](#training-with-resfit-resfit) for these datasets and
+their regenerated versions.
 
 Each episode's scene is in the tag frame, with the robot base placed behind that
 episode's workspace, so the same arm pose has different coordinates in different
@@ -319,3 +321,104 @@ Key hyperparameters (all overridable on the CLI):
 | `residual.action_scale` | 0.1 | max residual magnitude per action dim |
 | `residual.hidden_dims` | [256, 256] | residual MLP hidden layers |
 | `critic.hidden_dims` | [256, 256, 256] | critic MLP hidden layers |
+
+## Training with ResFiT (resfit)
+
+`resfit/` is a port of [ResFiT](https://github.com/amazon-science/residual-offpolicy-rl)
+(residual off-policy RL on top of a behaviour-cloning policy) to this task, in PyTorch
+with LeRobot. Its behaviour-cloning stage is ported: it trains a base policy on the
+LeRobot datasets and evaluates it in the same simulation as `policy/` (same env, same
+reset protocol). The residual RL stage is not ported yet. Nothing in `resfit/` imports
+from `policy/`.
+
+### Datasets
+
+Every LeRobot dataset is named `<version>_<action mode>` and is in
+`videos/task/dataset_sim/lerobot/`. Each episode has `observation.state` (end-effector
+position, quaternion xyzw, 2 finger joints), `observation.images.agentview` and
+`observation.images.wrist` (128 x 128 video), `action` and `next.done`, and ends at the
+demo's first success.
+
+| Action mode | Size | Action |
+|---|---|---|
+| `absolute` | 7 | end-effector target: position, rotation axis-angle, gripper |
+| `delta` | 7 | the same target relative to the current end-effector pose |
+| `absolute_6d` | 10 | position, rotation as the first two rows of its matrix (continuous, unlike axis-angle), gripper |
+
+| Version | What differs | Built by |
+|---|---|---|
+| `pick_place_bottle` | the demos as converted | `make_dataset.py` (step 1 above) |
+| `pick_place_bottle_home` | every episode starts from one home pose (the most central demo start); an approach from it to the demo's start is added | `regenerate_dataset.py --home` |
+| `pick_place_bottle_wristcanon` | every demo grasps with the gripper turned the same way (the demos grasp in two groups 180 deg apart about the gripper axis; 13 of 59 are turned) | `regenerate_dataset.py --canonical-wrist` |
+| `pick_place_bottle_home_wristcanon` | both | `regenerate_dataset.py --home --canonical-wrist` |
+
+```sh
+uv run resfit/pick_place/regenerate_dataset.py --canonical-wrist                 # all action modes
+uv run resfit/pick_place/regenerate_dataset.py --home --modes absolute_6d        # one action mode
+```
+
+`regenerate_dataset.py` replays every demo in the evaluation env and records new
+observations and images (so training images are rendered exactly like the evaluation's),
+writes `videos/task/dataset_sim/policy/<version>.hdf5` (the existing datasets are left
+as they are), then converts and checks it like `make_dataset.py`. A demo that does not
+succeed is left out. The evaluation starts from each version's own start states, so a
+policy trained on the home version is also evaluated from the home pose. To redo only
+the LeRobot datasets of a version: `uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py --src <hdf5> --name <version> [--modes ...]`.
+
+Delta actions applied from the live pose drift in `pick_place_bottle` (26/59 replays
+succeed: the simulator reaches targets through IK, the demos were recorded with joint
+targets); in the regenerated versions they do not (59/59).
+
+### Training
+
+```sh
+bash resfit/lerobot/shell/train_bc.sh                       # defaults: ACT, absolute actions
+POLICY=legacy_bc ACTION_MODE=absolute_6d GPU=1 bash resfit/lerobot/shell/train_bc.sh
+bash resfit/lerobot/shell/train_bc_legacy_bc_absolute_6d.sh # a ready-made setup
+```
+
+`train_bc.sh` takes every setting as a variable (see its header); the other
+`train_bc_*.sh` files are ready-made setups that set them. W&B logging is required
+(`uv run wandb login` once per machine); only metrics and the config go to W&B.
+
+| Policy (`POLICY`) | Model |
+|---|---|
+| `act` | ResFiT's ACT: ImageNet-pretrained ResNet18 (frozen batch norm), transformer |
+| `mlp` | ACT's vision, an MLP predicting the whole chunk instead of the transformer |
+| `diffusion` | Diffusion Policy: ResNet18 from scratch (GroupNorm, spatial softmax, random crop), 1D Unet, denoising |
+| `unet_bc` | the same Unet and encoder trained by plain BC (MSE on the chunk, one pass) |
+| `flow_matching` | the same Unet and encoder trained by flow matching (10 Euler steps to sample) |
+| `legacy_bc` | the plain BC of `policy/` (`agent=bc_vision_abs`): MLP 256-256 on Diffusion Policy's encoder, crop 116, chunk predicted from the current step |
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `GPU` | 0 | GPU for training and evaluation rendering |
+| `DATASET`, `ACTION_MODE` | `pick_place_bottle`, `absolute` | which LeRobot dataset (see above) |
+| `CAMERAS` | all | `"agentview wrist"`, `agentview` or `wrist` |
+| `N_OBS_STEPS` (To) | the policy's own (ACT, MLP: 1; Diffusion Policy family: 2) | observation frames |
+| `CHUNK_SIZE` (Ta) | 16 | actions predicted per call |
+| `N_ACTION_STEPS` | 8 | execution horizon: actions executed per call |
+| `NORMALIZER` | `mean_std` | `per_dim_range`: state and position actions mapped to [-1, 1] per dimension, quaternion / rotation / gripper unchanged (the formulation of `policy/`) |
+| `BATCH_SIZE`, `STEPS` | 256, 100000 | |
+| `OPTIMIZER` | `adamw` (constant learning rate) | `legacy`: betas (0.95, 0.999), 500-step warmup then cosine decay to 0 (as `policy/`) |
+| `GRAD_CLIP_NORM` | 10 | 0: no clipping |
+| `EMA` | 0 | 1: evaluate and save an exponential moving average of the weights (decay up to 0.9999) |
+| `RANDOM_SHIFT` | 0 | random image shift augmentation, in pixels (not for the Diffusion Policy family, which crops) |
+| `PRECISION` | `bf16` | bf16 mixed precision (~1.6-1.9x faster than `fp32` on an RTX 3090) |
+| `NUM_WORKERS` | 12 | data loading processes |
+| `EVAL_FREQ`, `EVAL_EPISODES` | 10000, 64 | evaluation in 16 simulators from fixed start states (`--eval_seed`) |
+| `RUN_NAME` | `<date>_<policy>_<dataset>` | W&B run and output folder |
+| `RESUME` | | a run folder to continue |
+| `EXTRA_ARGS` | | anything else, e.g. `--policy_kwargs dim_model=256` |
+
+Each run writes to `outputs/resfit_bc/<run name>/`: `latest/` (to resume), `best/` (the
+best evaluation so far, with EMA its averaged weights: the policy the residual RL will
+start from) and `evals/` (one video per evaluation, both cameras side by side).
+
+Each run takes about 28 GB of RAM (data workers and evaluation simulators). On a shared
+machine, systemd-oomd kills the whole user session (tmux included) when memory runs out:
+check `free -g` before starting several runs.
+
+Checks: `resfit/pick_place/check_vec_env.py` (the vectorized env against the datasets)
+and `resfit/pick_place/check_rollout_obs.py` (the simulator's observations against the
+dataset's along every replayed demo).
