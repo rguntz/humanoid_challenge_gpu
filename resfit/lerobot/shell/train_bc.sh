@@ -11,10 +11,11 @@ set -euo pipefail
 GPU="${GPU:-0}"                      # GPU used for training, evaluation rendering included
 DATASET="${DATASET:-pick_place_bottle}"       # pick_place_bottle | pick_place_bottle_home (one home start) | pick_place_bottle_wristcanon
                                      # (one grasp orientation) | pick_place_bottle_home_wristcanon: regenerate_dataset.py
-ACTION_MODE="${ACTION_MODE:-absolute}"       # absolute | delta | absolute_6d: which LeRobot dataset to train on
+ACTION_MODE="${ACTION_MODE:-absolute}"       # absolute | delta | absolute_6d | joint (joint targets, joint state)
 NORMALIZER="${NORMALIZER:-mean_std}"        # mean_std (LeRobot) | per_dim_range (state and actions, see train_bc.py)
 POLICY="${POLICY:-act}"                    # act | mlp (ACT's vision + MLP head) | diffusion | unet_bc | flow_matching
-                                     # (diffusion's Unet) | legacy_bc (the earlier JAX pipeline's plain BC)
+                                     # (diffusion's Unet) | legacy_bc (the earlier JAX pipeline's plain BC) | smolvla
+PRETRAINED="${PRETRAINED:-}"               # smolvla: checkpoint to start from, e.g. lerobot/smolvla_base (empty: none)
 CAMERAS="${CAMERAS:-}"                     # cameras the policy gets: "agentview wrist" | agentview | wrist (empty: all)
 N_OBS_STEPS="${N_OBS_STEPS:-}"                 # To: observation frames (empty: the policy's own; act and mlp: 1)
 CHUNK_SIZE="${CHUNK_SIZE:-16}"              # Ta: actions predicted per policy call (16 = ~1.1 s at 15 Hz)
@@ -22,6 +23,7 @@ N_ACTION_STEPS="${N_ACTION_STEPS:-8}"           # execution horizon: actions exe
 STEPS="${STEPS:-100000}"               # total optimisation steps
 BATCH_SIZE="${BATCH_SIZE:-256}"
 OPTIMIZER="${OPTIMIZER:-adamw}"            # adamw (constant lr) | legacy (betas 0.95/0.999, 500-step warmup + cosine)
+                                     # | policy (the policy's own optimizer and schedule)
 GRAD_CLIP_NORM="${GRAD_CLIP_NORM:-10}"         # 0: no clipping
 EMA="${EMA:-0}"                         # 1: evaluate and save an EMA of the weights (warmup up to 0.9999)
 NUM_WORKERS="${NUM_WORKERS:-12}"             # data loading processes: 12 give a batch every ~50 ms, faster than
@@ -73,6 +75,7 @@ else
     [[ -n "$WANDB_ENTITY" ]] && ARGS+=(--wandb_entity "$WANDB_ENTITY")
     [[ -n "$RUN_NAME" ]] && ARGS+=(--run_name "$RUN_NAME")
     [[ -n "$N_OBS_STEPS" ]] && ARGS+=(--n_obs_steps "$N_OBS_STEPS")
+    [[ -n "$PRETRAINED" ]] && ARGS+=(--pretrained "$PRETRAINED")
     # shellcheck disable=SC2206  # one argument per camera
     [[ -n "$CAMERAS" ]] && ARGS+=(--cameras $CAMERAS)
 fi

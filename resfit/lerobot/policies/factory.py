@@ -34,6 +34,7 @@ from resfit.lerobot.configs.policies import PreTrainedConfig
 from resfit.lerobot.policies.act.configuration_act import ACTConfig
 from resfit.lerobot.policies.diffusion.configuration_diffusion import DiffusionConfig
 from resfit.lerobot.policies.mlp.configuration_mlp import MLPConfig
+from lerobot.common.policies.smolvla.configuration_smolvla import SmolVLAConfig
 from resfit.lerobot.policies.pretrained import PreTrainedPolicy
 
 
@@ -56,6 +57,10 @@ def get_policy_class(name: str) -> PreTrainedPolicy:
         from resfit.lerobot.policies.mlp.modeling_mlp import MLPPolicy
 
         return MLPPolicy
+    if name == "smolvla":
+        from resfit.lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy
+
+        return SmolVLAPolicy
     if name == "vqbet":
         raise NotImplementedError("VQBeT is not implemented in this repository.")
         from lerobot.common.policies.vqbet.modeling_vqbet import VQBeTPolicy
@@ -83,6 +88,8 @@ def make_policy_config(policy_type: str, **kwargs) -> PreTrainedConfig:
         return ACTConfig(**kwargs)
     if policy_type == "mlp":
         return MLPConfig(**kwargs)
+    if policy_type == "smolvla":
+        return SmolVLAConfig(**kwargs)
     if policy_type == "vqbet":
         return VQBeTConfig(**kwargs)
     if policy_type == "pi0":

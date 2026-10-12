@@ -2,16 +2,19 @@
 observations and actions of the LeRobot dataset the policy is trained on. Replaces
 resfit/dexmg/environments/dexmg.py (robosuite / DexMimicGen) for this task.
 
-PickPlaceGymEnv wraps one simulator (env.py, PickPlaceBottleEnv), which always takes
-absolute end-effector targets:
-  observations  observation.state (9, float32), observation.images.agentview and
+PickPlaceGymEnv wraps one simulator (env.py, PickPlaceBottleEnv), which takes absolute
+end-effector targets (step) or joint targets (step_joint):
+  observations  observation.state (9, float32: end-effector pose and fingers, or the arm
+                and finger joints for joint datasets, action_mode.STATE_MODES),
+                observation.images.agentview and
                 observation.images.wrist ((3, H, W) float32 in [0, 1]), the
                 dataset's features in the format LeRobotDataset returns them
   actions       (7,) or (10,) in the dataset's action mode, turned into the
                 simulator's absolute targets by action_mode.to_env: delta actions
                 from the end-effector pose of the current observation (the
                 definition the dataset was converted with), absolute_6d actions by
-                turning their 6D rotation back into axis-angle.
+                turning their 6D rotation back into axis-angle; joint actions (8,)
+                go to step_joint as they are.
   episodes      end on success (terminated, reward 1) or at the env's horizon
                 (truncated); the last step's info has "success" and "episode_steps",
                 as ResFiT's robosuite wrapper gives them.
@@ -31,7 +34,8 @@ import gymnasium as gym
 import numpy as np
 import torch
 
-from resfit.pick_place.action_mode import ACTION_DIMS, to_env
+from resfit.pick_place import task
+from resfit.pick_place.action_mode import ACTION_DIMS, STATE_MODES, to_env
 from resfit.pick_place.env import CAMERA_KEYS, PickPlaceBottleEnv
 from resfit.pick_place.task import IMAGE_FEATURES
 
@@ -69,8 +73,10 @@ class PickPlaceGymEnv(gym.Env):
         self.episode_steps = 0
 
     def _observe(self, state):
-        self._state = state
-        obs = {"observation.state": state.astype(np.float32)}
+        self._state = state  # end-effector pose and fingers: delta actions are relative to it
+        if STATE_MODES[self.action_mode] == "joint":
+            state = self.env.data.qpos[:task.ARM + 2]  # arm and finger joints
+        obs = {"observation.state": np.asarray(state, np.float32)}
         for key, image in self.env.get_images(CAMERA_KEYS).items():
             obs[IMAGE_FEATURES[key]] = np.ascontiguousarray(image.transpose(2, 0, 1), np.float32) / 255.0
         return obs
@@ -84,8 +90,11 @@ class PickPlaceGymEnv(gym.Env):
 
     def step(self, action):
         action = np.asarray(action.cpu() if hasattr(action, "cpu") else action, np.float32).reshape(-1)
-        action = to_env(action, self.action_mode, self._state[0:3], self._state[3:7])
-        state, reward, terminated, truncated, info = self.env.step(action)
+        if self.action_mode == "joint":
+            state, reward, terminated, truncated, info = self.env.step_joint(action)
+        else:
+            action = to_env(action, self.action_mode, self._state[0:3], self._state[3:7])
+            state, reward, terminated, truncated, info = self.env.step(action)
         self.episode_steps += 1
         if terminated or truncated:
             info = {**info, "episode_steps": self.episode_steps}

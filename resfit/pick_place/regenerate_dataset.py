@@ -44,7 +44,9 @@ Output, next to the source (they share env_scene.xml), named pick_place_bottle[_
       evaluation included, from it. layout.attrs: home_qpos and home_from_demo (--home).
       Per demo, attrs wrist_flipped, approach_steps and approach_end_error_mm / _deg
       (end-effector error to the demo's start after the approach); states are [time, qpos,
-      qvel] of env_scene.xml (the source's states are of each demo's own scene).
+      qvel] of env_scene.xml (the source's states are of each demo's own scene); actions_joint
+      (T, 8) are the joint targets the IK made of each action, and the gripper (the joint
+      action mode's actions).
 Then the LeRobot datasets <name>_<mode>/ (convert_pick_place_to_lerobot.py, with its replay
 checks and check videos).
 
@@ -177,7 +179,8 @@ def rollout(env, fk_data, row, q_start, home, demo_actions, steps_after_success,
                             float(np.degrees((Rotation.from_quat(live["robot0_eef_quat"]) * r.inv()).magnitude())))
         obs, images, state = record(env)
         _, reward, success, _, _ = env.step(action)
-        frames.append((obs, images, state, action, reward))
+        joint_target = np.concatenate([env.q_target, [action[6]]])  # what the IK made of it
+        frames.append((obs, images, state, action, reward, joint_target))
         if success and first_success is None:
             first_success = t
         if first_success is not None and t >= first_success + steps_after_success:
@@ -191,6 +194,7 @@ def rollout(env, fk_data, row, q_start, home, demo_actions, steps_after_success,
         "states": np.stack([f[2] for f in frames]),
         "actions": np.stack([f[3] for f in frames]).astype(np.float32),
         "rewards": np.array([f[4] for f in frames], np.float32),
+        "actions_joint": np.stack([f[5] for f in frames]).astype(np.float32),
         "dones": np.eye(T, dtype=np.int64)[-1],
         "first_success": first_success,
     }
@@ -275,7 +279,7 @@ def main():
             for k, v in episode["images"].items():
                 g.create_dataset(f"obs/{k}", data=v, compression="gzip", compression_opts=4,
                                  chunks=(1,) + v.shape[1:])
-            for k in ("actions", "rewards", "dones", "states"):
+            for k in ("actions", "actions_joint", "rewards", "dones", "states"):
                 g.create_dataset(k, data=episode[k])
             kept.append(row)
             total += T

@@ -19,7 +19,13 @@ actions. Any 6 values give back a rotation by Gram-Schmidt orthogonalization, so
 policy's outputs need not be exact rows of a rotation matrix. Same convention as
 pytorch3d's matrix_to_rotation_6d / rotation_6d_to_matrix.
 
-The dataset converter writes the actions with from_absolute, from the recorded
+A joint action is the demos' recorded control itself: the 7 arm joint targets (rad) and
+the gripper (8 values), executed by the env's step_joint without IK
+(rollout_physics.Recorder's actions_joint). Its datasets give the joint state instead of
+the end-effector pose: the 7 arm joints and the 2 finger joints (9 values, STATE_MODES).
+It is not derived from the absolute targets, so from_absolute and to_env do not apply.
+
+The dataset converter writes the other modes' actions with from_absolute, from the recorded
 observations; the env adapter turns the policy's actions back into the env's absolute
 targets with to_env, from the env's live observation. The demos' recorder
 (sim/rollout_physics.py, Recorder.act) defines its delta actions the same way.
@@ -27,8 +33,11 @@ targets with to_env, from the env's live observation. The demos' recorder
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-ACTION_MODES = ("absolute", "delta", "absolute_6d")
-ACTION_DIMS = {"absolute": 7, "delta": 7, "absolute_6d": 10}
+ACTION_MODES = ("absolute", "delta", "absolute_6d", "joint")
+ACTION_DIMS = {"absolute": 7, "delta": 7, "absolute_6d": 10, "joint": 8}
+# observation.state of each action mode's datasets: end-effector position, quaternion xyzw and
+# fingers ("eef"), or the 7 arm joints and the 2 fingers ("joint"); 9 values either way.
+STATE_MODES = {"absolute": "eef", "delta": "eef", "absolute_6d": "eef", "joint": "joint"}
 
 
 def to_delta(action_abs, eef_pos, eef_quat_xyzw):
@@ -84,6 +93,8 @@ def from_absolute(action_abs, mode, eef_pos, eef_quat_xyzw):
         return to_delta(action_abs, eef_pos, eef_quat_xyzw)
     if mode == "absolute_6d":
         return to_absolute_6d(action_abs)
+    if mode == "joint":
+        raise ValueError("joint actions are the recorded joint targets, not derived from absolute ones")
     return np.asarray(action_abs, np.float32)
 
 
@@ -93,4 +104,6 @@ def to_env(action, mode, eef_pos, eef_quat_xyzw):
         return to_absolute(action, eef_pos, eef_quat_xyzw)
     if mode == "absolute_6d":
         return from_absolute_6d(action)
+    if mode == "joint":
+        raise ValueError("joint actions go to the env's step_joint as they are")
     return np.asarray(action, np.float32)

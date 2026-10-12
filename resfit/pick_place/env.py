@@ -11,7 +11,9 @@ robot-base frame (task.py).
 Control: each action is a base-frame target [position (3), axis-angle (3),
 gripper (1)]. Inverse kinematics (sim/replay_hand.py's solve_ik, warm-started from
 the current joints, as in the demos) turns it into joint targets; the gripper
-closes when the last component is > 0.
+closes when the last component is > 0. step_joint takes joint targets instead
+[7 arm joints (rad), gripper (1)], clipped to the joint ranges, without IK: the
+demos' own recorded control (rollout_physics.Recorder's actions_joint).
 
 Reset (no demo state is replayed): each part of the start state is drawn
 independently from what the demos cover, in the base frame (the dataset's layout/
@@ -157,14 +159,24 @@ class PickPlaceBottleEnv(gym.Env):
 
     # ----------------------------------------------------------------- step
     def step(self, action):
+        """Absolute base-frame end-effector target (7), through IK."""
         action = np.asarray(action, np.float64).reshape(-1)
         p, R = task.from_base_pose(action[:3], action[3:6], self.pb, self.Rb)
         self.ik_data.qpos[:] = self.data.qpos
         solve_ik(self.model, self.ik_data, self.scene.site, p, R, self.q_home)
-        q_prev, q_next = self.q_target, self.ik_data.qpos[:task.ARM].copy()
+        return self._advance(self.ik_data.qpos[:task.ARM].copy(), action[6] > 0)
 
+    def step_joint(self, action):
+        """Joint targets (7, rad) and gripper (1), no IK."""
+        action = np.asarray(action, np.float64).reshape(-1)
+        lo, hi = self.model.jnt_range[:task.ARM].T
+        return self._advance(np.clip(action[:task.ARM], lo, hi), action[task.ARM] > 0)
+
+    def _advance(self, q_next, close):
+        """One control step: the joint targets move linearly from the previous ones to q_next."""
+        q_prev = self.q_target
         d = self.data
-        d.ctrl[task.ARM] = GRIPPER_CLOSED if action[6] > 0 else GRIPPER_OPEN
+        d.ctrl[task.ARM] = GRIPPER_CLOSED if close else GRIPPER_OPEN
         for s in range(self.steps_per_control):
             a = s / self.steps_per_control
             d.ctrl[:task.ARM] = (1 - a) * q_prev + a * q_next

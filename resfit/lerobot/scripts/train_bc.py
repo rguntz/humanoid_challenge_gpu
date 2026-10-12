@@ -46,6 +46,12 @@ frames), --chunk_size (Ta, actions predicted) and --n_action_steps (execution ho
 cosine-decayed to 0 at --steps) and --grad_clip_norm 0 (no clipping). With --ema, latest/policy
 holds the trained weights (to resume) and best/policy the averaged ones (the evaluated policy).
 
+--policy smolvla is LeRobot's SmolVLA (policies/smolvla/): one observation frame, its own
+chunk size (--chunk_size, SmolVLA's default 50); --pretrained lerobot/smolvla_base initializes
+it from that checkpoint (its weights, not its normalization statistics) and --optimizer policy
+uses its own optimizer and learning-rate schedule (AdamW betas (0.9, 0.95), warmup then cosine
+decay; the policy's get_optimizer_preset / get_scheduler_preset, for any policy).
+
 W&B logging is required (wandb login once per machine).
 
 Usage: see resfit/lerobot/shell/train_bc.sh.
@@ -102,11 +108,11 @@ def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--dataset", required=False, help="LeRobot dataset folder (videos/task/dataset_sim/lerobot/...)")
     p.add_argument("--policy", default="act",
-                   choices=["act", "mlp", "diffusion", "unet_bc", "flow_matching", "legacy_bc"],
+                   choices=["act", "mlp", "diffusion", "unet_bc", "flow_matching", "legacy_bc", "smolvla"],
                    help="act; mlp (ACT's vision, an MLP head: policies/mlp/); diffusion (Diffusion Policy's "
                         "Unet, denoising objective); unet_bc (the same Unet trained by plain behaviour "
                         "cloning); flow_matching (the same Unet, flow matching); legacy_bc (the earlier JAX "
-                        "pipeline's plain BC): see make_bc_policy_config")
+                        "pipeline's plain BC): see make_bc_policy_config; smolvla (LeRobot's SmolVLA)")
     p.add_argument("--chunk_size", type=int, default=16, help="Ta: actions predicted per policy call")
     p.add_argument("--n_action_steps", type=int, default=8,
                    help="execution horizon: actions of each chunk executed before the next call")
@@ -116,8 +122,10 @@ def parse_args():
                    help="cameras given to the policy (default: all)")
     p.add_argument("--ema", type=int, default=0, choices=[0, 1],
                    help="evaluate and save an EMA of the weights (see the module docstring)")
-    p.add_argument("--optimizer", default="adamw", choices=["adamw", "legacy"],
-                   help="adamw: constant learning rate; legacy: see the module docstring")
+    p.add_argument("--optimizer", default="adamw", choices=["adamw", "legacy", "policy"],
+                   help="adamw: constant learning rate; legacy, policy: see the module docstring")
+    p.add_argument("--pretrained", default=None,
+                   help="smolvla: checkpoint to initialize from (folder or Hugging Face id, e.g. lerobot/smolvla_base)")
     p.add_argument("--policy_kwargs", default="", help="other policy config overrides, as 'key=value key=value'")
     p.add_argument("--normalizer", default="mean_std", choices=["mean_std", "per_dim_range"],
                    help="state and action normalization (see the module docstring)")
@@ -184,7 +192,9 @@ def make_bc_policy_config(args, ds_meta):
     kwargs = parse_policy_kwargs(args.policy_kwargs)
     if args.n_obs_steps is not None:
         kwargs = {"n_obs_steps": args.n_obs_steps, **kwargs}
-    if args.policy in ("act", "mlp"):
+    if args.policy == "smolvla" and args.pretrained:
+        kwargs = {**pretrained_config(args.pretrained), **kwargs}
+    if args.policy in ("act", "mlp", "smolvla"):
         return make_policy_config(args.policy, chunk_size=args.chunk_size, n_action_steps=args.n_action_steps,
                                   **kwargs)
     h, w = ds_meta.features[ds_meta.camera_keys[0]]["shape"][:2]
@@ -197,6 +207,23 @@ def make_bc_policy_config(args, ds_meta):
     if args.policy == "legacy_bc":
         defaults.update(crop_shape=(min(116, h), min(116, w)), actions_from_current_step=True)
     return make_policy_config("diffusion", **{**defaults, **kwargs})
+
+
+def pretrained_config(checkpoint):
+    """The architecture settings of a SmolVLA checkpoint's config.json (folder or Hugging Face
+    id), so the policy is built as the checkpoint was (e.g. lerobot/smolvla_base pads the task
+    sentence to max_length). Left out: what this script sets (features, chunk, normalization,
+    device) and load_vlm_weights (the checkpoint's weights are loaded afterwards anyway)."""
+    from lerobot.common.policies.smolvla.configuration_smolvla import SmolVLAConfig
+    path = Path(checkpoint) / "config.json"
+    if not path.exists():
+        from huggingface_hub import hf_hub_download
+        path = Path(hf_hub_download(checkpoint, "config.json"))
+    cfg = json.loads(path.read_text())
+    skip = {"type", "input_features", "output_features", "normalization_mapping", "device", "use_amp",
+            "chunk_size", "n_action_steps", "n_obs_steps", "load_vlm_weights"}
+    fields = set(SmolVLAConfig.__dataclass_fields__)
+    return {k: tuple(v) if isinstance(v, list) else v for k, v in cfg.items() if k in fields and k not in skip}
 
 
 def ema_decay(step):
@@ -362,7 +389,8 @@ def main():
     policy_cfg = make_bc_policy_config(args, ds_meta)
     policy_cfg.device = device.type
     if args.normalizer == "per_dim_range":
-        policy_cfg.normalization_mapping = {"VISUAL": NormalizationMode.MEAN_STD, "STATE": NormalizationMode.MIN_MAX,
+        # Images keep the policy's own normalization (SmolVLA: none, its encoder rescales them).
+        policy_cfg.normalization_mapping = {**policy_cfg.normalization_mapping, "STATE": NormalizationMode.MIN_MAX,
                                             "ACTION": NormalizationMode.MIN_MAX}
         ds_meta.stats = per_dim_range_stats(ds_meta.stats, ds_meta.info["action_mode"])
     delta_timestamps = resolve_delta_timestamps(policy_cfg, ds_meta)
@@ -387,7 +415,16 @@ def main():
         policy.to(memory_format=torch.channels_last)
     autocast = (lambda: torch.autocast(device.type, dtype=torch.bfloat16)) if args.precision == "bf16" \
         else contextlib.nullcontext
-    if args.optimizer == "legacy":
+    if args.pretrained:
+        if args.policy != "smolvla":
+            raise SystemExit("--pretrained is for --policy smolvla")
+        from resfit.lerobot.policies.smolvla.modeling_smolvla import load_pretrained_weights
+        logger.info(f"Initialized from {args.pretrained}: {load_pretrained_weights(policy, args.pretrained)}")
+    if args.optimizer == "policy":
+        optimizer = policy_cfg.get_optimizer_preset().build(policy.get_optim_params())
+        scheduler_cfg = policy_cfg.get_scheduler_preset()
+        scheduler = scheduler_cfg.build(optimizer, args.steps) if scheduler_cfg is not None else None
+    elif args.optimizer == "legacy":
         optimizer = torch.optim.AdamW(policy.get_optim_params(), lr=policy_cfg.optimizer_lr, betas=(0.95, 0.999),
                                       eps=1e-8, weight_decay=policy_cfg.optimizer_weight_decay)
         scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, legacy_lr_lambda(args.steps))
@@ -456,7 +493,7 @@ def main():
                         f"iter {iter_ms:.0f} ms")
             wandb.log({"train/loss": loss.item(), "train/grad_norm": float(grad_norm),
                        "train/lr": optimizer.param_groups[0]["lr"],
-                       **{f"train/{k}": v for k, v in (loss_dict or {}).items()},
+                       **{f"train/{k}": v for k, v in (loss_dict or {}).items() if isinstance(v, (int, float))},
                        "time/data_ms": data_ms, "time/iter_ms": iter_ms}, step=step)
 
         if step % args.eval_freq == 0 or step == args.steps:

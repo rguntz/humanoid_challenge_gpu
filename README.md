@@ -344,6 +344,7 @@ demo's first success.
 | `absolute` | 7 | end-effector target: position, rotation axis-angle, gripper |
 | `delta` | 7 | the same target relative to the current end-effector pose |
 | `absolute_6d` | 10 | position, rotation as the first two rows of its matrix (continuous, unlike axis-angle), gripper |
+| `joint` | 8 | the demo's recorded joint targets (7 arm joints) and gripper, executed without IK; `observation.state` is then the 7 arm joints and 2 fingers |
 
 | Version | What differs | Built by |
 |---|---|---|
@@ -364,6 +365,9 @@ as they are), then converts and checks it like `make_dataset.py`. A demo that do
 succeed is left out. The evaluation starts from each version's own start states, so a
 policy trained on the home version is also evaluated from the home pose. To redo only
 the LeRobot datasets of a version: `uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py --src <hdf5> --name <version> [--modes ...]`.
+
+Joint actions replay every demo of `pick_place_bottle` (59/59, 55 at the recorded step and 4
+one step later): they are the recording's own control, and need no IK.
 
 Delta actions applied from the live pose drift in `pick_place_bottle` (26/59 replays
 succeed: the simulator reaches targets through IK, the demos were recorded with joint
@@ -389,6 +393,7 @@ bash resfit/lerobot/shell/train_bc_legacy_bc_absolute_6d.sh # a ready-made setup
 | `unet_bc` | the same Unet and encoder trained by plain BC (MSE on the chunk, one pass) |
 | `flow_matching` | the same Unet and encoder trained by flow matching (10 Euler steps to sample) |
 | `legacy_bc` | the plain BC of `policy/` (`agent=bc_vision_abs`): MLP 256-256 on Diffusion Policy's encoder, crop 116, chunk predicted from the current step |
+| `smolvla` | LeRobot's SmolVLA vision-language-action model (450M parameters, flow-matching action expert), one observation frame, the task sentence as instruction; `PRETRAINED=lerobot/smolvla_base` starts from the pretrained model (vision-language model frozen, action expert trained) |
 
 | Setting | Default | Meaning |
 |---|---|---|
@@ -400,7 +405,8 @@ bash resfit/lerobot/shell/train_bc_legacy_bc_absolute_6d.sh # a ready-made setup
 | `N_ACTION_STEPS` | 8 | execution horizon: actions executed per call |
 | `NORMALIZER` | `mean_std` | `per_dim_range`: state and position actions mapped to [-1, 1] per dimension, quaternion / rotation / gripper unchanged (the formulation of `policy/`) |
 | `BATCH_SIZE`, `STEPS` | 256, 100000 | |
-| `OPTIMIZER` | `adamw` (constant learning rate) | `legacy`: betas (0.95, 0.999), 500-step warmup then cosine decay to 0 (as `policy/`) |
+| `OPTIMIZER` | `adamw` (constant learning rate) | `legacy`: betas (0.95, 0.999), 500-step warmup then cosine decay to 0 (as `policy/`); `policy`: the policy's own optimizer and schedule (SmolVLA: betas (0.9, 0.95), 1000-step warmup, cosine decay) |
+| `PRETRAINED` | | `smolvla`: checkpoint to start from (folder or Hugging Face id) |
 | `GRAD_CLIP_NORM` | 10 | 0: no clipping |
 | `EMA` | 0 | 1: evaluate and save an exponential moving average of the weights (decay up to 0.9999) |
 | `RANDOM_SHIFT` | 0 | random image shift augmentation, in pixels (not for the Diffusion Policy family, which crops) |

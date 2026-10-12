@@ -53,7 +53,7 @@ def download_policy_from_wandb(
 
 
 def load_policy(policy_dir: Path) -> ACTPolicy:
-    """Infer policy type (diffusion / act / mlp) from `config.json` and load weights."""
+    """Infer policy type (diffusion / act / mlp / smolvla) from `config.json` and load weights."""
 
     with (policy_dir / "config.json").open() as f:
         cfg_dict = json.load(f)
@@ -65,6 +65,10 @@ def load_policy(policy_dir: Path) -> ACTPolicy:
         return DiffusionPolicy.from_pretrained(policy_dir)
     if policy_name_field == "mlp":
         return MLPPolicy.from_pretrained(policy_dir)
+    if policy_name_field == "smolvla":
+        from resfit.lerobot.policies.smolvla.modeling_smolvla import SmolVLAPolicy
+
+        return SmolVLAPolicy.from_pretrained(policy_dir)
     if "use_vae" in cfg_dict:
         return ACTPolicy.from_pretrained(policy_dir)
 
