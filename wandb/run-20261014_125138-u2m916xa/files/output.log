@@ -1,0 +1,778 @@
+Run folder: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0
+Critic warmup: running 10000 critic-only updates...
+                                                                                                         
+Critic warmup: 0 / 10000, train/critic_qt=-0.3928 train/critic_loss=0.3414
+Critic warmup: 100 / 10000, train/critic_qt=-0.0928 train/critic_loss=0.0263
+Critic warmup: 200 / 10000, train/critic_qt=-0.1145 train/critic_loss=0.0147
+Critic warmup: 300 / 10000, train/critic_qt=-0.1344 train/critic_loss=0.0067
+Critic warmup: 400 / 10000, train/critic_qt=-0.1333 train/critic_loss=0.0055
+Critic warmup: 500 / 10000, train/critic_qt=-0.0969 train/critic_loss=0.0042
+Critic warmup: 600 / 10000, train/critic_qt=-0.1344 train/critic_loss=0.0019
+Critic warmup: 700 / 10000, train/critic_qt=-0.1001 train/critic_loss=0.0019
+Critic warmup: 800 / 10000, train/critic_qt=-0.0901 train/critic_loss=0.0047
+Critic warmup: 900 / 10000, train/critic_qt=-0.0822 train/critic_loss=0.0019
+Critic warmup: 1000 / 10000, train/critic_qt=-0.0587 train/critic_loss=0.0021
+Critic warmup: 1100 / 10000, train/critic_qt=-0.1042 train/critic_loss=0.0017
+Critic warmup: 1200 / 10000, train/critic_qt=-0.0644 train/critic_loss=0.0017
+Critic warmup: 1300 / 10000, train/critic_qt=-0.0556 train/critic_loss=0.0014
+Critic warmup: 1400 / 10000, train/critic_qt=-0.0371 train/critic_loss=0.0025
+Critic warmup: 1500 / 10000, train/critic_qt=-0.0089 train/critic_loss=0.0036
+Critic warmup: 1600 / 10000, train/critic_qt=-0.0169 train/critic_loss=0.0025
+Critic warmup: 1700 / 10000, train/critic_qt=-0.0191 train/critic_loss=0.0018
+Critic warmup: 1800 / 10000, train/critic_qt=-0.0271 train/critic_loss=0.0014
+Critic warmup: 1900 / 10000, train/critic_qt=-0.0027 train/critic_loss=0.0015
+Critic warmup: 2000 / 10000, train/critic_qt=0.0089 train/critic_loss=0.0022
+Critic warmup: 2100 / 10000, train/critic_qt=0.0190 train/critic_loss=0.0014
+Critic warmup: 2200 / 10000, train/critic_qt=0.0210 train/critic_loss=0.0015
+Critic warmup: 2300 / 10000, train/critic_qt=0.0188 train/critic_loss=0.0009
+Critic warmup: 2400 / 10000, train/critic_qt=0.0236 train/critic_loss=0.0018
+Critic warmup: 2500 / 10000, train/critic_qt=0.0254 train/critic_loss=0.0010
+Critic warmup: 2600 / 10000, train/critic_qt=0.0701 train/critic_loss=0.0009
+Critic warmup: 2700 / 10000, train/critic_qt=0.0301 train/critic_loss=0.0009
+Critic warmup: 2800 / 10000, train/critic_qt=0.0664 train/critic_loss=0.0010
+Critic warmup: 2900 / 10000, train/critic_qt=0.0851 train/critic_loss=0.0010
+Critic warmup: 3000 / 10000, train/critic_qt=0.0659 train/critic_loss=0.0009
+Critic warmup: 3100 / 10000, train/critic_qt=0.0837 train/critic_loss=0.0007
+Critic warmup: 3200 / 10000, train/critic_qt=0.0932 train/critic_loss=0.0008
+Critic warmup: 3300 / 10000, train/critic_qt=0.1070 train/critic_loss=0.0010
+Critic warmup: 3400 / 10000, train/critic_qt=0.1251 train/critic_loss=0.0006
+Critic warmup: 3500 / 10000, train/critic_qt=0.1203 train/critic_loss=0.0008
+Critic warmup: 3600 / 10000, train/critic_qt=0.0806 train/critic_loss=0.0010
+Critic warmup: 3700 / 10000, train/critic_qt=0.0945 train/critic_loss=0.0006
+Critic warmup: 3800 / 10000, train/critic_qt=0.1277 train/critic_loss=0.0009
+Critic warmup: 3900 / 10000, train/critic_qt=0.1606 train/critic_loss=0.0008
+Critic warmup: 4000 / 10000, train/critic_qt=0.1668 train/critic_loss=0.0007
+Critic warmup: 4100 / 10000, train/critic_qt=0.1241 train/critic_loss=0.0006
+Critic warmup: 4200 / 10000, train/critic_qt=0.1511 train/critic_loss=0.0010
+Critic warmup: 4300 / 10000, train/critic_qt=0.1449 train/critic_loss=0.0009
+Critic warmup: 4400 / 10000, train/critic_qt=0.1518 train/critic_loss=0.0010
+Critic warmup: 4500 / 10000, train/critic_qt=0.2017 train/critic_loss=0.0014
+Critic warmup: 4600 / 10000, train/critic_qt=0.1613 train/critic_loss=0.0011
+Critic warmup: 4700 / 10000, train/critic_qt=0.1663 train/critic_loss=0.0011
+Critic warmup: 4800 / 10000, train/critic_qt=0.1321 train/critic_loss=0.0014
+Critic warmup: 4900 / 10000, train/critic_qt=0.1712 train/critic_loss=0.0009
+Critic warmup: 5000 / 10000, train/critic_qt=0.1629 train/critic_loss=0.0012
+Critic warmup: 5100 / 10000, train/critic_qt=0.1858 train/critic_loss=0.0017
+Critic warmup: 5200 / 10000, train/critic_qt=0.1789 train/critic_loss=0.0009
+Critic warmup: 5300 / 10000, train/critic_qt=0.1911 train/critic_loss=0.0017
+Critic warmup: 5400 / 10000, train/critic_qt=0.1832 train/critic_loss=0.0011
+Critic warmup: 5500 / 10000, train/critic_qt=0.2024 train/critic_loss=0.0019
+Critic warmup: 5600 / 10000, train/critic_qt=0.2302 train/critic_loss=0.0014
+Critic warmup: 5700 / 10000, train/critic_qt=0.1886 train/critic_loss=0.0014
+Critic warmup: 5800 / 10000, train/critic_qt=0.1853 train/critic_loss=0.0022
+Critic warmup: 5900 / 10000, train/critic_qt=0.1933 train/critic_loss=0.0018
+Critic warmup: 6000 / 10000, train/critic_qt=0.1776 train/critic_loss=0.0013
+Critic warmup: 6100 / 10000, train/critic_qt=0.1752 train/critic_loss=0.0013
+Critic warmup: 6200 / 10000, train/critic_qt=0.1990 train/critic_loss=0.0011
+Critic warmup: 6300 / 10000, train/critic_qt=0.2091 train/critic_loss=0.0013
+Critic warmup: 6400 / 10000, train/critic_qt=0.2149 train/critic_loss=0.0012
+Critic warmup: 6500 / 10000, train/critic_qt=0.1948 train/critic_loss=0.0014
+Critic warmup: 6600 / 10000, train/critic_qt=0.1929 train/critic_loss=0.0009
+Critic warmup: 6700 / 10000, train/critic_qt=0.1906 train/critic_loss=0.0014
+Critic warmup: 6800 / 10000, train/critic_qt=0.1995 train/critic_loss=0.0024
+Critic warmup: 6900 / 10000, train/critic_qt=0.2270 train/critic_loss=0.0018
+Critic warmup: 7000 / 10000, train/critic_qt=0.2100 train/critic_loss=0.0012
+Critic warmup: 7100 / 10000, train/critic_qt=0.2338 train/critic_loss=0.0013
+Critic warmup: 7200 / 10000, train/critic_qt=0.2145 train/critic_loss=0.0015
+Critic warmup: 7300 / 10000, train/critic_qt=0.2404 train/critic_loss=0.0009
+Critic warmup: 7400 / 10000, train/critic_qt=0.2459 train/critic_loss=0.0013
+Critic warmup: 7500 / 10000, train/critic_qt=0.2329 train/critic_loss=0.0013
+Critic warmup: 7600 / 10000, train/critic_qt=0.2632 train/critic_loss=0.0018
+Critic warmup: 7700 / 10000, train/critic_qt=0.2195 train/critic_loss=0.0014
+Critic warmup: 7800 / 10000, train/critic_qt=0.2379 train/critic_loss=0.0013
+Critic warmup: 7900 / 10000, train/critic_qt=0.2339 train/critic_loss=0.0010
+Critic warmup: 8000 / 10000, train/critic_qt=0.2328 train/critic_loss=0.0012
+Critic warmup: 8100 / 10000, train/critic_qt=0.2423 train/critic_loss=0.0012
+Critic warmup: 8200 / 10000, train/critic_qt=0.2349 train/critic_loss=0.0009
+Critic warmup: 8300 / 10000, train/critic_qt=0.2238 train/critic_loss=0.0008
+Critic warmup: 8400 / 10000, train/critic_qt=0.2520 train/critic_loss=0.0007
+Critic warmup: 8500 / 10000, train/critic_qt=0.2436 train/critic_loss=0.0012
+Critic warmup: 8600 / 10000, train/critic_qt=0.2422 train/critic_loss=0.0009
+Critic warmup: 8700 / 10000, train/critic_qt=0.2505 train/critic_loss=0.0007
+Critic warmup: 8800 / 10000, train/critic_qt=0.2550 train/critic_loss=0.0008
+Critic warmup: 8900 / 10000, train/critic_qt=0.2317 train/critic_loss=0.0010
+Critic warmup: 9000 / 10000, train/critic_qt=0.2211 train/critic_loss=0.0008
+Critic warmup: 9100 / 10000, train/critic_qt=0.2462 train/critic_loss=0.0010
+Critic warmup: 9200 / 10000, train/critic_qt=0.2483 train/critic_loss=0.0008
+Critic warmup: 9300 / 10000, train/critic_qt=0.2585 train/critic_loss=0.0006
+Critic warmup: 9400 / 10000, train/critic_qt=0.2439 train/critic_loss=0.0010
+Critic warmup: 9500 / 10000, train/critic_qt=0.2446 train/critic_loss=0.0007
+Critic warmup: 9600 / 10000, train/critic_qt=0.2490 train/critic_loss=0.0007
+Critic warmup: 9700 / 10000, train/critic_qt=0.2608 train/critic_loss=0.0006
+Critic warmup: 9800 / 10000, train/critic_qt=0.2199 train/critic_loss=0.0004
+Critic warmup: 9900 / 10000, train/critic_qt=0.2396 train/critic_loss=0.0012
+Critic warmup completed.
+                                                                                                         
+Evaluating 50 episodes: ✓✓✓✓✓✓✓✓✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✗✗✗✗✗✗✗✓✓✗✓✓✓✗✗✗✗✗✗✗✗✗✗Done
+Saved Q-trajectory plots to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_q_trajectories_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_0.png
+Saved evaluation video to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_0.mp4
+🎉 New best success rate: 0.3600 (prev: 0.0000)
+[100] actor_loss_base=-0.2322 critic_loss=0.0012 actor_lr=1.00e-06 residual_l1=0.0039 residual_l2=0.0000 actor_grad_norm=0.0597 | Time%: env=0.4 grad=45.1 batch=2.6 eval=51.9
+[200] actor_loss_base=-0.2675 critic_loss=0.0007 actor_lr=1.00e-06 residual_l1=0.0081 residual_l2=0.0001 success_last50=1.00 actor_grad_norm=0.0689 | Time%: env=0.8 grad=45.9 batch=2.6 eval=50.7
+[300] actor_loss_base=-0.2497 critic_loss=0.0004 actor_lr=1.00e-06 residual_l1=0.0125 residual_l2=0.0002 success_last50=1.00 actor_grad_norm=0.0699 | Time%: env=1.1 grad=46.6 batch=2.7 eval=49.6
+[400] actor_loss_base=-0.2659 critic_loss=0.0005 actor_lr=1.00e-06 residual_l1=0.0164 residual_l2=0.0003 success_last50=1.00 actor_grad_norm=0.0661 | Time%: env=1.5 grad=47.3 batch=2.7 eval=48.5
+[500] actor_loss_base=-0.2696 critic_loss=0.0005 actor_lr=1.00e-06 residual_l1=0.0205 residual_l2=0.0004 success_last50=0.67 actor_grad_norm=0.0635 | Time%: env=1.8 grad=47.9 batch=2.7 eval=47.5
+[600] actor_loss_base=-0.2831 critic_loss=0.0007 actor_lr=1.00e-06 residual_l1=0.0241 residual_l2=0.0006 success_last50=0.75 actor_grad_norm=0.0627 | Time%: env=2.2 grad=48.6 batch=2.8 eval=46.5
+[700] actor_loss_base=-0.2691 critic_loss=0.0004 actor_lr=1.00e-06 residual_l1=0.0268 residual_l2=0.0008 success_last50=0.75 actor_grad_norm=0.0490 | Time%: env=2.5 grad=49.2 batch=2.8 eval=45.6
+[800] actor_loss_base=-0.2568 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0297 residual_l2=0.0010 success_last50=0.75 actor_grad_norm=0.0514 | Time%: env=2.7 grad=49.8 batch=2.8 eval=44.7
+[900] actor_loss_base=-0.2699 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0323 residual_l2=0.0012 success_last50=0.60 actor_grad_norm=0.0459 | Time%: env=3.0 grad=50.3 batch=2.9 eval=43.8
+[1000] actor_loss_base=-0.2802 critic_loss=0.0007 actor_lr=1.00e-06 residual_l1=0.0348 residual_l2=0.0014 success_last50=0.67 actor_grad_norm=0.0387 | Time%: env=3.3 grad=50.9 batch=2.9 eval=43.0
+[1100] actor_loss_base=-0.2781 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0373 residual_l2=0.0016 success_last50=0.67 actor_grad_norm=0.0356 | Time%: env=3.6 grad=51.4 batch=2.9 eval=42.2
+[1200] actor_loss_base=-0.2908 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0388 residual_l2=0.0017 success_last50=0.57 actor_grad_norm=0.0367 | Time%: env=3.8 grad=51.9 batch=2.9 eval=41.4
+[1300] actor_loss_base=-0.2800 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0393 residual_l2=0.0018 success_last50=0.57 actor_grad_norm=0.0346 | Time%: env=4.0 grad=52.4 batch=3.0 eval=40.6
+[1400] actor_loss_base=-0.2842 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0399 residual_l2=0.0018 success_last50=0.57 actor_grad_norm=0.0274 | Time%: env=4.3 grad=52.8 batch=3.0 eval=39.9
+[1500] actor_loss_base=-0.3089 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0411 residual_l2=0.0020 success_last50=0.56 actor_grad_norm=0.0283 | Time%: env=4.5 grad=53.3 batch=3.0 eval=39.2
+[1600] actor_loss_base=-0.2805 critic_loss=0.0005 actor_lr=1.00e-06 residual_l1=0.0402 residual_l2=0.0019 success_last50=0.60 actor_grad_norm=0.0242 | Time%: env=4.7 grad=53.7 batch=3.0 eval=38.5
+[1700] actor_loss_base=-0.2798 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0406 residual_l2=0.0020 success_last50=0.60 actor_grad_norm=0.0278 | Time%: env=4.9 grad=54.1 batch=3.0 eval=37.9
+[1800] actor_loss_base=-0.2928 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0426 residual_l2=0.0022 success_last50=0.60 actor_grad_norm=0.0255 | Time%: env=5.1 grad=54.5 batch=3.1 eval=37.3
+[1900] actor_loss_base=-0.3279 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0452 residual_l2=0.0024 success_last50=0.55 actor_grad_norm=0.0307 | Time%: env=5.3 grad=54.9 batch=3.1 eval=36.6
+[2000] actor_loss_base=-0.2997 critic_loss=0.0004 actor_lr=1.00e-06 residual_l1=0.0458 residual_l2=0.0025 success_last50=0.55 actor_grad_norm=0.0259 | Time%: env=5.5 grad=55.3 batch=3.1 eval=36.1
+[2100] actor_loss_base=-0.2883 critic_loss=0.0013 actor_lr=1.00e-06 residual_l1=0.0490 residual_l2=0.0028 success_last50=0.50 actor_grad_norm=0.0234 | Time%: env=5.7 grad=55.7 batch=3.1 eval=35.5
+[2200] actor_loss_base=-0.3136 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0502 residual_l2=0.0029 success_last50=0.50 actor_grad_norm=0.0196 | Time%: env=5.9 grad=56.0 batch=3.1 eval=34.9
+[2300] actor_loss_base=-0.2942 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0514 residual_l2=0.0030 success_last50=0.46 actor_grad_norm=0.0191 | Time%: env=6.1 grad=56.4 batch=3.2 eval=34.4
+[2400] actor_loss_base=-0.3221 critic_loss=0.0017 actor_lr=1.00e-06 residual_l1=0.0531 residual_l2=0.0032 success_last50=0.46 actor_grad_norm=0.0198 | Time%: env=6.2 grad=56.7 batch=3.2 eval=33.9
+[2500] actor_loss_base=-0.3122 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0545 residual_l2=0.0034 success_last50=0.46 actor_grad_norm=0.0177 | Time%: env=6.4 grad=57.0 batch=3.2 eval=33.4
+[2600] actor_loss_base=-0.3404 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0556 residual_l2=0.0035 success_last50=0.43 actor_grad_norm=0.0184 | Time%: env=6.5 grad=57.4 batch=3.2 eval=32.9
+[2700] actor_loss_base=-0.3479 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0566 residual_l2=0.0036 success_last50=0.43 actor_grad_norm=0.0159 | Time%: env=6.7 grad=57.7 batch=3.2 eval=32.4
+[2800] actor_loss_base=-0.3109 critic_loss=0.0004 actor_lr=1.00e-06 residual_l1=0.0577 residual_l2=0.0037 success_last50=0.40 actor_grad_norm=0.0164 | Time%: env=6.8 grad=58.0 batch=3.2 eval=32.0
+[2900] actor_loss_base=-0.3108 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0585 residual_l2=0.0038 success_last50=0.40 actor_grad_norm=0.0174 | Time%: env=7.0 grad=58.3 batch=3.3 eval=31.5
+[3000] actor_loss_base=-0.3379 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0593 residual_l2=0.0040 success_last50=0.38 actor_grad_norm=0.0173 | Time%: env=7.1 grad=58.5 batch=3.3 eval=31.1
+[3100] actor_loss_base=-0.3263 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0602 residual_l2=0.0041 success_last50=0.38 actor_grad_norm=0.0130 | Time%: env=7.3 grad=58.8 batch=3.3 eval=30.6
+[3200] actor_loss_base=-0.3410 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0610 residual_l2=0.0042 success_last50=0.38 actor_grad_norm=0.0136 | Time%: env=7.4 grad=59.1 batch=3.3 eval=30.2
+[3300] actor_loss_base=-0.3559 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0613 residual_l2=0.0043 success_last50=0.35 actor_grad_norm=0.0160 | Time%: env=7.5 grad=59.3 batch=3.3 eval=29.8
+[3400] actor_loss_base=-0.3232 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0615 residual_l2=0.0043 success_last50=0.35 actor_grad_norm=0.0158 | Time%: env=7.6 grad=59.6 batch=3.3 eval=29.4
+[3500] actor_loss_base=-0.3223 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0625 residual_l2=0.0044 success_last50=0.33 actor_grad_norm=0.0124 | Time%: env=7.8 grad=59.8 batch=3.3 eval=29.0
+[3600] actor_loss_base=-0.3474 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0630 residual_l2=0.0045 success_last50=0.33 actor_grad_norm=0.0105 | Time%: env=7.9 grad=60.1 batch=3.3 eval=28.7
+[3700] actor_loss_base=-0.3409 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0626 residual_l2=0.0045 success_last50=0.33 actor_grad_norm=0.0108 | Time%: env=8.0 grad=60.3 batch=3.4 eval=28.3
+[3800] actor_loss_base=-0.3242 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0616 residual_l2=0.0044 success_last50=0.32 actor_grad_norm=0.0147 | Time%: env=8.1 grad=60.5 batch=3.4 eval=28.0
+[3900] actor_loss_base=-0.3298 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0629 residual_l2=0.0046 success_last50=0.32 actor_grad_norm=0.0104 | Time%: env=8.2 grad=60.8 batch=3.4 eval=27.6
+[4000] actor_loss_base=-0.3496 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0636 residual_l2=0.0047 success_last50=0.30 actor_grad_norm=0.0124 | Time%: env=8.4 grad=61.0 batch=3.4 eval=27.3
+[4100] actor_loss_base=-0.3149 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0632 residual_l2=0.0046 success_last50=0.30 actor_grad_norm=0.0086 | Time%: env=8.5 grad=61.2 batch=3.4 eval=27.0
+[4200] actor_loss_base=-0.3283 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0642 residual_l2=0.0048 success_last50=0.29 actor_grad_norm=0.0094 | Time%: env=8.6 grad=61.4 batch=3.4 eval=26.6
+[4300] actor_loss_base=-0.3504 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0646 residual_l2=0.0048 success_last50=0.29 actor_grad_norm=0.0098 | Time%: env=8.7 grad=61.6 batch=3.4 eval=26.3
+[4400] actor_loss_base=-0.3465 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0649 residual_l2=0.0049 success_last50=0.29 actor_grad_norm=0.0096 | Time%: env=8.8 grad=61.8 batch=3.4 eval=26.0
+[4500] actor_loss_base=-0.3357 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0651 residual_l2=0.0049 success_last50=0.27 actor_grad_norm=0.0135 | Time%: env=8.8 grad=62.0 batch=3.4 eval=25.7
+[4600] actor_loss_base=-0.3544 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0653 residual_l2=0.0049 success_last50=0.27 actor_grad_norm=0.0089 | Time%: env=8.9 grad=62.2 batch=3.4 eval=25.4
+[4700] actor_loss_base=-0.3526 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0668 residual_l2=0.0051 success_last50=0.26 actor_grad_norm=0.0165 | Time%: env=9.0 grad=62.4 batch=3.5 eval=25.2
+[4800] actor_loss_base=-0.3614 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0676 residual_l2=0.0052 success_last50=0.26 actor_grad_norm=0.0137 | Time%: env=9.1 grad=62.5 batch=3.5 eval=24.9
+[4900] actor_loss_base=-0.3535 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0674 residual_l2=0.0052 success_last50=0.25 actor_grad_norm=0.0114 | Time%: env=9.2 grad=62.7 batch=3.5 eval=24.6
+[5000] actor_loss_base=-0.3601 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0673 residual_l2=0.0052 success_last50=0.25 actor_grad_norm=0.0086 | Time%: env=9.3 grad=62.9 batch=3.5 eval=24.3
+[5100] actor_loss_base=-0.3444 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0680 residual_l2=0.0052 success_last50=0.25 actor_grad_norm=0.0203 | Time%: env=9.4 grad=63.0 batch=3.5 eval=24.1
+[5200] actor_loss_base=-0.3530 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0683 residual_l2=0.0053 success_last50=0.24 actor_grad_norm=0.0138 | Time%: env=9.5 grad=63.2 batch=3.5 eval=23.8
+[5300] actor_loss_base=-0.3670 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0688 residual_l2=0.0054 success_last50=0.27 actor_grad_norm=0.0094 | Time%: env=9.5 grad=63.4 batch=3.5 eval=23.6
+[5400] actor_loss_base=-0.3418 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0673 residual_l2=0.0052 success_last50=0.27 actor_grad_norm=0.0107 | Time%: env=9.6 grad=63.5 batch=3.5 eval=23.3
+[5500] actor_loss_base=-0.3628 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0669 residual_l2=0.0052 success_last50=0.26 actor_grad_norm=0.0243 | Time%: env=9.7 grad=63.7 batch=3.5 eval=23.1
+[5600] actor_loss_base=-0.3513 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0691 residual_l2=0.0055 success_last50=0.26 actor_grad_norm=0.0091 | Time%: env=9.8 grad=63.8 batch=3.5 eval=22.9
+[5700] actor_loss_base=-0.3300 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0695 residual_l2=0.0055 success_last50=0.26 actor_grad_norm=0.0157 | Time%: env=9.9 grad=64.0 batch=3.5 eval=22.6
+[5800] actor_loss_base=-0.3433 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0698 residual_l2=0.0055 success_last50=0.25 actor_grad_norm=0.0126 | Time%: env=9.9 grad=64.1 batch=3.5 eval=22.4
+[5900] actor_loss_base=-0.3651 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0708 residual_l2=0.0057 success_last50=0.25 actor_grad_norm=0.0089 | Time%: env=10.0 grad=64.3 batch=3.5 eval=22.2
+[6000] actor_loss_base=-0.3597 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0690 residual_l2=0.0055 success_last50=0.24 actor_grad_norm=0.0143 | Time%: env=10.1 grad=64.4 batch=3.5 eval=22.0
+[6100] actor_loss_base=-0.3515 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0705 residual_l2=0.0056 success_last50=0.24 actor_grad_norm=0.0144 | Time%: env=10.1 grad=64.6 batch=3.6 eval=21.8
+[6200] actor_loss_base=-0.3521 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0701 residual_l2=0.0056 success_last50=0.23 actor_grad_norm=0.0085 | Time%: env=10.2 grad=64.7 batch=3.6 eval=21.6
+[6300] actor_loss_base=-0.3597 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0717 residual_l2=0.0058 success_last50=0.23 actor_grad_norm=0.0182 | Time%: env=10.3 grad=64.8 batch=3.6 eval=21.3
+[6400] actor_loss_base=-0.3788 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0734 residual_l2=0.0060 success_last50=0.23 actor_grad_norm=0.0109 | Time%: env=10.3 grad=65.0 batch=3.6 eval=21.1
+[6500] actor_loss_base=-0.3605 critic_loss=0.0006 actor_lr=1.00e-06 residual_l1=0.0718 residual_l2=0.0058 success_last50=0.23 actor_grad_norm=0.0139 | Time%: env=10.4 grad=65.1 batch=3.6 eval=21.0
+[6600] actor_loss_base=-0.3406 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0703 residual_l2=0.0057 success_last50=0.23 actor_grad_norm=0.0141 | Time%: env=10.4 grad=65.2 batch=3.6 eval=20.8
+[6700] actor_loss_base=-0.3523 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0722 residual_l2=0.0059 success_last50=0.22 actor_grad_norm=0.0115 | Time%: env=10.5 grad=65.3 batch=3.6 eval=20.6
+[6800] actor_loss_base=-0.3407 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0721 residual_l2=0.0059 success_last50=0.22 actor_grad_norm=0.0084 | Time%: env=10.6 grad=65.5 batch=3.6 eval=20.4
+[6900] actor_loss_base=-0.3570 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0709 residual_l2=0.0058 success_last50=0.21 actor_grad_norm=0.0090 | Time%: env=10.6 grad=65.6 batch=3.6 eval=20.2
+[7000] actor_loss_base=-0.3601 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0705 residual_l2=0.0057 success_last50=0.21 actor_grad_norm=0.0165 | Time%: env=10.7 grad=65.7 batch=3.6 eval=20.0
+[7100] actor_loss_base=-0.3682 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0703 residual_l2=0.0057 success_last50=0.21 actor_grad_norm=0.0207 | Time%: env=10.7 grad=65.8 batch=3.6 eval=19.8
+[7200] actor_loss_base=-0.3707 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0712 residual_l2=0.0058 success_last50=0.23 actor_grad_norm=0.0076 | Time%: env=10.8 grad=65.9 batch=3.6 eval=19.6
+[7300] actor_loss_base=-0.3560 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0721 residual_l2=0.0060 success_last50=0.23 actor_grad_norm=0.0107 | Time%: env=10.9 grad=66.0 batch=3.6 eval=19.5
+[7400] actor_loss_base=-0.3786 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0719 residual_l2=0.0059 success_last50=0.23 actor_grad_norm=0.0129 | Time%: env=10.9 grad=66.1 batch=3.6 eval=19.3
+[7500] actor_loss_base=-0.3516 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0715 residual_l2=0.0059 success_last50=0.22 actor_grad_norm=0.0079 | Time%: env=11.0 grad=66.3 batch=3.6 eval=19.1
+[7600] actor_loss_base=-0.3670 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0732 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0103 | Time%: env=11.0 grad=66.4 batch=3.6 eval=19.0
+[7700] actor_loss_base=-0.3556 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0734 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0113 | Time%: env=11.1 grad=66.5 batch=3.6 eval=18.8
+[7800] actor_loss_base=-0.3628 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0719 residual_l2=0.0059 success_last50=0.24 actor_grad_norm=0.0201 | Time%: env=11.1 grad=66.6 batch=3.6 eval=18.7
+[7900] actor_loss_base=-0.3532 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0740 residual_l2=0.0062 success_last50=0.24 actor_grad_norm=0.0126 | Time%: env=11.2 grad=66.7 batch=3.7 eval=18.5
+[8000] actor_loss_base=-0.3572 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0717 residual_l2=0.0060 success_last50=0.23 actor_grad_norm=0.0178 | Time%: env=11.2 grad=66.8 batch=3.7 eval=18.4
+[8100] actor_loss_base=-0.3564 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0727 residual_l2=0.0060 success_last50=0.23 actor_grad_norm=0.0109 | Time%: env=11.3 grad=66.9 batch=3.7 eval=18.2
+[8200] actor_loss_base=-0.3484 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0710 residual_l2=0.0059 success_last50=0.23 actor_grad_norm=0.0179 | Time%: env=11.3 grad=66.9 batch=3.7 eval=18.1
+[8300] actor_loss_base=-0.3505 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0728 residual_l2=0.0060 success_last50=0.23 actor_grad_norm=0.0283 | Time%: env=11.4 grad=67.0 batch=3.7 eval=17.9
+[8400] actor_loss_base=-0.3434 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0725 residual_l2=0.0060 success_last50=0.24 actor_grad_norm=0.0128 | Time%: env=11.4 grad=67.1 batch=3.7 eval=17.8
+[8500] actor_loss_base=-0.3622 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0720 residual_l2=0.0060 success_last50=0.24 actor_grad_norm=0.0156 | Time%: env=11.5 grad=67.2 batch=3.7 eval=17.6
+[8600] actor_loss_base=-0.3346 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0711 residual_l2=0.0058 success_last50=0.24 actor_grad_norm=0.0215 | Time%: env=11.5 grad=67.3 batch=3.7 eval=17.5
+[8700] actor_loss_base=-0.3558 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0739 residual_l2=0.0062 success_last50=0.26 actor_grad_norm=0.0361 | Time%: env=11.5 grad=67.4 batch=3.7 eval=17.4
+[8800] actor_loss_base=-0.3612 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0739 residual_l2=0.0062 success_last50=0.26 actor_grad_norm=0.0271 | Time%: env=11.6 grad=67.5 batch=3.7 eval=17.2
+[8900] actor_loss_base=-0.3725 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0728 residual_l2=0.0061 success_last50=0.26 actor_grad_norm=0.0209 | Time%: env=11.6 grad=67.6 batch=3.7 eval=17.1
+[9000] actor_loss_base=-0.3569 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0726 residual_l2=0.0061 success_last50=0.25 actor_grad_norm=0.0093 | Time%: env=11.7 grad=67.7 batch=3.7 eval=17.0
+[9100] actor_loss_base=-0.3395 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0728 residual_l2=0.0061 success_last50=0.25 actor_grad_norm=0.0204 | Time%: env=11.7 grad=67.7 batch=3.7 eval=16.9
+[9200] actor_loss_base=-0.3511 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0734 residual_l2=0.0061 success_last50=0.24 actor_grad_norm=0.0117 | Time%: env=11.7 grad=67.8 batch=3.7 eval=16.7
+[9300] actor_loss_base=-0.3522 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0737 residual_l2=0.0062 success_last50=0.26 actor_grad_norm=0.0168 | Time%: env=11.8 grad=67.9 batch=3.7 eval=16.6
+[9400] actor_loss_base=-0.3664 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0736 residual_l2=0.0062 success_last50=0.26 actor_grad_norm=0.0178 | Time%: env=11.8 grad=68.0 batch=3.7 eval=16.5
+[9500] actor_loss_base=-0.3468 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0721 residual_l2=0.0060 success_last50=0.26 actor_grad_norm=0.0131 | Time%: env=11.9 grad=68.1 batch=3.7 eval=16.4
+[9600] actor_loss_base=-0.3610 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0734 residual_l2=0.0062 success_last50=0.26 actor_grad_norm=0.0131 | Time%: env=11.9 grad=68.1 batch=3.7 eval=16.2
+[9700] actor_loss_base=-0.3382 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0720 residual_l2=0.0060 success_last50=0.26 actor_grad_norm=0.0222 | Time%: env=11.9 grad=68.2 batch=3.7 eval=16.1
+[9800] actor_loss_base=-0.3486 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0722 residual_l2=0.0060 success_last50=0.25 actor_grad_norm=0.0146 | Time%: env=12.0 grad=68.3 batch=3.7 eval=16.0
+[9900] actor_loss_base=-0.3497 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0715 residual_l2=0.0059 success_last50=0.25 actor_grad_norm=0.0172 | Time%: env=12.0 grad=68.4 batch=3.7 eval=15.9
+[10000] actor_loss_base=-0.3654 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0721 residual_l2=0.0060 success_last50=0.24 actor_grad_norm=0.0196 | Time%: env=12.1 grad=68.4 batch=3.7 eval=15.8
+Evaluating 50 episodes: ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✗✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗Done
+Saved Q-trajectory plots to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_q_trajectories_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_10000.png
+Saved evaluation video to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_10000.mp4
+[10100] actor_loss_base=-0.3802 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0720 residual_l2=0.0060 success_last50=0.24 actor_grad_norm=0.0389 | Time%: env=10.5 grad=59.2 batch=3.2 eval=27.1
+[10200] actor_loss_base=-0.3728 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0720 residual_l2=0.0060 success_last50=0.24 actor_grad_norm=0.0248 | Time%: env=10.5 grad=59.4 batch=3.2 eval=26.9
+[10300] actor_loss_base=-0.3680 critic_loss=0.0005 actor_lr=1.00e-06 residual_l1=0.0720 residual_l2=0.0060 success_last50=0.24 actor_grad_norm=0.0232 | Time%: env=10.5 grad=59.5 batch=3.3 eval=26.7
+[10400] actor_loss_base=-0.3571 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0709 residual_l2=0.0059 success_last50=0.24 actor_grad_norm=0.0167 | Time%: env=10.6 grad=59.6 batch=3.3 eval=26.6
+[10500] actor_loss_base=-0.3620 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0724 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0179 | Time%: env=10.6 grad=59.7 batch=3.3 eval=26.4
+[10600] actor_loss_base=-0.3686 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0727 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0189 | Time%: env=10.7 grad=59.8 batch=3.3 eval=26.3
+[10700] actor_loss_base=-0.3798 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0724 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0317 | Time%: env=10.7 grad=59.9 batch=3.3 eval=26.1
+[10800] actor_loss_base=-0.3587 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0732 residual_l2=0.0062 success_last50=0.22 actor_grad_norm=0.0212 | Time%: env=10.7 grad=60.0 batch=3.3 eval=26.0
+[10900] actor_loss_base=-0.3532 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0734 residual_l2=0.0062 success_last50=0.22 actor_grad_norm=0.1035 | Time%: env=10.8 grad=60.1 batch=3.3 eval=25.8
+[11000] actor_loss_base=-0.3527 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0722 residual_l2=0.0061 success_last50=0.20 actor_grad_norm=0.0160 | Time%: env=10.8 grad=60.2 batch=3.3 eval=25.7
+[11100] actor_loss_base=-0.3649 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0725 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0159 | Time%: env=10.8 grad=60.3 batch=3.3 eval=25.5
+[11200] actor_loss_base=-0.3599 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0735 residual_l2=0.0062 success_last50=0.22 actor_grad_norm=0.0347 | Time%: env=10.9 grad=60.5 batch=3.3 eval=25.4
+[11300] actor_loss_base=-0.3708 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0725 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0210 | Time%: env=10.9 grad=60.6 batch=3.3 eval=25.2
+[11400] actor_loss_base=-0.3677 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0734 residual_l2=0.0062 success_last50=0.22 actor_grad_norm=0.0182 | Time%: env=10.9 grad=60.7 batch=3.3 eval=25.1
+[11500] actor_loss_base=-0.3811 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0741 residual_l2=0.0063 success_last50=0.24 actor_grad_norm=0.0181 | Time%: env=11.0 grad=60.8 batch=3.3 eval=24.9
+[11600] actor_loss_base=-0.3616 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0733 residual_l2=0.0062 success_last50=0.24 actor_grad_norm=0.0391 | Time%: env=11.0 grad=60.9 batch=3.3 eval=24.8
+[11700] actor_loss_base=-0.3684 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0733 residual_l2=0.0063 success_last50=0.24 actor_grad_norm=0.0270 | Time%: env=11.1 grad=61.0 batch=3.3 eval=24.7
+[11800] actor_loss_base=-0.3744 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0727 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0526 | Time%: env=11.1 grad=61.0 batch=3.3 eval=24.5
+[11900] actor_loss_base=-0.3679 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0721 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0138 | Time%: env=11.1 grad=61.1 batch=3.3 eval=24.4
+[12000] actor_loss_base=-0.3597 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0720 residual_l2=0.0061 success_last50=0.20 actor_grad_norm=0.0207 | Time%: env=11.1 grad=61.2 batch=3.3 eval=24.3
+[12100] actor_loss_base=-0.3796 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0729 residual_l2=0.0062 success_last50=0.20 actor_grad_norm=0.0233 | Time%: env=11.2 grad=61.3 batch=3.3 eval=24.1
+[12200] actor_loss_base=-0.3721 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0720 residual_l2=0.0061 success_last50=0.20 actor_grad_norm=0.0392 | Time%: env=11.2 grad=61.4 batch=3.4 eval=24.0
+[12300] actor_loss_base=-0.3734 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0712 residual_l2=0.0060 success_last50=0.22 actor_grad_norm=0.1268 | Time%: env=11.2 grad=61.5 batch=3.4 eval=23.9
+[12400] actor_loss_base=-0.3760 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0716 residual_l2=0.0060 success_last50=0.22 actor_grad_norm=0.0297 | Time%: env=11.3 grad=61.6 batch=3.4 eval=23.8
+[12500] actor_loss_base=-0.3566 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0711 residual_l2=0.0060 success_last50=0.22 actor_grad_norm=0.0321 | Time%: env=11.3 grad=61.7 batch=3.4 eval=23.6
+[12600] actor_loss_base=-0.3736 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0735 residual_l2=0.0063 success_last50=0.22 actor_grad_norm=0.0260 | Time%: env=11.3 grad=61.8 batch=3.4 eval=23.5
+[12700] actor_loss_base=-0.3586 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0728 residual_l2=0.0062 success_last50=0.22 actor_grad_norm=0.0159 | Time%: env=11.4 grad=61.9 batch=3.4 eval=23.4
+[12800] actor_loss_base=-0.3733 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0724 residual_l2=0.0061 success_last50=0.22 actor_grad_norm=0.0278 | Time%: env=11.4 grad=62.0 batch=3.4 eval=23.3
+[12900] actor_loss_base=-0.3545 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0719 residual_l2=0.0060 success_last50=0.24 actor_grad_norm=0.0363 | Time%: env=11.4 grad=62.0 batch=3.4 eval=23.1
+[13000] actor_loss_base=-0.3567 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0730 residual_l2=0.0062 success_last50=0.24 actor_grad_norm=0.0225 | Time%: env=11.5 grad=62.1 batch=3.4 eval=23.0
+[13100] actor_loss_base=-0.3539 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0731 residual_l2=0.0062 success_last50=0.24 actor_grad_norm=0.0373 | Time%: env=11.5 grad=62.2 batch=3.4 eval=22.9
+[13200] actor_loss_base=-0.3922 critic_loss=0.0010 actor_lr=1.00e-06 residual_l1=0.0739 residual_l2=0.0063 success_last50=0.24 actor_grad_norm=0.0270 | Time%: env=11.5 grad=62.3 batch=3.4 eval=22.8
+[13300] actor_loss_base=-0.3662 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0734 residual_l2=0.0063 success_last50=0.24 actor_grad_norm=0.0220 | Time%: env=11.5 grad=62.4 batch=3.4 eval=22.7
+[13400] actor_loss_base=-0.3837 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0733 residual_l2=0.0062 success_last50=0.24 actor_grad_norm=0.0321 | Time%: env=11.6 grad=62.5 batch=3.4 eval=22.6
+[13500] actor_loss_base=-0.3831 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0747 residual_l2=0.0064 success_last50=0.24 actor_grad_norm=0.0256 | Time%: env=11.6 grad=62.5 batch=3.4 eval=22.4
+[13600] actor_loss_base=-0.3585 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0745 residual_l2=0.0064 success_last50=0.24 actor_grad_norm=0.0187 | Time%: env=11.6 grad=62.6 batch=3.4 eval=22.3
+[13700] actor_loss_base=-0.3624 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0732 residual_l2=0.0062 success_last50=0.24 actor_grad_norm=0.0237 | Time%: env=11.7 grad=62.7 batch=3.4 eval=22.2
+[13800] actor_loss_base=-0.3680 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0749 residual_l2=0.0064 success_last50=0.24 actor_grad_norm=0.0384 | Time%: env=11.7 grad=62.8 batch=3.4 eval=22.1
+[13900] actor_loss_base=-0.3620 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0731 residual_l2=0.0062 success_last50=0.26 actor_grad_norm=0.0268 | Time%: env=11.7 grad=62.9 batch=3.4 eval=22.0
+[14000] actor_loss_base=-0.3886 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0742 residual_l2=0.0063 success_last50=0.26 actor_grad_norm=0.0457 | Time%: env=11.7 grad=62.9 batch=3.4 eval=21.9
+[14100] actor_loss_base=-0.3663 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0743 residual_l2=0.0064 success_last50=0.26 actor_grad_norm=0.0794 | Time%: env=11.8 grad=63.0 batch=3.4 eval=21.8
+[14200] actor_loss_base=-0.3830 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0745 residual_l2=0.0064 success_last50=0.28 actor_grad_norm=0.0247 | Time%: env=11.8 grad=63.1 batch=3.4 eval=21.7
+[14300] actor_loss_base=-0.3721 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0737 residual_l2=0.0063 success_last50=0.28 actor_grad_norm=0.0470 | Time%: env=11.8 grad=63.2 batch=3.4 eval=21.6
+[14400] actor_loss_base=-0.3687 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0732 residual_l2=0.0062 success_last50=0.28 actor_grad_norm=0.0454 | Time%: env=11.8 grad=63.2 batch=3.4 eval=21.5
+[14500] actor_loss_base=-0.3577 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0736 residual_l2=0.0063 success_last50=0.28 actor_grad_norm=0.0157 | Time%: env=11.9 grad=63.3 batch=3.4 eval=21.4
+[14600] actor_loss_base=-0.3870 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0742 residual_l2=0.0064 success_last50=0.28 actor_grad_norm=0.0255 | Time%: env=11.9 grad=63.4 batch=3.4 eval=21.3
+[14700] actor_loss_base=-0.3649 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0737 residual_l2=0.0063 success_last50=0.28 actor_grad_norm=0.0257 | Time%: env=11.9 grad=63.5 batch=3.5 eval=21.2
+[14800] actor_loss_base=-0.3876 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0743 residual_l2=0.0064 success_last50=0.28 actor_grad_norm=0.0175 | Time%: env=11.9 grad=63.5 batch=3.5 eval=21.1
+[14900] actor_loss_base=-0.3682 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0754 residual_l2=0.0065 success_last50=0.28 actor_grad_norm=0.0307 | Time%: env=12.0 grad=63.6 batch=3.5 eval=21.0
+[15000] actor_loss_base=-0.3721 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0746 residual_l2=0.0064 success_last50=0.28 actor_grad_norm=0.0375 | Time%: env=12.0 grad=63.7 batch=3.5 eval=20.9
+[15100] actor_loss_base=-0.3681 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0743 residual_l2=0.0064 success_last50=0.28 actor_grad_norm=0.0235 | Time%: env=12.0 grad=63.7 batch=3.5 eval=20.8
+[15200] actor_loss_base=-0.3537 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0766 residual_l2=0.0067 success_last50=0.26 actor_grad_norm=0.0172 | Time%: env=12.0 grad=63.8 batch=3.5 eval=20.7
+[15300] actor_loss_base=-0.3891 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0763 residual_l2=0.0066 success_last50=0.26 actor_grad_norm=0.0427 | Time%: env=12.1 grad=63.9 batch=3.5 eval=20.6
+[15400] actor_loss_base=-0.3906 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0748 residual_l2=0.0065 success_last50=0.26 actor_grad_norm=0.0301 | Time%: env=12.1 grad=63.9 batch=3.5 eval=20.5
+[15500] actor_loss_base=-0.3806 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0756 residual_l2=0.0066 success_last50=0.26 actor_grad_norm=0.0386 | Time%: env=12.1 grad=64.0 batch=3.5 eval=20.4
+[15600] actor_loss_base=-0.3587 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0764 residual_l2=0.0066 success_last50=0.26 actor_grad_norm=0.0755 | Time%: env=12.1 grad=64.1 batch=3.5 eval=20.3
+[15700] actor_loss_base=-0.3809 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0744 residual_l2=0.0064 success_last50=0.28 actor_grad_norm=0.0293 | Time%: env=12.2 grad=64.1 batch=3.5 eval=20.2
+[15800] actor_loss_base=-0.3950 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0765 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0934 | Time%: env=12.2 grad=64.2 batch=3.5 eval=20.1
+[15900] actor_loss_base=-0.3614 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0746 residual_l2=0.0064 success_last50=0.28 actor_grad_norm=0.0342 | Time%: env=12.2 grad=64.3 batch=3.5 eval=20.0
+[16000] actor_loss_base=-0.3697 critic_loss=0.0004 actor_lr=1.00e-06 residual_l1=0.0759 residual_l2=0.0066 success_last50=0.28 actor_grad_norm=0.0652 | Time%: env=12.2 grad=64.3 batch=3.5 eval=19.9
+[16100] actor_loss_base=-0.3667 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0760 residual_l2=0.0066 success_last50=0.28 actor_grad_norm=0.0562 | Time%: env=12.2 grad=64.4 batch=3.5 eval=19.9
+[16200] actor_loss_base=-0.3748 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0770 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0682 | Time%: env=12.3 grad=64.5 batch=3.5 eval=19.8
+[16300] actor_loss_base=-0.3757 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0766 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0334 | Time%: env=12.3 grad=64.5 batch=3.5 eval=19.7
+[16400] actor_loss_base=-0.3765 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0768 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0149 | Time%: env=12.3 grad=64.6 batch=3.5 eval=19.6
+[16500] actor_loss_base=-0.3891 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0757 residual_l2=0.0066 success_last50=0.30 actor_grad_norm=0.1163 | Time%: env=12.3 grad=64.6 batch=3.5 eval=19.5
+[16600] actor_loss_base=-0.3788 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0760 residual_l2=0.0066 success_last50=0.30 actor_grad_norm=0.0549 | Time%: env=12.3 grad=64.7 batch=3.5 eval=19.4
+[16700] actor_loss_base=-0.3676 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0769 residual_l2=0.0067 success_last50=0.30 actor_grad_norm=0.0374 | Time%: env=12.4 grad=64.8 batch=3.5 eval=19.3
+[16800] actor_loss_base=-0.3855 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0782 residual_l2=0.0069 success_last50=0.30 actor_grad_norm=0.0275 | Time%: env=12.4 grad=64.8 batch=3.5 eval=19.3
+[16900] actor_loss_base=-0.3721 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0774 residual_l2=0.0068 success_last50=0.30 actor_grad_norm=0.0188 | Time%: env=12.4 grad=64.9 batch=3.5 eval=19.2
+[17000] actor_loss_base=-0.3845 critic_loss=0.0008 actor_lr=1.00e-06 residual_l1=0.0768 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0518 | Time%: env=12.4 grad=64.9 batch=3.5 eval=19.1
+[17100] actor_loss_base=-0.3831 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0769 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0437 | Time%: env=12.4 grad=65.0 batch=3.5 eval=19.0
+[17200] actor_loss_base=-0.3940 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0773 residual_l2=0.0068 success_last50=0.28 actor_grad_norm=0.0249 | Time%: env=12.5 grad=65.1 batch=3.5 eval=18.9
+[17300] actor_loss_base=-0.3668 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0773 residual_l2=0.0068 success_last50=0.28 actor_grad_norm=0.0190 | Time%: env=12.5 grad=65.1 batch=3.5 eval=18.9
+[17400] actor_loss_base=-0.3821 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0767 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0645 | Time%: env=12.5 grad=65.2 batch=3.5 eval=18.8
+[17500] actor_loss_base=-0.3857 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0068 success_last50=0.28 actor_grad_norm=0.0282 | Time%: env=12.5 grad=65.2 batch=3.5 eval=18.7
+[17600] actor_loss_base=-0.3846 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0760 residual_l2=0.0066 success_last50=0.30 actor_grad_norm=0.0325 | Time%: env=12.5 grad=65.3 batch=3.6 eval=18.6
+[17700] actor_loss_base=-0.3864 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0068 success_last50=0.30 actor_grad_norm=0.0229 | Time%: env=12.6 grad=65.3 batch=3.6 eval=18.5
+[17800] actor_loss_base=-0.3895 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0768 residual_l2=0.0067 success_last50=0.30 actor_grad_norm=0.0223 | Time%: env=12.6 grad=65.4 batch=3.6 eval=18.5
+[17900] actor_loss_base=-0.3595 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0763 residual_l2=0.0066 success_last50=0.30 actor_grad_norm=0.0228 | Time%: env=12.6 grad=65.4 batch=3.6 eval=18.4
+[18000] actor_loss_base=-0.3759 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0067 success_last50=0.30 actor_grad_norm=0.0205 | Time%: env=12.6 grad=65.5 batch=3.6 eval=18.3
+[18100] actor_loss_base=-0.3731 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0765 residual_l2=0.0066 success_last50=0.28 actor_grad_norm=0.0292 | Time%: env=12.6 grad=65.6 batch=3.6 eval=18.2
+[18200] actor_loss_base=-0.3603 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0771 residual_l2=0.0068 success_last50=0.28 actor_grad_norm=0.0608 | Time%: env=12.7 grad=65.6 batch=3.6 eval=18.2
+[18300] actor_loss_base=-0.3814 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0767 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0288 | Time%: env=12.7 grad=65.7 batch=3.6 eval=18.1
+[18400] actor_loss_base=-0.3889 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0768 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0429 | Time%: env=12.7 grad=65.7 batch=3.6 eval=18.0
+[18500] actor_loss_base=-0.3704 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0764 residual_l2=0.0067 success_last50=0.28 actor_grad_norm=0.0250 | Time%: env=12.7 grad=65.8 batch=3.6 eval=18.0
+[18600] actor_loss_base=-0.3691 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0771 residual_l2=0.0067 success_last50=0.26 actor_grad_norm=0.0304 | Time%: env=12.7 grad=65.8 batch=3.6 eval=17.9
+[18700] actor_loss_base=-0.3805 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0771 residual_l2=0.0067 success_last50=0.26 actor_grad_norm=0.0661 | Time%: env=12.7 grad=65.9 batch=3.6 eval=17.8
+[18800] actor_loss_base=-0.3704 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0764 residual_l2=0.0067 success_last50=0.26 actor_grad_norm=0.0325 | Time%: env=12.8 grad=65.9 batch=3.6 eval=17.7
+[18900] actor_loss_base=-0.3734 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0767 residual_l2=0.0067 success_last50=0.26 actor_grad_norm=0.0286 | Time%: env=12.8 grad=66.0 batch=3.6 eval=17.7
+[19000] actor_loss_base=-0.3614 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0754 residual_l2=0.0066 success_last50=0.26 actor_grad_norm=0.0317 | Time%: env=12.8 grad=66.0 batch=3.6 eval=17.6
+[19100] actor_loss_base=-0.3461 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0771 residual_l2=0.0067 success_last50=0.26 actor_grad_norm=0.0266 | Time%: env=12.8 grad=66.1 batch=3.6 eval=17.5
+[19200] actor_loss_base=-0.3635 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0771 residual_l2=0.0068 success_last50=0.26 actor_grad_norm=0.0851 | Time%: env=12.8 grad=66.1 batch=3.6 eval=17.5
+[19300] actor_loss_base=-0.3704 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0777 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0262 | Time%: env=12.8 grad=66.2 batch=3.6 eval=17.4
+[19400] actor_loss_base=-0.3649 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0067 success_last50=0.24 actor_grad_norm=0.0227 | Time%: env=12.9 grad=66.2 batch=3.6 eval=17.3
+[19500] actor_loss_base=-0.3638 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0778 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0477 | Time%: env=12.9 grad=66.3 batch=3.6 eval=17.3
+[19600] actor_loss_base=-0.3720 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0759 residual_l2=0.0066 success_last50=0.24 actor_grad_norm=0.0630 | Time%: env=12.9 grad=66.3 batch=3.6 eval=17.2
+[19700] actor_loss_base=-0.3756 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0770 residual_l2=0.0067 success_last50=0.24 actor_grad_norm=0.0309 | Time%: env=12.9 grad=66.3 batch=3.6 eval=17.1
+[19800] actor_loss_base=-0.3725 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0773 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0480 | Time%: env=12.9 grad=66.4 batch=3.6 eval=17.1
+[19900] actor_loss_base=-0.3853 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0776 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0841 | Time%: env=12.9 grad=66.4 batch=3.6 eval=17.0
+[20000] actor_loss_base=-0.3956 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0776 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0188 | Time%: env=13.0 grad=66.5 batch=3.6 eval=16.9
+Evaluating 50 episodes: ✓✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✗✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗Done
+Saved Q-trajectory plots to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_q_trajectories_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_20000.png
+Saved evaluation video to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_20000.mp4
+[20100] actor_loss_base=-0.3829 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0457 | Time%: env=12.0 grad=61.3 batch=3.3 eval=23.4
+[20200] actor_loss_base=-0.3944 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0780 residual_l2=0.0069 success_last50=0.24 actor_grad_norm=0.0463 | Time%: env=12.0 grad=61.4 batch=3.3 eval=23.3
+[20300] actor_loss_base=-0.4082 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0777 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0278 | Time%: env=12.0 grad=61.4 batch=3.3 eval=23.2
+[20400] actor_loss_base=-0.3713 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0786 residual_l2=0.0070 success_last50=0.24 actor_grad_norm=0.0245 | Time%: env=12.0 grad=61.5 batch=3.3 eval=23.1
+[20500] actor_loss_base=-0.3623 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0782 residual_l2=0.0069 success_last50=0.24 actor_grad_norm=0.0504 | Time%: env=12.0 grad=61.6 batch=3.3 eval=23.1
+[20600] actor_loss_base=-0.3892 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0779 residual_l2=0.0069 success_last50=0.24 actor_grad_norm=0.0283 | Time%: env=12.0 grad=61.6 batch=3.4 eval=23.0
+[20700] actor_loss_base=-0.3723 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0775 residual_l2=0.0068 success_last50=0.22 actor_grad_norm=0.0313 | Time%: env=12.1 grad=61.7 batch=3.4 eval=22.9
+[20800] actor_loss_base=-0.3811 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0779 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0313 | Time%: env=12.1 grad=61.7 batch=3.4 eval=22.8
+[20900] actor_loss_base=-0.3811 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0787 residual_l2=0.0070 success_last50=0.24 actor_grad_norm=0.0478 | Time%: env=12.1 grad=61.8 batch=3.4 eval=22.8
+[21000] actor_loss_base=-0.3716 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0780 residual_l2=0.0069 success_last50=0.24 actor_grad_norm=0.0712 | Time%: env=12.1 grad=61.8 batch=3.4 eval=22.7
+[21100] actor_loss_base=-0.3669 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0777 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0482 | Time%: env=12.1 grad=61.9 batch=3.4 eval=22.6
+[21200] actor_loss_base=-0.3792 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0771 residual_l2=0.0068 success_last50=0.24 actor_grad_norm=0.0450 | Time%: env=12.1 grad=62.0 batch=3.4 eval=22.5
+[21300] actor_loss_base=-0.3945 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0777 residual_l2=0.0068 success_last50=0.22 actor_grad_norm=0.0417 | Time%: env=12.2 grad=62.0 batch=3.4 eval=22.5
+[21400] actor_loss_base=-0.4003 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0778 residual_l2=0.0069 success_last50=0.22 actor_grad_norm=0.0596 | Time%: env=12.2 grad=62.1 batch=3.4 eval=22.4
+[21500] actor_loss_base=-0.3721 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0776 residual_l2=0.0068 success_last50=0.20 actor_grad_norm=0.0383 | Time%: env=12.2 grad=62.1 batch=3.4 eval=22.3
+[21600] actor_loss_base=-0.3792 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0779 residual_l2=0.0069 success_last50=0.20 actor_grad_norm=0.0312 | Time%: env=12.2 grad=62.2 batch=3.4 eval=22.2
+[21700] actor_loss_base=-0.3842 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0785 residual_l2=0.0069 success_last50=0.20 actor_grad_norm=0.0340 | Time%: env=12.2 grad=62.2 batch=3.4 eval=22.2
+[21800] actor_loss_base=-0.3708 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0778 residual_l2=0.0068 success_last50=0.20 actor_grad_norm=0.0256 | Time%: env=12.2 grad=62.3 batch=3.4 eval=22.1
+[21900] actor_loss_base=-0.4006 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0778 residual_l2=0.0068 success_last50=0.20 actor_grad_norm=0.0269 | Time%: env=12.3 grad=62.3 batch=3.4 eval=22.0
+[22000] actor_loss_base=-0.3910 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0779 residual_l2=0.0069 success_last50=0.18 actor_grad_norm=0.0851 | Time%: env=12.3 grad=62.4 batch=3.4 eval=21.9
+[22100] actor_loss_base=-0.3890 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0068 success_last50=0.18 actor_grad_norm=0.0656 | Time%: env=12.3 grad=62.4 batch=3.4 eval=21.9
+[22200] actor_loss_base=-0.3647 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0068 success_last50=0.18 actor_grad_norm=0.0386 | Time%: env=12.3 grad=62.5 batch=3.4 eval=21.8
+[22300] actor_loss_base=-0.3790 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0789 residual_l2=0.0070 success_last50=0.18 actor_grad_norm=0.1456 | Time%: env=12.3 grad=62.5 batch=3.4 eval=21.7
+[22400] actor_loss_base=-0.3794 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0781 residual_l2=0.0069 success_last50=0.18 actor_grad_norm=0.0403 | Time%: env=12.3 grad=62.6 batch=3.4 eval=21.7
+[22500] actor_loss_base=-0.3947 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0776 residual_l2=0.0068 success_last50=0.18 actor_grad_norm=0.0343 | Time%: env=12.4 grad=62.6 batch=3.4 eval=21.6
+[22600] actor_loss_base=-0.3669 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0777 residual_l2=0.0068 success_last50=0.18 actor_grad_norm=0.0506 | Time%: env=12.4 grad=62.7 batch=3.4 eval=21.5
+[22700] actor_loss_base=-0.3836 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0778 residual_l2=0.0069 success_last50=0.18 actor_grad_norm=0.0191 | Time%: env=12.4 grad=62.7 batch=3.4 eval=21.5
+[22800] actor_loss_base=-0.3671 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0772 residual_l2=0.0068 success_last50=0.18 actor_grad_norm=0.0395 | Time%: env=12.4 grad=62.8 batch=3.4 eval=21.4
+[22900] actor_loss_base=-0.3750 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0779 residual_l2=0.0069 success_last50=0.16 actor_grad_norm=0.0376 | Time%: env=12.4 grad=62.8 batch=3.4 eval=21.3
+[23000] actor_loss_base=-0.3726 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0780 residual_l2=0.0069 success_last50=0.16 actor_grad_norm=0.0231 | Time%: env=12.4 grad=62.9 batch=3.4 eval=21.3
+[23100] actor_loss_base=-0.3870 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0797 residual_l2=0.0071 success_last50=0.16 actor_grad_norm=0.0252 | Time%: env=12.4 grad=62.9 batch=3.4 eval=21.2
+[23200] actor_loss_base=-0.3719 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0779 residual_l2=0.0068 success_last50=0.16 actor_grad_norm=0.0472 | Time%: env=12.5 grad=63.0 batch=3.4 eval=21.1
+[23300] actor_loss_base=-0.3836 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0787 residual_l2=0.0070 success_last50=0.16 actor_grad_norm=0.0326 | Time%: env=12.5 grad=63.0 batch=3.4 eval=21.1
+[23400] actor_loss_base=-0.3739 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0795 residual_l2=0.0071 success_last50=0.16 actor_grad_norm=0.0323 | Time%: env=12.5 grad=63.1 batch=3.4 eval=21.0
+[23500] actor_loss_base=-0.3755 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0782 residual_l2=0.0069 success_last50=0.16 actor_grad_norm=0.0514 | Time%: env=12.5 grad=63.1 batch=3.4 eval=20.9
+[23600] actor_loss_base=-0.3718 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0803 residual_l2=0.0072 success_last50=0.16 actor_grad_norm=0.0250 | Time%: env=12.5 grad=63.2 batch=3.4 eval=20.9
+[23700] actor_loss_base=-0.3954 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0797 residual_l2=0.0071 success_last50=0.16 actor_grad_norm=0.0289 | Time%: env=12.5 grad=63.2 batch=3.4 eval=20.8
+[23800] actor_loss_base=-0.3786 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0792 residual_l2=0.0070 success_last50=0.16 actor_grad_norm=0.0592 | Time%: env=12.5 grad=63.3 batch=3.4 eval=20.7
+[23900] actor_loss_base=-0.3794 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0790 residual_l2=0.0070 success_last50=0.16 actor_grad_norm=0.0258 | Time%: env=12.6 grad=63.3 batch=3.4 eval=20.7
+[24000] actor_loss_base=-0.3680 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0790 residual_l2=0.0070 success_last50=0.16 actor_grad_norm=0.0486 | Time%: env=12.6 grad=63.4 batch=3.5 eval=20.6
+[24100] actor_loss_base=-0.3645 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0797 residual_l2=0.0071 success_last50=0.16 actor_grad_norm=0.0274 | Time%: env=12.6 grad=63.4 batch=3.5 eval=20.5
+[24200] actor_loss_base=-0.3554 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0794 residual_l2=0.0070 success_last50=0.16 actor_grad_norm=0.0357 | Time%: env=12.6 grad=63.5 batch=3.5 eval=20.5
+[24300] actor_loss_base=-0.3618 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0774 residual_l2=0.0068 success_last50=0.16 actor_grad_norm=0.0626 | Time%: env=12.6 grad=63.5 batch=3.5 eval=20.4
+[24400] actor_loss_base=-0.3689 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0797 residual_l2=0.0071 success_last50=0.16 actor_grad_norm=0.0341 | Time%: env=12.6 grad=63.6 batch=3.5 eval=20.4
+[24500] actor_loss_base=-0.3881 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0791 residual_l2=0.0070 success_last50=0.16 actor_grad_norm=0.0564 | Time%: env=12.6 grad=63.6 batch=3.5 eval=20.3
+[24600] actor_loss_base=-0.3745 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0794 residual_l2=0.0070 success_last50=0.14 actor_grad_norm=0.0270 | Time%: env=12.7 grad=63.6 batch=3.5 eval=20.2
+[24700] actor_loss_base=-0.3718 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0813 residual_l2=0.0073 success_last50=0.14 actor_grad_norm=0.0263 | Time%: env=12.7 grad=63.7 batch=3.5 eval=20.2
+[24800] actor_loss_base=-0.3838 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0811 residual_l2=0.0073 success_last50=0.14 actor_grad_norm=0.0225 | Time%: env=12.7 grad=63.7 batch=3.5 eval=20.1
+[24900] actor_loss_base=-0.3680 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0808 residual_l2=0.0072 success_last50=0.14 actor_grad_norm=0.0252 | Time%: env=12.7 grad=63.8 batch=3.5 eval=20.1
+[25000] actor_loss_base=-0.3672 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0796 residual_l2=0.0071 success_last50=0.14 actor_grad_norm=0.0421 | Time%: env=12.7 grad=63.8 batch=3.5 eval=20.0
+[25100] actor_loss_base=-0.3633 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0801 residual_l2=0.0071 success_last50=0.12 actor_grad_norm=0.0353 | Time%: env=12.7 grad=63.9 batch=3.5 eval=19.9
+[25200] actor_loss_base=-0.3700 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0786 residual_l2=0.0070 success_last50=0.12 actor_grad_norm=0.0276 | Time%: env=12.7 grad=63.9 batch=3.5 eval=19.9
+[25300] actor_loss_base=-0.3711 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0793 residual_l2=0.0071 success_last50=0.12 actor_grad_norm=0.0584 | Time%: env=12.7 grad=64.0 batch=3.5 eval=19.8
+[25400] actor_loss_base=-0.3738 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0799 residual_l2=0.0071 success_last50=0.12 actor_grad_norm=0.0282 | Time%: env=12.8 grad=64.0 batch=3.5 eval=19.8
+[25500] actor_loss_base=-0.3752 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0794 residual_l2=0.0071 success_last50=0.12 actor_grad_norm=0.0717 | Time%: env=12.8 grad=64.0 batch=3.5 eval=19.7
+[25600] actor_loss_base=-0.3734 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0790 residual_l2=0.0070 success_last50=0.12 actor_grad_norm=0.0376 | Time%: env=12.8 grad=64.1 batch=3.5 eval=19.6
+[25700] actor_loss_base=-0.3631 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0786 residual_l2=0.0070 success_last50=0.12 actor_grad_norm=0.0313 | Time%: env=12.8 grad=64.1 batch=3.5 eval=19.6
+[25800] actor_loss_base=-0.3811 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0801 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.0368 | Time%: env=12.8 grad=64.2 batch=3.5 eval=19.5
+[25900] actor_loss_base=-0.3824 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0807 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.0513 | Time%: env=12.8 grad=64.2 batch=3.5 eval=19.5
+[26000] actor_loss_base=-0.3717 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0810 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0483 | Time%: env=12.8 grad=64.3 batch=3.5 eval=19.4
+[26100] actor_loss_base=-0.3661 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0812 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0226 | Time%: env=12.9 grad=64.3 batch=3.5 eval=19.4
+[26200] actor_loss_base=-0.3865 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0805 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.0627 | Time%: env=12.9 grad=64.3 batch=3.5 eval=19.3
+[26300] actor_loss_base=-0.3860 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0797 residual_l2=0.0071 success_last50=0.12 actor_grad_norm=0.0828 | Time%: env=12.9 grad=64.4 batch=3.5 eval=19.3
+[26400] actor_loss_base=-0.3843 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0808 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0331 | Time%: env=12.9 grad=64.4 batch=3.5 eval=19.2
+[26500] actor_loss_base=-0.3647 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0455 | Time%: env=12.9 grad=64.5 batch=3.5 eval=19.1
+[26600] actor_loss_base=-0.3704 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0813 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0382 | Time%: env=12.9 grad=64.5 batch=3.5 eval=19.1
+[26700] actor_loss_base=-0.3714 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0812 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0206 | Time%: env=12.9 grad=64.5 batch=3.5 eval=19.0
+[26800] actor_loss_base=-0.3655 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0810 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0487 | Time%: env=12.9 grad=64.6 batch=3.5 eval=19.0
+[26900] actor_loss_base=-0.3726 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0809 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.1153 | Time%: env=12.9 grad=64.6 batch=3.5 eval=18.9
+[27000] actor_loss_base=-0.3474 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0815 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.1281 | Time%: env=13.0 grad=64.7 batch=3.5 eval=18.9
+[27100] actor_loss_base=-0.3758 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0815 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0361 | Time%: env=13.0 grad=64.7 batch=3.5 eval=18.8
+[27200] actor_loss_base=-0.3707 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0808 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.0409 | Time%: env=13.0 grad=64.7 batch=3.5 eval=18.8
+[27300] actor_loss_base=-0.3888 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0820 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0352 | Time%: env=13.0 grad=64.8 batch=3.5 eval=18.7
+[27400] actor_loss_base=-0.3523 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0810 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.0463 | Time%: env=13.0 grad=64.8 batch=3.5 eval=18.7
+[27500] actor_loss_base=-0.3848 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0505 | Time%: env=13.0 grad=64.8 batch=3.5 eval=18.6
+[27600] actor_loss_base=-0.3840 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0811 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0636 | Time%: env=13.0 grad=64.9 batch=3.5 eval=18.6
+[27700] actor_loss_base=-0.3882 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0817 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0512 | Time%: env=13.0 grad=64.9 batch=3.5 eval=18.5
+[27800] actor_loss_base=-0.3787 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0820 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0324 | Time%: env=13.0 grad=65.0 batch=3.5 eval=18.5
+[27900] actor_loss_base=-0.3805 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0816 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.1001 | Time%: env=13.1 grad=65.0 batch=3.5 eval=18.4
+[28000] actor_loss_base=-0.3764 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0808 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.0322 | Time%: env=13.1 grad=65.0 batch=3.5 eval=18.4
+[28100] actor_loss_base=-0.3763 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0811 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0344 | Time%: env=13.1 grad=65.1 batch=3.5 eval=18.3
+[28200] actor_loss_base=-0.3709 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0800 residual_l2=0.0072 success_last50=0.14 actor_grad_norm=0.0633 | Time%: env=13.1 grad=65.1 batch=3.5 eval=18.3
+[28300] actor_loss_base=-0.3889 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0824 residual_l2=0.0075 success_last50=0.14 actor_grad_norm=0.0236 | Time%: env=13.1 grad=65.1 batch=3.5 eval=18.2
+[28400] actor_loss_base=-0.3692 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0807 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.0339 | Time%: env=13.1 grad=65.2 batch=3.5 eval=18.2
+[28500] actor_loss_base=-0.3752 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0819 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0335 | Time%: env=13.1 grad=65.2 batch=3.5 eval=18.1
+[28600] actor_loss_base=-0.3833 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0811 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0491 | Time%: env=13.1 grad=65.3 batch=3.5 eval=18.1
+[28700] actor_loss_base=-0.3672 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0810 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.0292 | Time%: env=13.1 grad=65.3 batch=3.5 eval=18.0
+[28800] actor_loss_base=-0.3739 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0809 residual_l2=0.0072 success_last50=0.10 actor_grad_norm=0.0339 | Time%: env=13.2 grad=65.3 batch=3.5 eval=18.0
+[28900] actor_loss_base=-0.3697 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.0924 | Time%: env=13.2 grad=65.4 batch=3.5 eval=17.9
+[29000] actor_loss_base=-0.3903 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0813 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.1403 | Time%: env=13.2 grad=65.4 batch=3.6 eval=17.9
+[29100] actor_loss_base=-0.3757 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0811 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.0961 | Time%: env=13.2 grad=65.4 batch=3.6 eval=17.8
+[29200] actor_loss_base=-0.3593 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0802 residual_l2=0.0071 success_last50=0.10 actor_grad_norm=0.0449 | Time%: env=13.2 grad=65.5 batch=3.6 eval=17.8
+[29300] actor_loss_base=-0.3679 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.0551 | Time%: env=13.2 grad=65.5 batch=3.6 eval=17.7
+[29400] actor_loss_base=-0.3739 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0823 residual_l2=0.0075 success_last50=0.10 actor_grad_norm=0.0392 | Time%: env=13.2 grad=65.5 batch=3.6 eval=17.7
+[29500] actor_loss_base=-0.3814 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0817 residual_l2=0.0074 success_last50=0.10 actor_grad_norm=0.0249 | Time%: env=13.2 grad=65.6 batch=3.6 eval=17.6
+[29600] actor_loss_base=-0.3935 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0813 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.0356 | Time%: env=13.2 grad=65.6 batch=3.6 eval=17.6
+[29700] actor_loss_base=-0.3867 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0821 residual_l2=0.0074 success_last50=0.10 actor_grad_norm=0.0328 | Time%: env=13.2 grad=65.6 batch=3.6 eval=17.6
+[29800] actor_loss_base=-0.3916 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0810 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.0327 | Time%: env=13.3 grad=65.7 batch=3.6 eval=17.5
+[29900] actor_loss_base=-0.3846 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0800 residual_l2=0.0072 success_last50=0.12 actor_grad_norm=0.1049 | Time%: env=13.3 grad=65.7 batch=3.6 eval=17.5
+[30000] actor_loss_base=-0.3983 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0810 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0260 | Time%: env=13.3 grad=65.7 batch=3.6 eval=17.4
+Evaluating 50 episodes: ✓✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗Done
+Saved Q-trajectory plots to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_q_trajectories_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_30000.png
+Saved evaluation video to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_30000.mp4
+[30100] actor_loss_base=-0.3584 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0819 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0246 | Time%: env=12.6 grad=62.2 batch=3.4 eval=21.9
+[30200] actor_loss_base=-0.3604 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0817 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0313 | Time%: env=12.6 grad=62.2 batch=3.4 eval=21.8
+[30300] actor_loss_base=-0.3967 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0817 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0454 | Time%: env=12.6 grad=62.3 batch=3.4 eval=21.7
+[30400] actor_loss_base=-0.3785 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0821 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0365 | Time%: env=12.6 grad=62.3 batch=3.4 eval=21.7
+[30500] actor_loss_base=-0.3733 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0823 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0607 | Time%: env=12.6 grad=62.4 batch=3.4 eval=21.6
+[30600] actor_loss_base=-0.3712 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0816 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0792 | Time%: env=12.6 grad=62.4 batch=3.4 eval=21.6
+[30700] actor_loss_base=-0.3986 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0214 | Time%: env=12.6 grad=62.4 batch=3.4 eval=21.5
+[30800] actor_loss_base=-0.3796 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0816 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.1084 | Time%: env=12.6 grad=62.5 batch=3.4 eval=21.5
+[30900] actor_loss_base=-0.3645 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0816 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0870 | Time%: env=12.7 grad=62.5 batch=3.4 eval=21.4
+[31000] actor_loss_base=-0.3775 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0825 residual_l2=0.0075 success_last50=0.12 actor_grad_norm=0.0171 | Time%: env=12.7 grad=62.5 batch=3.4 eval=21.4
+[31100] actor_loss_base=-0.3908 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0075 success_last50=0.12 actor_grad_norm=0.0545 | Time%: env=12.7 grad=62.6 batch=3.4 eval=21.3
+[31200] actor_loss_base=-0.3532 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0817 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0326 | Time%: env=12.7 grad=62.6 batch=3.4 eval=21.3
+[31300] actor_loss_base=-0.3792 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0075 success_last50=0.12 actor_grad_norm=0.0782 | Time%: env=12.7 grad=62.7 batch=3.4 eval=21.2
+[31400] actor_loss_base=-0.3847 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0818 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0576 | Time%: env=12.7 grad=62.7 batch=3.4 eval=21.2
+[31500] actor_loss_base=-0.3784 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.12 actor_grad_norm=0.0382 | Time%: env=12.7 grad=62.7 batch=3.4 eval=21.1
+[31600] actor_loss_base=-0.3603 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0817 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0460 | Time%: env=12.7 grad=62.8 batch=3.4 eval=21.1
+[31700] actor_loss_base=-0.3642 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0817 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0412 | Time%: env=12.7 grad=62.8 batch=3.4 eval=21.0
+[31800] actor_loss_base=-0.3780 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0816 residual_l2=0.0074 success_last50=0.10 actor_grad_norm=0.0443 | Time%: env=12.8 grad=62.8 batch=3.4 eval=21.0
+[31900] actor_loss_base=-0.3940 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0075 success_last50=0.10 actor_grad_norm=0.0322 | Time%: env=12.8 grad=62.9 batch=3.4 eval=20.9
+[32000] actor_loss_base=-0.3713 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0811 residual_l2=0.0073 success_last50=0.10 actor_grad_norm=0.0458 | Time%: env=12.8 grad=62.9 batch=3.4 eval=20.9
+[32100] actor_loss_base=-0.3770 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0826 residual_l2=0.0075 success_last50=0.10 actor_grad_norm=0.0543 | Time%: env=12.8 grad=63.0 batch=3.4 eval=20.8
+[32200] actor_loss_base=-0.3730 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0825 residual_l2=0.0075 success_last50=0.10 actor_grad_norm=0.0235 | Time%: env=12.8 grad=63.0 batch=3.4 eval=20.8
+[32300] actor_loss_base=-0.4049 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0823 residual_l2=0.0075 success_last50=0.10 actor_grad_norm=0.0448 | Time%: env=12.8 grad=63.0 batch=3.4 eval=20.7
+[32400] actor_loss_base=-0.3937 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0823 residual_l2=0.0075 success_last50=0.10 actor_grad_norm=0.0637 | Time%: env=12.8 grad=63.1 batch=3.4 eval=20.7
+[32500] actor_loss_base=-0.3617 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0805 residual_l2=0.0072 success_last50=0.10 actor_grad_norm=0.0430 | Time%: env=12.8 grad=63.1 batch=3.4 eval=20.6
+[32600] actor_loss_base=-0.3708 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0074 success_last50=0.12 actor_grad_norm=0.0548 | Time%: env=12.8 grad=63.1 batch=3.4 eval=20.6
+[32700] actor_loss_base=-0.3672 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0832 residual_l2=0.0076 success_last50=0.14 actor_grad_norm=0.3294 | Time%: env=12.8 grad=63.2 batch=3.4 eval=20.5
+[32800] actor_loss_base=-0.3639 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0838 residual_l2=0.0076 success_last50=0.14 actor_grad_norm=0.0565 | Time%: env=12.9 grad=63.2 batch=3.4 eval=20.5
+[32900] actor_loss_base=-0.3715 critic_loss=0.0011 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0074 success_last50=0.14 actor_grad_norm=0.0454 | Time%: env=12.9 grad=63.2 batch=3.4 eval=20.5
+[33000] actor_loss_base=-0.3780 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0832 residual_l2=0.0076 success_last50=0.14 actor_grad_norm=0.0771 | Time%: env=12.9 grad=63.3 batch=3.4 eval=20.4
+[33100] actor_loss_base=-0.3924 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0075 success_last50=0.14 actor_grad_norm=0.0352 | Time%: env=12.9 grad=63.3 batch=3.4 eval=20.4
+[33200] actor_loss_base=-0.3561 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0820 residual_l2=0.0074 success_last50=0.14 actor_grad_norm=0.0621 | Time%: env=12.9 grad=63.3 batch=3.4 eval=20.3
+[33300] actor_loss_base=-0.3553 critic_loss=0.0004 actor_lr=1.00e-06 residual_l1=0.0820 residual_l2=0.0074 success_last50=0.16 actor_grad_norm=0.0548 | Time%: env=12.9 grad=63.4 batch=3.4 eval=20.3
+[33400] actor_loss_base=-0.3768 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0809 residual_l2=0.0072 success_last50=0.16 actor_grad_norm=0.0402 | Time%: env=12.9 grad=63.4 batch=3.4 eval=20.2
+[33500] actor_loss_base=-0.3684 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0800 residual_l2=0.0072 success_last50=0.16 actor_grad_norm=0.0919 | Time%: env=12.9 grad=63.4 batch=3.4 eval=20.2
+[33600] actor_loss_base=-0.3481 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0804 residual_l2=0.0072 success_last50=0.16 actor_grad_norm=0.0325 | Time%: env=12.9 grad=63.5 batch=3.5 eval=20.1
+[33700] actor_loss_base=-0.3671 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.16 actor_grad_norm=0.0425 | Time%: env=12.9 grad=63.5 batch=3.5 eval=20.1
+[33800] actor_loss_base=-0.3811 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0815 residual_l2=0.0074 success_last50=0.16 actor_grad_norm=0.0420 | Time%: env=13.0 grad=63.6 batch=3.5 eval=20.0
+[33900] actor_loss_base=-0.3764 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0075 success_last50=0.16 actor_grad_norm=0.0370 | Time%: env=13.0 grad=63.6 batch=3.5 eval=20.0
+[34000] actor_loss_base=-0.3823 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0826 residual_l2=0.0075 success_last50=0.16 actor_grad_norm=0.0339 | Time%: env=13.0 grad=63.6 batch=3.5 eval=20.0
+[34100] actor_loss_base=-0.3805 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0819 residual_l2=0.0074 success_last50=0.18 actor_grad_norm=0.0717 | Time%: env=13.0 grad=63.7 batch=3.5 eval=19.9
+[34200] actor_loss_base=-0.3903 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0821 residual_l2=0.0074 success_last50=0.18 actor_grad_norm=0.0947 | Time%: env=13.0 grad=63.7 batch=3.5 eval=19.9
+[34300] actor_loss_base=-0.3723 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0833 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0309 | Time%: env=13.0 grad=63.7 batch=3.5 eval=19.8
+[34400] actor_loss_base=-0.3656 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0814 residual_l2=0.0073 success_last50=0.18 actor_grad_norm=0.0475 | Time%: env=13.0 grad=63.7 batch=3.5 eval=19.8
+[34500] actor_loss_base=-0.3899 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0836 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0386 | Time%: env=13.0 grad=63.8 batch=3.5 eval=19.7
+[34600] actor_loss_base=-0.3886 critic_loss=0.0006 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.1649 | Time%: env=13.0 grad=63.8 batch=3.5 eval=19.7
+[34700] actor_loss_base=-0.3784 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0560 | Time%: env=13.0 grad=63.8 batch=3.5 eval=19.6
+[34800] actor_loss_base=-0.3780 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0833 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0264 | Time%: env=13.0 grad=63.9 batch=3.5 eval=19.6
+[34900] actor_loss_base=-0.3582 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0487 | Time%: env=13.1 grad=63.9 batch=3.5 eval=19.6
+[35000] actor_loss_base=-0.3535 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0203 | Time%: env=13.1 grad=63.9 batch=3.5 eval=19.5
+[35100] actor_loss_base=-0.3806 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0834 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0516 | Time%: env=13.1 grad=64.0 batch=3.5 eval=19.5
+[35200] actor_loss_base=-0.3790 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0277 | Time%: env=13.1 grad=64.0 batch=3.5 eval=19.4
+[35300] actor_loss_base=-0.3669 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0378 | Time%: env=13.1 grad=64.0 batch=3.5 eval=19.4
+[35400] actor_loss_base=-0.3897 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0833 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0200 | Time%: env=13.1 grad=64.1 batch=3.5 eval=19.3
+[35500] actor_loss_base=-0.3793 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0831 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0613 | Time%: env=13.1 grad=64.1 batch=3.5 eval=19.3
+[35600] actor_loss_base=-0.3869 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0826 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0990 | Time%: env=13.1 grad=64.1 batch=3.5 eval=19.3
+[35700] actor_loss_base=-0.3859 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0824 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0329 | Time%: env=13.1 grad=64.2 batch=3.5 eval=19.2
+[35800] actor_loss_base=-0.3780 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0816 residual_l2=0.0073 success_last50=0.18 actor_grad_norm=0.0491 | Time%: env=13.1 grad=64.2 batch=3.5 eval=19.2
+[35900] actor_loss_base=-0.3618 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0074 success_last50=0.18 actor_grad_norm=0.1439 | Time%: env=13.1 grad=64.2 batch=3.5 eval=19.1
+[36000] actor_loss_base=-0.3782 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0704 | Time%: env=13.1 grad=64.3 batch=3.5 eval=19.1
+[36100] actor_loss_base=-0.3834 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0838 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0596 | Time%: env=13.2 grad=64.3 batch=3.5 eval=19.1
+[36200] actor_loss_base=-0.3886 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0823 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0323 | Time%: env=13.2 grad=64.3 batch=3.5 eval=19.0
+[36300] actor_loss_base=-0.3723 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0819 residual_l2=0.0074 success_last50=0.20 actor_grad_norm=0.0334 | Time%: env=13.2 grad=64.3 batch=3.5 eval=19.0
+[36400] actor_loss_base=-0.3945 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0325 | Time%: env=13.2 grad=64.4 batch=3.5 eval=18.9
+[36500] actor_loss_base=-0.3621 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0665 | Time%: env=13.2 grad=64.4 batch=3.5 eval=18.9
+[36600] actor_loss_base=-0.3663 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0398 | Time%: env=13.2 grad=64.4 batch=3.5 eval=18.9
+[36700] actor_loss_base=-0.3693 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0074 success_last50=0.20 actor_grad_norm=0.1026 | Time%: env=13.2 grad=64.5 batch=3.5 eval=18.8
+[36800] actor_loss_base=-0.3766 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0825 residual_l2=0.0075 success_last50=0.20 actor_grad_norm=0.0404 | Time%: env=13.2 grad=64.5 batch=3.5 eval=18.8
+[36900] actor_loss_base=-0.3739 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0074 success_last50=0.20 actor_grad_norm=0.0274 | Time%: env=13.2 grad=64.5 batch=3.5 eval=18.7
+[37000] actor_loss_base=-0.3786 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0818 residual_l2=0.0074 success_last50=0.18 actor_grad_norm=0.0465 | Time%: env=13.2 grad=64.6 batch=3.5 eval=18.7
+[37100] actor_loss_base=-0.4038 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0812 residual_l2=0.0073 success_last50=0.18 actor_grad_norm=0.0446 | Time%: env=13.2 grad=64.6 batch=3.5 eval=18.7
+[37200] actor_loss_base=-0.3807 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0832 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0297 | Time%: env=13.2 grad=64.6 batch=3.5 eval=18.6
+[37300] actor_loss_base=-0.3783 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0809 residual_l2=0.0073 success_last50=0.18 actor_grad_norm=0.0434 | Time%: env=13.3 grad=64.6 batch=3.5 eval=18.6
+[37400] actor_loss_base=-0.3807 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0819 residual_l2=0.0074 success_last50=0.18 actor_grad_norm=0.0639 | Time%: env=13.3 grad=64.7 batch=3.5 eval=18.5
+[37500] actor_loss_base=-0.3828 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0836 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0484 | Time%: env=13.3 grad=64.7 batch=3.5 eval=18.5
+[37600] actor_loss_base=-0.3747 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0765 | Time%: env=13.3 grad=64.7 batch=3.5 eval=18.5
+[37700] actor_loss_base=-0.3690 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0826 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0254 | Time%: env=13.3 grad=64.8 batch=3.5 eval=18.4
+[37800] actor_loss_base=-0.4010 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0831 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.1141 | Time%: env=13.3 grad=64.8 batch=3.5 eval=18.4
+[37900] actor_loss_base=-0.3988 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0833 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0733 | Time%: env=13.3 grad=64.8 batch=3.5 eval=18.4
+[38000] actor_loss_base=-0.3839 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0822 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0385 | Time%: env=13.3 grad=64.8 batch=3.5 eval=18.3
+[38100] actor_loss_base=-0.3656 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0828 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0383 | Time%: env=13.3 grad=64.9 batch=3.5 eval=18.3
+[38200] actor_loss_base=-0.3847 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0354 | Time%: env=13.3 grad=64.9 batch=3.5 eval=18.2
+[38300] actor_loss_base=-0.3780 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0678 | Time%: env=13.3 grad=64.9 batch=3.5 eval=18.2
+[38400] actor_loss_base=-0.3720 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0834 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0425 | Time%: env=13.3 grad=65.0 batch=3.5 eval=18.2
+[38500] actor_loss_base=-0.3666 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0328 | Time%: env=13.4 grad=65.0 batch=3.5 eval=18.1
+[38600] actor_loss_base=-0.3638 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0824 residual_l2=0.0074 success_last50=0.18 actor_grad_norm=0.0911 | Time%: env=13.4 grad=65.0 batch=3.5 eval=18.1
+[38700] actor_loss_base=-0.3755 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0244 | Time%: env=13.4 grad=65.0 batch=3.5 eval=18.1
+[38800] actor_loss_base=-0.3779 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0839 residual_l2=0.0077 success_last50=0.16 actor_grad_norm=0.0496 | Time%: env=13.4 grad=65.1 batch=3.5 eval=18.0
+[38900] actor_loss_base=-0.3844 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0077 success_last50=0.16 actor_grad_norm=0.0485 | Time%: env=13.4 grad=65.1 batch=3.5 eval=18.0
+[39000] actor_loss_base=-0.3811 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.16 actor_grad_norm=0.0455 | Time%: env=13.4 grad=65.1 batch=3.5 eval=17.9
+[39100] actor_loss_base=-0.3697 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0838 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0606 | Time%: env=13.4 grad=65.1 batch=3.5 eval=17.9
+[39200] actor_loss_base=-0.3522 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0450 | Time%: env=13.4 grad=65.2 batch=3.5 eval=17.9
+[39300] actor_loss_base=-0.3702 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0386 | Time%: env=13.4 grad=65.2 batch=3.5 eval=17.8
+[39400] actor_loss_base=-0.3756 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0258 | Time%: env=13.4 grad=65.2 batch=3.5 eval=17.8
+[39500] actor_loss_base=-0.3689 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0322 | Time%: env=13.4 grad=65.2 batch=3.5 eval=17.8
+[39600] actor_loss_base=-0.3732 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0839 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0208 | Time%: env=13.4 grad=65.3 batch=3.6 eval=17.7
+[39700] actor_loss_base=-0.3729 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0849 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0498 | Time%: env=13.4 grad=65.3 batch=3.6 eval=17.7
+[39800] actor_loss_base=-0.3942 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0834 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0313 | Time%: env=13.5 grad=65.3 batch=3.6 eval=17.7
+[39900] actor_loss_base=-0.3725 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0834 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0391 | Time%: env=13.5 grad=65.4 batch=3.6 eval=17.6
+[40000] actor_loss_base=-0.3736 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0833 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0450 | Time%: env=13.5 grad=65.4 batch=3.6 eval=17.6
+Evaluating 50 episodes: ✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✓✓✓✓✓✗✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗Done
+Saved Q-trajectory plots to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_q_trajectories_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_40000.png
+Saved evaluation video to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_40000.mp4
+[40100] actor_loss_base=-0.3705 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.20 actor_grad_norm=0.0390 | Time%: env=12.9 grad=62.7 batch=3.4 eval=21.0
+[40200] actor_loss_base=-0.3835 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0848 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0328 | Time%: env=12.9 grad=62.7 batch=3.4 eval=21.0
+[40300] actor_loss_base=-0.3610 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0836 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0559 | Time%: env=12.9 grad=62.7 batch=3.4 eval=20.9
+[40400] actor_loss_base=-0.3659 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0836 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0428 | Time%: env=12.9 grad=62.8 batch=3.4 eval=20.9
+[40500] actor_loss_base=-0.3749 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0921 | Time%: env=12.9 grad=62.8 batch=3.4 eval=20.9
+[40600] actor_loss_base=-0.3916 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0848 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0813 | Time%: env=13.0 grad=62.8 batch=3.4 eval=20.8
+[40700] actor_loss_base=-0.3622 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0445 | Time%: env=13.0 grad=62.8 batch=3.4 eval=20.8
+[40800] actor_loss_base=-0.3609 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0450 | Time%: env=13.0 grad=62.9 batch=3.4 eval=20.7
+[40900] actor_loss_base=-0.3757 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0831 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0718 | Time%: env=13.0 grad=62.9 batch=3.4 eval=20.7
+[41000] actor_loss_base=-0.3805 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0846 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0678 | Time%: env=13.0 grad=62.9 batch=3.4 eval=20.7
+[41100] actor_loss_base=-0.3902 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0474 | Time%: env=13.0 grad=63.0 batch=3.4 eval=20.6
+[41200] actor_loss_base=-0.3867 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0328 | Time%: env=13.0 grad=63.0 batch=3.4 eval=20.6
+[41300] actor_loss_base=-0.3869 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0838 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0388 | Time%: env=13.0 grad=63.0 batch=3.4 eval=20.5
+[41400] actor_loss_base=-0.3748 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.1181 | Time%: env=13.0 grad=63.1 batch=3.4 eval=20.5
+[41500] actor_loss_base=-0.3674 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0368 | Time%: env=13.0 grad=63.1 batch=3.4 eval=20.5
+[41600] actor_loss_base=-0.3959 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0540 | Time%: env=13.0 grad=63.1 batch=3.4 eval=20.4
+[41700] actor_loss_base=-0.4033 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0409 | Time%: env=13.0 grad=63.1 batch=3.4 eval=20.4
+[41800] actor_loss_base=-0.3732 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0846 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0420 | Time%: env=13.0 grad=63.2 batch=3.4 eval=20.4
+[41900] actor_loss_base=-0.3683 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0838 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0451 | Time%: env=13.1 grad=63.2 batch=3.4 eval=20.3
+[42000] actor_loss_base=-0.3793 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0847 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0346 | Time%: env=13.1 grad=63.2 batch=3.4 eval=20.3
+[42100] actor_loss_base=-0.3753 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0838 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.1950 | Time%: env=13.1 grad=63.2 batch=3.4 eval=20.2
+[42200] actor_loss_base=-0.3832 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0815 | Time%: env=13.1 grad=63.3 batch=3.4 eval=20.2
+[42300] actor_loss_base=-0.3601 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0075 success_last50=0.22 actor_grad_norm=0.0431 | Time%: env=13.1 grad=63.3 batch=3.4 eval=20.2
+[42400] actor_loss_base=-0.3986 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0607 | Time%: env=13.1 grad=63.3 batch=3.4 eval=20.1
+[42500] actor_loss_base=-0.3697 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0885 | Time%: env=13.1 grad=63.4 batch=3.4 eval=20.1
+[42600] actor_loss_base=-0.3826 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0427 | Time%: env=13.1 grad=63.4 batch=3.4 eval=20.1
+[42700] actor_loss_base=-0.3634 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0823 residual_l2=0.0075 success_last50=0.22 actor_grad_norm=0.0368 | Time%: env=13.1 grad=63.4 batch=3.4 eval=20.0
+[42800] actor_loss_base=-0.3629 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0834 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0412 | Time%: env=13.1 grad=63.4 batch=3.5 eval=20.0
+[42900] actor_loss_base=-0.3862 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0846 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0362 | Time%: env=13.1 grad=63.5 batch=3.5 eval=20.0
+[43000] actor_loss_base=-0.3721 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0328 | Time%: env=13.1 grad=63.5 batch=3.5 eval=19.9
+[43100] actor_loss_base=-0.3809 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0249 | Time%: env=13.1 grad=63.5 batch=3.5 eval=19.9
+[43200] actor_loss_base=-0.3790 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.3033 | Time%: env=13.1 grad=63.5 batch=3.5 eval=19.9
+[43300] actor_loss_base=-0.4150 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0376 | Time%: env=13.2 grad=63.6 batch=3.5 eval=19.8
+[43400] actor_loss_base=-0.3790 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.20 actor_grad_norm=0.0357 | Time%: env=13.2 grad=63.6 batch=3.5 eval=19.8
+[43500] actor_loss_base=-0.3927 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0849 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0409 | Time%: env=13.2 grad=63.6 batch=3.5 eval=19.7
+[43600] actor_loss_base=-0.3751 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0246 | Time%: env=13.2 grad=63.7 batch=3.5 eval=19.7
+[43700] actor_loss_base=-0.3746 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0832 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0647 | Time%: env=13.2 grad=63.7 batch=3.5 eval=19.7
+[43800] actor_loss_base=-0.3940 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0831 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0217 | Time%: env=13.2 grad=63.7 batch=3.5 eval=19.6
+[43900] actor_loss_base=-0.3902 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0835 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.1342 | Time%: env=13.2 grad=63.7 batch=3.5 eval=19.6
+[44000] actor_loss_base=-0.3689 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0848 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0299 | Time%: env=13.2 grad=63.8 batch=3.5 eval=19.6
+[44100] actor_loss_base=-0.3871 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0344 | Time%: env=13.2 grad=63.8 batch=3.5 eval=19.5
+[44200] actor_loss_base=-0.3746 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0836 residual_l2=0.0077 success_last50=0.20 actor_grad_norm=0.0398 | Time%: env=13.2 grad=63.8 batch=3.5 eval=19.5
+[44300] actor_loss_base=-0.3872 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0450 | Time%: env=13.2 grad=63.8 batch=3.5 eval=19.5
+[44400] actor_loss_base=-0.3615 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0826 residual_l2=0.0075 success_last50=0.18 actor_grad_norm=0.0372 | Time%: env=13.2 grad=63.9 batch=3.5 eval=19.4
+[44500] actor_loss_base=-0.3927 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0839 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0414 | Time%: env=13.2 grad=63.9 batch=3.5 eval=19.4
+[44600] actor_loss_base=-0.3824 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0831 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0333 | Time%: env=13.2 grad=63.9 batch=3.5 eval=19.4
+[44700] actor_loss_base=-0.3753 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0826 residual_l2=0.0075 success_last50=0.16 actor_grad_norm=0.0560 | Time%: env=13.2 grad=63.9 batch=3.5 eval=19.3
+[44800] actor_loss_base=-0.3879 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0077 success_last50=0.16 actor_grad_norm=0.0351 | Time%: env=13.3 grad=64.0 batch=3.5 eval=19.3
+[44900] actor_loss_base=-0.3838 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0077 success_last50=0.16 actor_grad_norm=0.0292 | Time%: env=13.3 grad=64.0 batch=3.5 eval=19.3
+[45000] actor_loss_base=-0.3897 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0077 success_last50=0.16 actor_grad_norm=0.0508 | Time%: env=13.3 grad=64.0 batch=3.5 eval=19.2
+[45100] actor_loss_base=-0.3937 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0077 success_last50=0.16 actor_grad_norm=0.0256 | Time%: env=13.3 grad=64.0 batch=3.5 eval=19.2
+[45200] actor_loss_base=-0.3778 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0077 success_last50=0.16 actor_grad_norm=0.0308 | Time%: env=13.3 grad=64.1 batch=3.5 eval=19.2
+[45300] actor_loss_base=-0.3789 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0833 residual_l2=0.0076 success_last50=0.16 actor_grad_norm=0.0903 | Time%: env=13.3 grad=64.1 batch=3.5 eval=19.1
+[45400] actor_loss_base=-0.3611 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0832 residual_l2=0.0076 success_last50=0.16 actor_grad_norm=0.0396 | Time%: env=13.3 grad=64.1 batch=3.5 eval=19.1
+[45500] actor_loss_base=-0.4073 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0240 | Time%: env=13.3 grad=64.1 batch=3.5 eval=19.1
+[45600] actor_loss_base=-0.3809 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0544 | Time%: env=13.3 grad=64.2 batch=3.5 eval=19.0
+[45700] actor_loss_base=-0.3715 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0849 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0421 | Time%: env=13.3 grad=64.2 batch=3.5 eval=19.0
+[45800] actor_loss_base=-0.3729 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0361 | Time%: env=13.3 grad=64.2 batch=3.5 eval=19.0
+[45900] actor_loss_base=-0.3961 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0847 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0409 | Time%: env=13.3 grad=64.2 batch=3.5 eval=18.9
+[46000] actor_loss_base=-0.3684 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0838 residual_l2=0.0077 success_last50=0.20 actor_grad_norm=0.0927 | Time%: env=13.3 grad=64.3 batch=3.5 eval=18.9
+[46100] actor_loss_base=-0.3802 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0372 | Time%: env=13.3 grad=64.3 batch=3.5 eval=18.9
+[46200] actor_loss_base=-0.3791 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0841 residual_l2=0.0077 success_last50=0.20 actor_grad_norm=0.0952 | Time%: env=13.3 grad=64.3 batch=3.5 eval=18.9
+[46300] actor_loss_base=-0.3693 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0830 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0588 | Time%: env=13.4 grad=64.3 batch=3.5 eval=18.8
+[46400] actor_loss_base=-0.3857 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0835 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0400 | Time%: env=13.4 grad=64.4 batch=3.5 eval=18.8
+[46500] actor_loss_base=-0.3762 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0077 success_last50=0.20 actor_grad_norm=0.0223 | Time%: env=13.4 grad=64.4 batch=3.5 eval=18.8
+[46600] actor_loss_base=-0.3657 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0834 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.0401 | Time%: env=13.4 grad=64.4 batch=3.5 eval=18.7
+[46700] actor_loss_base=-0.4069 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0835 residual_l2=0.0076 success_last50=0.18 actor_grad_norm=0.0441 | Time%: env=13.4 grad=64.4 batch=3.5 eval=18.7
+[46800] actor_loss_base=-0.3657 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0825 residual_l2=0.0075 success_last50=0.20 actor_grad_norm=0.0645 | Time%: env=13.4 grad=64.4 batch=3.5 eval=18.7
+[46900] actor_loss_base=-0.3669 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0432 | Time%: env=13.4 grad=64.5 batch=3.5 eval=18.6
+[47000] actor_loss_base=-0.3831 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0834 residual_l2=0.0076 success_last50=0.22 actor_grad_norm=0.0408 | Time%: env=13.4 grad=64.5 batch=3.5 eval=18.6
+[47100] actor_loss_base=-0.3853 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0832 residual_l2=0.0076 success_last50=0.22 actor_grad_norm=0.1037 | Time%: env=13.4 grad=64.5 batch=3.5 eval=18.6
+[47200] actor_loss_base=-0.3759 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0835 residual_l2=0.0076 success_last50=0.22 actor_grad_norm=0.0409 | Time%: env=13.4 grad=64.5 batch=3.5 eval=18.5
+[47300] actor_loss_base=-0.3734 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0848 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0362 | Time%: env=13.4 grad=64.6 batch=3.5 eval=18.5
+[47400] actor_loss_base=-0.3769 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0849 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0695 | Time%: env=13.4 grad=64.6 batch=3.5 eval=18.5
+[47500] actor_loss_base=-0.3659 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0852 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0430 | Time%: env=13.4 grad=64.6 batch=3.5 eval=18.4
+[47600] actor_loss_base=-0.3605 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0487 | Time%: env=13.4 grad=64.6 batch=3.5 eval=18.4
+[47700] actor_loss_base=-0.3864 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0520 | Time%: env=13.4 grad=64.7 batch=3.5 eval=18.4
+[47800] actor_loss_base=-0.3807 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0079 success_last50=0.22 actor_grad_norm=0.0209 | Time%: env=13.4 grad=64.7 batch=3.5 eval=18.4
+[47900] actor_loss_base=-0.3879 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0449 | Time%: env=13.5 grad=64.7 batch=3.5 eval=18.3
+[48000] actor_loss_base=-0.3795 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0846 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0309 | Time%: env=13.5 grad=64.7 batch=3.5 eval=18.3
+[48100] actor_loss_base=-0.3748 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0837 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0653 | Time%: env=13.5 grad=64.8 batch=3.5 eval=18.3
+[48200] actor_loss_base=-0.3821 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0841 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0452 | Time%: env=13.5 grad=64.8 batch=3.5 eval=18.2
+[48300] actor_loss_base=-0.3677 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0848 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0316 | Time%: env=13.5 grad=64.8 batch=3.5 eval=18.2
+[48400] actor_loss_base=-0.3788 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0850 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.1418 | Time%: env=13.5 grad=64.8 batch=3.5 eval=18.2
+[48500] actor_loss_base=-0.3910 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0833 residual_l2=0.0076 success_last50=0.26 actor_grad_norm=0.0780 | Time%: env=13.5 grad=64.8 batch=3.5 eval=18.1
+[48600] actor_loss_base=-0.3789 critic_loss=0.0036 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0077 success_last50=0.26 actor_grad_norm=0.0290 | Time%: env=13.5 grad=64.9 batch=3.5 eval=18.1
+[48700] actor_loss_base=-0.3588 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0848 residual_l2=0.0078 success_last50=0.26 actor_grad_norm=0.0424 | Time%: env=13.5 grad=64.9 batch=3.5 eval=18.1
+[48800] actor_loss_base=-0.3721 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0835 residual_l2=0.0076 success_last50=0.26 actor_grad_norm=0.1589 | Time%: env=13.5 grad=64.9 batch=3.5 eval=18.1
+[48900] actor_loss_base=-0.3709 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0079 success_last50=0.26 actor_grad_norm=0.0377 | Time%: env=13.5 grad=64.9 batch=3.5 eval=18.0
+[49000] actor_loss_base=-0.3913 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0856 residual_l2=0.0079 success_last50=0.24 actor_grad_norm=0.0331 | Time%: env=13.5 grad=64.9 batch=3.5 eval=18.0
+[49100] actor_loss_base=-0.3823 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0846 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.1699 | Time%: env=13.5 grad=65.0 batch=3.5 eval=18.0
+[49200] actor_loss_base=-0.3623 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0079 success_last50=0.24 actor_grad_norm=0.0396 | Time%: env=13.5 grad=65.0 batch=3.5 eval=17.9
+[49300] actor_loss_base=-0.3737 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0850 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0365 | Time%: env=13.5 grad=65.0 batch=3.5 eval=17.9
+[49400] actor_loss_base=-0.3630 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0357 | Time%: env=13.5 grad=65.0 batch=3.5 eval=17.9
+[49500] actor_loss_base=-0.3510 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0703 | Time%: env=13.5 grad=65.1 batch=3.5 eval=17.9
+[49600] actor_loss_base=-0.3775 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0841 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0486 | Time%: env=13.6 grad=65.1 batch=3.5 eval=17.8
+[49700] actor_loss_base=-0.3680 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0854 residual_l2=0.0079 success_last50=0.24 actor_grad_norm=0.2245 | Time%: env=13.6 grad=65.1 batch=3.5 eval=17.8
+[49800] actor_loss_base=-0.3617 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0855 residual_l2=0.0079 success_last50=0.26 actor_grad_norm=0.0413 | Time%: env=13.6 grad=65.1 batch=3.5 eval=17.8
+[49900] actor_loss_base=-0.3794 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.26 actor_grad_norm=0.0545 | Time%: env=13.6 grad=65.1 batch=3.5 eval=17.7
+[50000] actor_loss_base=-0.3771 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0852 residual_l2=0.0079 success_last50=0.26 actor_grad_norm=0.1051 | Time%: env=13.6 grad=65.2 batch=3.5 eval=17.7
+Evaluating 50 episodes: ✓✓✓✓✓✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✓✓✓✗✗✓✗✗✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗Done
+Saved Q-trajectory plots to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_q_trajectories_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_50000.png
+Saved evaluation video to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_50000.mp4
+[50100] actor_loss_base=-0.3742 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0326 | Time%: env=13.1 grad=62.9 batch=3.4 eval=20.5
+[50200] actor_loss_base=-0.3719 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0393 | Time%: env=13.1 grad=63.0 batch=3.4 eval=20.5
+[50300] actor_loss_base=-0.3622 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0079 success_last50=0.24 actor_grad_norm=0.0359 | Time%: env=13.1 grad=63.0 batch=3.4 eval=20.5
+[50400] actor_loss_base=-0.3662 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0852 residual_l2=0.0079 success_last50=0.24 actor_grad_norm=0.0568 | Time%: env=13.1 grad=63.0 batch=3.4 eval=20.4
+[50500] actor_loss_base=-0.3711 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0079 success_last50=0.24 actor_grad_norm=0.0496 | Time%: env=13.1 grad=63.0 batch=3.4 eval=20.4
+[50600] actor_loss_base=-0.3560 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0841 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0922 | Time%: env=13.1 grad=63.1 batch=3.4 eval=20.4
+[50700] actor_loss_base=-0.3858 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0429 | Time%: env=13.2 grad=63.1 batch=3.4 eval=20.3
+[50800] actor_loss_base=-0.3693 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0847 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0366 | Time%: env=13.2 grad=63.1 batch=3.4 eval=20.3
+[50900] actor_loss_base=-0.3548 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0387 | Time%: env=13.2 grad=63.1 batch=3.4 eval=20.3
+[51000] actor_loss_base=-0.3969 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0835 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0461 | Time%: env=13.2 grad=63.1 batch=3.4 eval=20.3
+[51100] actor_loss_base=-0.4106 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0839 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0582 | Time%: env=13.2 grad=63.2 batch=3.4 eval=20.2
+[51200] actor_loss_base=-0.3836 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0079 success_last50=0.24 actor_grad_norm=0.0410 | Time%: env=13.2 grad=63.2 batch=3.4 eval=20.2
+[51300] actor_loss_base=-0.3618 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0840 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0324 | Time%: env=13.2 grad=63.2 batch=3.4 eval=20.2
+[51400] actor_loss_base=-0.3671 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0441 | Time%: env=13.2 grad=63.2 batch=3.4 eval=20.1
+[51500] actor_loss_base=-0.3715 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0839 residual_l2=0.0077 success_last50=0.24 actor_grad_norm=0.0435 | Time%: env=13.2 grad=63.3 batch=3.4 eval=20.1
+[51600] actor_loss_base=-0.3771 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0324 | Time%: env=13.2 grad=63.3 batch=3.4 eval=20.1
+[51700] actor_loss_base=-0.3885 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0846 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0355 | Time%: env=13.2 grad=63.3 batch=3.4 eval=20.0
+[51800] actor_loss_base=-0.3670 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0078 success_last50=0.24 actor_grad_norm=0.0391 | Time%: env=13.2 grad=63.3 batch=3.4 eval=20.0
+[51900] actor_loss_base=-0.3665 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0364 | Time%: env=13.2 grad=63.4 batch=3.4 eval=20.0
+[52000] actor_loss_base=-0.3734 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0839 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0444 | Time%: env=13.2 grad=63.4 batch=3.4 eval=20.0
+[52100] actor_loss_base=-0.3747 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0440 | Time%: env=13.2 grad=63.4 batch=3.4 eval=19.9
+[52200] actor_loss_base=-0.3913 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0841 residual_l2=0.0077 success_last50=0.22 actor_grad_norm=0.0684 | Time%: env=13.2 grad=63.4 batch=3.4 eval=19.9
+[52300] actor_loss_base=-0.3636 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0078 success_last50=0.22 actor_grad_norm=0.0395 | Time%: env=13.2 grad=63.4 batch=3.4 eval=19.9
+[52400] actor_loss_base=-0.3767 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0079 success_last50=0.20 actor_grad_norm=0.0240 | Time%: env=13.2 grad=63.5 batch=3.4 eval=19.8
+[52500] actor_loss_base=-0.3860 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0829 residual_l2=0.0076 success_last50=0.20 actor_grad_norm=0.1389 | Time%: env=13.3 grad=63.5 batch=3.4 eval=19.8
+[52600] actor_loss_base=-0.3835 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0079 success_last50=0.20 actor_grad_norm=0.0400 | Time%: env=13.3 grad=63.5 batch=3.4 eval=19.8
+[52700] actor_loss_base=-0.3659 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0852 residual_l2=0.0079 success_last50=0.20 actor_grad_norm=0.0315 | Time%: env=13.3 grad=63.5 batch=3.4 eval=19.8
+[52800] actor_loss_base=-0.3816 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0855 residual_l2=0.0079 success_last50=0.20 actor_grad_norm=0.1264 | Time%: env=13.3 grad=63.6 batch=3.4 eval=19.7
+[52900] actor_loss_base=-0.3857 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0080 success_last50=0.20 actor_grad_norm=0.0760 | Time%: env=13.3 grad=63.6 batch=3.4 eval=19.7
+[53000] actor_loss_base=-0.3957 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0079 success_last50=0.20 actor_grad_norm=0.0406 | Time%: env=13.3 grad=63.6 batch=3.4 eval=19.7
+[53100] actor_loss_base=-0.3626 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.20 actor_grad_norm=0.0357 | Time%: env=13.3 grad=63.6 batch=3.5 eval=19.6
+[53200] actor_loss_base=-0.3727 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0842 residual_l2=0.0077 success_last50=0.20 actor_grad_norm=0.0785 | Time%: env=13.3 grad=63.6 batch=3.5 eval=19.6
+[53300] actor_loss_base=-0.3787 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0850 residual_l2=0.0079 success_last50=0.20 actor_grad_norm=0.0299 | Time%: env=13.3 grad=63.7 batch=3.5 eval=19.6
+[53400] actor_loss_base=-0.3536 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0845 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0306 | Time%: env=13.3 grad=63.7 batch=3.5 eval=19.6
+[53500] actor_loss_base=-0.3922 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0848 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0550 | Time%: env=13.3 grad=63.7 batch=3.5 eval=19.5
+[53600] actor_loss_base=-0.3867 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0849 residual_l2=0.0078 success_last50=0.20 actor_grad_norm=0.0864 | Time%: env=13.3 grad=63.7 batch=3.5 eval=19.5
+[53700] actor_loss_base=-0.3797 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0857 residual_l2=0.0079 success_last50=0.20 actor_grad_norm=0.0579 | Time%: env=13.3 grad=63.8 batch=3.5 eval=19.5
+[53800] actor_loss_base=-0.3861 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.18 actor_grad_norm=0.0368 | Time%: env=13.3 grad=63.8 batch=3.5 eval=19.4
+[53900] actor_loss_base=-0.3872 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0841 residual_l2=0.0077 success_last50=0.18 actor_grad_norm=0.0611 | Time%: env=13.3 grad=63.8 batch=3.5 eval=19.4
+[54000] actor_loss_base=-0.3751 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.18 actor_grad_norm=0.1909 | Time%: env=13.3 grad=63.8 batch=3.5 eval=19.4
+[54100] actor_loss_base=-0.3664 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0854 residual_l2=0.0079 success_last50=0.18 actor_grad_norm=0.0443 | Time%: env=13.3 grad=63.8 batch=3.5 eval=19.4
+[54200] actor_loss_base=-0.3840 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0855 residual_l2=0.0079 success_last50=0.18 actor_grad_norm=0.0395 | Time%: env=13.3 grad=63.9 batch=3.5 eval=19.3
+[54300] actor_loss_base=-0.3811 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0857 residual_l2=0.0079 success_last50=0.18 actor_grad_norm=0.0286 | Time%: env=13.4 grad=63.9 batch=3.5 eval=19.3
+[54400] actor_loss_base=-0.3697 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0847 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0785 | Time%: env=13.4 grad=63.9 batch=3.5 eval=19.3
+[54500] actor_loss_base=-0.3735 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0847 residual_l2=0.0078 success_last50=0.18 actor_grad_norm=0.0497 | Time%: env=13.4 grad=63.9 batch=3.5 eval=19.2
+[54600] actor_loss_base=-0.3808 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.18 actor_grad_norm=0.0778 | Time%: env=13.4 grad=63.9 batch=3.5 eval=19.2
+[54700] actor_loss_base=-0.3823 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0079 success_last50=0.18 actor_grad_norm=0.0542 | Time%: env=13.4 grad=64.0 batch=3.5 eval=19.2
+[54800] actor_loss_base=-0.3805 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0855 residual_l2=0.0079 success_last50=0.16 actor_grad_norm=0.0519 | Time%: env=13.4 grad=64.0 batch=3.5 eval=19.2
+[54900] actor_loss_base=-0.3669 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0079 success_last50=0.16 actor_grad_norm=0.0446 | Time%: env=13.4 grad=64.0 batch=3.5 eval=19.1
+[55000] actor_loss_base=-0.3665 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0078 success_last50=0.16 actor_grad_norm=0.0895 | Time%: env=13.4 grad=64.0 batch=3.5 eval=19.1
+[55100] actor_loss_base=-0.3798 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0854 residual_l2=0.0079 success_last50=0.16 actor_grad_norm=0.0701 | Time%: env=13.4 grad=64.0 batch=3.5 eval=19.1
+[55200] actor_loss_base=-0.3720 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0851 residual_l2=0.0078 success_last50=0.16 actor_grad_norm=0.0374 | Time%: env=13.4 grad=64.1 batch=3.5 eval=19.1
+[55300] actor_loss_base=-0.3778 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0849 residual_l2=0.0078 success_last50=0.16 actor_grad_norm=0.0616 | Time%: env=13.4 grad=64.1 batch=3.5 eval=19.0
+[55400] actor_loss_base=-0.3777 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0079 success_last50=0.16 actor_grad_norm=0.0894 | Time%: env=13.4 grad=64.1 batch=3.5 eval=19.0
+[55500] actor_loss_base=-0.3772 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.16 actor_grad_norm=0.0647 | Time%: env=13.4 grad=64.1 batch=3.5 eval=19.0
+[55600] actor_loss_base=-0.3948 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0863 residual_l2=0.0080 success_last50=0.16 actor_grad_norm=0.0900 | Time%: env=13.4 grad=64.2 batch=3.5 eval=19.0
+[55700] actor_loss_base=-0.3631 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0861 residual_l2=0.0080 success_last50=0.16 actor_grad_norm=0.0203 | Time%: env=13.4 grad=64.2 batch=3.5 eval=18.9
+[55800] actor_loss_base=-0.3827 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0865 residual_l2=0.0080 success_last50=0.16 actor_grad_norm=0.0855 | Time%: env=13.4 grad=64.2 batch=3.5 eval=18.9
+[55900] actor_loss_base=-0.3870 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.16 actor_grad_norm=0.0689 | Time%: env=13.4 grad=64.2 batch=3.5 eval=18.9
+[56000] actor_loss_base=-0.3735 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0078 success_last50=0.16 actor_grad_norm=0.1485 | Time%: env=13.4 grad=64.2 batch=3.5 eval=18.8
+[56100] actor_loss_base=-0.3589 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.16 actor_grad_norm=0.0478 | Time%: env=13.4 grad=64.3 batch=3.5 eval=18.8
+[56200] actor_loss_base=-0.3862 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.14 actor_grad_norm=0.0422 | Time%: env=13.5 grad=64.3 batch=3.5 eval=18.8
+[56300] actor_loss_base=-0.3803 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0080 success_last50=0.14 actor_grad_norm=0.0249 | Time%: env=13.5 grad=64.3 batch=3.5 eval=18.8
+[56400] actor_loss_base=-0.3884 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0857 residual_l2=0.0079 success_last50=0.14 actor_grad_norm=0.0469 | Time%: env=13.5 grad=64.3 batch=3.5 eval=18.7
+[56500] actor_loss_base=-0.3709 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0079 success_last50=0.14 actor_grad_norm=0.0704 | Time%: env=13.5 grad=64.3 batch=3.5 eval=18.7
+[56600] actor_loss_base=-0.3734 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.14 actor_grad_norm=0.0234 | Time%: env=13.5 grad=64.4 batch=3.5 eval=18.7
+[56700] actor_loss_base=-0.3691 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0080 success_last50=0.14 actor_grad_norm=0.0369 | Time%: env=13.5 grad=64.4 batch=3.5 eval=18.7
+[56800] actor_loss_base=-0.3873 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.14 actor_grad_norm=0.0648 | Time%: env=13.5 grad=64.4 batch=3.5 eval=18.6
+[56900] actor_loss_base=-0.3717 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.12 actor_grad_norm=0.0536 | Time%: env=13.5 grad=64.4 batch=3.5 eval=18.6
+[57000] actor_loss_base=-0.3530 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0869 residual_l2=0.0081 success_last50=0.12 actor_grad_norm=0.0323 | Time%: env=13.5 grad=64.4 batch=3.5 eval=18.6
+[57100] actor_loss_base=-0.3780 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.12 actor_grad_norm=0.0631 | Time%: env=13.5 grad=64.4 batch=3.5 eval=18.6
+[57200] actor_loss_base=-0.3808 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0079 success_last50=0.12 actor_grad_norm=0.0576 | Time%: env=13.5 grad=64.5 batch=3.5 eval=18.5
+[57300] actor_loss_base=-0.3731 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.12 actor_grad_norm=0.0518 | Time%: env=13.5 grad=64.5 batch=3.5 eval=18.5
+[57400] actor_loss_base=-0.3785 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0079 success_last50=0.12 actor_grad_norm=0.0511 | Time%: env=13.5 grad=64.5 batch=3.5 eval=18.5
+[57500] actor_loss_base=-0.3655 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0867 residual_l2=0.0081 success_last50=0.12 actor_grad_norm=0.0387 | Time%: env=13.5 grad=64.5 batch=3.5 eval=18.5
+[57600] actor_loss_base=-0.3839 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0867 residual_l2=0.0081 success_last50=0.12 actor_grad_norm=0.0631 | Time%: env=13.5 grad=64.5 batch=3.5 eval=18.4
+[57700] actor_loss_base=-0.3774 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0861 residual_l2=0.0080 success_last50=0.12 actor_grad_norm=0.0885 | Time%: env=13.5 grad=64.6 batch=3.5 eval=18.4
+[57800] actor_loss_base=-0.3685 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0863 residual_l2=0.0080 success_last50=0.10 actor_grad_norm=0.0528 | Time%: env=13.5 grad=64.6 batch=3.5 eval=18.4
+[57900] actor_loss_base=-0.3699 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0865 residual_l2=0.0081 success_last50=0.10 actor_grad_norm=0.0270 | Time%: env=13.5 grad=64.6 batch=3.5 eval=18.4
+[58000] actor_loss_base=-0.3713 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0854 residual_l2=0.0079 success_last50=0.10 actor_grad_norm=0.0895 | Time%: env=13.5 grad=64.6 batch=3.5 eval=18.3
+[58100] actor_loss_base=-0.3481 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0856 residual_l2=0.0079 success_last50=0.08 actor_grad_norm=0.0373 | Time%: env=13.6 grad=64.6 batch=3.5 eval=18.3
+[58200] actor_loss_base=-0.3842 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.08 actor_grad_norm=0.0407 | Time%: env=13.6 grad=64.7 batch=3.5 eval=18.3
+[58300] actor_loss_base=-0.4028 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0866 residual_l2=0.0081 success_last50=0.08 actor_grad_norm=0.0449 | Time%: env=13.6 grad=64.7 batch=3.5 eval=18.3
+[58400] actor_loss_base=-0.3609 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0857 residual_l2=0.0079 success_last50=0.08 actor_grad_norm=0.0331 | Time%: env=13.6 grad=64.7 batch=3.5 eval=18.2
+[58500] actor_loss_base=-0.3875 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0870 residual_l2=0.0081 success_last50=0.08 actor_grad_norm=0.0649 | Time%: env=13.6 grad=64.7 batch=3.5 eval=18.2
+[58600] actor_loss_base=-0.3850 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0872 residual_l2=0.0081 success_last50=0.08 actor_grad_norm=0.0587 | Time%: env=13.6 grad=64.7 batch=3.5 eval=18.2
+[58700] actor_loss_base=-0.3747 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.08 actor_grad_norm=0.0596 | Time%: env=13.6 grad=64.8 batch=3.5 eval=18.2
+[58800] actor_loss_base=-0.3775 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.08 actor_grad_norm=0.0333 | Time%: env=13.6 grad=64.8 batch=3.5 eval=18.1
+[58900] actor_loss_base=-0.3803 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0869 residual_l2=0.0081 success_last50=0.08 actor_grad_norm=0.0373 | Time%: env=13.6 grad=64.8 batch=3.5 eval=18.1
+[59000] actor_loss_base=-0.3816 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.08 actor_grad_norm=0.0405 | Time%: env=13.6 grad=64.8 batch=3.5 eval=18.1
+[59100] actor_loss_base=-0.3731 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0844 residual_l2=0.0078 success_last50=0.08 actor_grad_norm=0.0377 | Time%: env=13.6 grad=64.8 batch=3.5 eval=18.1
+[59200] actor_loss_base=-0.3724 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.08 actor_grad_norm=0.0989 | Time%: env=13.6 grad=64.8 batch=3.5 eval=18.0
+[59300] actor_loss_base=-0.3611 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0872 residual_l2=0.0081 success_last50=0.08 actor_grad_norm=0.0223 | Time%: env=13.6 grad=64.9 batch=3.5 eval=18.0
+[59400] actor_loss_base=-0.3641 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.08 actor_grad_norm=0.0426 | Time%: env=13.6 grad=64.9 batch=3.5 eval=18.0
+[59500] actor_loss_base=-0.3916 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0871 residual_l2=0.0081 success_last50=0.06 actor_grad_norm=0.0518 | Time%: env=13.6 grad=64.9 batch=3.5 eval=18.0
+[59600] actor_loss_base=-0.3852 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0867 residual_l2=0.0081 success_last50=0.06 actor_grad_norm=0.0693 | Time%: env=13.6 grad=64.9 batch=3.5 eval=17.9
+[59700] actor_loss_base=-0.3761 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0874 residual_l2=0.0082 success_last50=0.06 actor_grad_norm=0.0371 | Time%: env=13.6 grad=64.9 batch=3.5 eval=17.9
+[59800] actor_loss_base=-0.3817 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0867 residual_l2=0.0081 success_last50=0.06 actor_grad_norm=0.0570 | Time%: env=13.6 grad=65.0 batch=3.5 eval=17.9
+[59900] actor_loss_base=-0.3850 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.06 actor_grad_norm=0.0255 | Time%: env=13.6 grad=65.0 batch=3.5 eval=17.9
+[60000] actor_loss_base=-0.3585 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.1139 | Time%: env=13.6 grad=65.0 batch=3.5 eval=17.8
+Evaluating 50 episodes: ✓✓✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✓✗✓✓✗✗✗✗✓✗✓✗✗✗✗✗✗✗✗✗✗✗✗✗Done
+Saved Q-trajectory plots to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_q_trajectories_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_60000.png
+Saved evaluation video to: outputs/resfit_residual/2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0/outputs/2026-10-14_12-51-38/eval_2026-10-14_12-51-38__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0_step_60000.mp4
+[60100] actor_loss_base=-0.3862 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0867 residual_l2=0.0081 success_last50=0.04 actor_grad_norm=0.0623 | Time%: env=13.3 grad=63.1 batch=3.4 eval=20.2
+[60200] actor_loss_base=-0.3703 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0856 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0664 | Time%: env=13.3 grad=63.1 batch=3.4 eval=20.2
+[60300] actor_loss_base=-0.3685 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0850 residual_l2=0.0078 success_last50=0.04 actor_grad_norm=0.0535 | Time%: env=13.3 grad=63.2 batch=3.4 eval=20.2
+[60400] actor_loss_base=-0.3745 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0866 residual_l2=0.0081 success_last50=0.04 actor_grad_norm=0.0394 | Time%: env=13.3 grad=63.2 batch=3.4 eval=20.1
+[60500] actor_loss_base=-0.3824 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.1057 | Time%: env=13.3 grad=63.2 batch=3.4 eval=20.1
+[60600] actor_loss_base=-0.3701 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.0724 | Time%: env=13.3 grad=63.2 batch=3.4 eval=20.1
+[60700] actor_loss_base=-0.3750 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0079 success_last50=0.04 actor_grad_norm=0.1001 | Time%: env=13.3 grad=63.2 batch=3.4 eval=20.1
+[60800] actor_loss_base=-0.3781 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0079 success_last50=0.04 actor_grad_norm=0.0832 | Time%: env=13.3 grad=63.3 batch=3.4 eval=20.0
+[60900] actor_loss_base=-0.3620 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0861 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.0890 | Time%: env=13.3 grad=63.3 batch=3.4 eval=20.0
+[61000] actor_loss_base=-0.3684 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.0418 | Time%: env=13.3 grad=63.3 batch=3.4 eval=20.0
+[61100] actor_loss_base=-0.3671 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0863 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.0628 | Time%: env=13.3 grad=63.3 batch=3.4 eval=19.9
+[61200] actor_loss_base=-0.3682 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.0491 | Time%: env=13.3 grad=63.3 batch=3.4 eval=19.9
+[61300] actor_loss_base=-0.3779 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.04 actor_grad_norm=0.0626 | Time%: env=13.3 grad=63.4 batch=3.4 eval=19.9
+[61400] actor_loss_base=-0.3848 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0878 residual_l2=0.0082 success_last50=0.04 actor_grad_norm=0.0282 | Time%: env=13.3 grad=63.4 batch=3.4 eval=19.9
+[61500] actor_loss_base=-0.3644 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0430 | Time%: env=13.3 grad=63.4 batch=3.4 eval=19.8
+[61600] actor_loss_base=-0.3855 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0733 | Time%: env=13.3 grad=63.4 batch=3.4 eval=19.8
+[61700] actor_loss_base=-0.3733 critic_loss=0.0004 actor_lr=1.00e-06 residual_l1=0.0850 residual_l2=0.0078 success_last50=0.02 actor_grad_norm=0.1337 | Time%: env=13.3 grad=63.4 batch=3.4 eval=19.8
+[61800] actor_loss_base=-0.3719 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0869 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0674 | Time%: env=13.3 grad=63.5 batch=3.4 eval=19.8
+[61900] actor_loss_base=-0.3753 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0853 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0321 | Time%: env=13.3 grad=63.5 batch=3.4 eval=19.7
+[62000] actor_loss_base=-0.3961 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0469 | Time%: env=13.3 grad=63.5 batch=3.4 eval=19.7
+[62100] actor_loss_base=-0.3726 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0442 | Time%: env=13.4 grad=63.5 batch=3.4 eval=19.7
+[62200] actor_loss_base=-0.3663 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0843 residual_l2=0.0077 success_last50=0.02 actor_grad_norm=0.0787 | Time%: env=13.4 grad=63.5 batch=3.4 eval=19.7
+[62300] actor_loss_base=-0.3729 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0279 | Time%: env=13.4 grad=63.5 batch=3.4 eval=19.7
+[62400] actor_loss_base=-0.3758 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0857 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0497 | Time%: env=13.4 grad=63.6 batch=3.4 eval=19.6
+[62500] actor_loss_base=-0.3816 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0603 | Time%: env=13.4 grad=63.6 batch=3.4 eval=19.6
+[62600] actor_loss_base=-0.3765 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0866 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0313 | Time%: env=13.4 grad=63.6 batch=3.4 eval=19.6
+[62700] actor_loss_base=-0.3585 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0861 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0615 | Time%: env=13.4 grad=63.6 batch=3.4 eval=19.6
+[62800] actor_loss_base=-0.3684 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0854 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0402 | Time%: env=13.4 grad=63.6 batch=3.4 eval=19.5
+[62900] actor_loss_base=-0.3694 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0867 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0797 | Time%: env=13.4 grad=63.7 batch=3.4 eval=19.5
+[63000] actor_loss_base=-0.3733 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0854 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0383 | Time%: env=13.4 grad=63.7 batch=3.4 eval=19.5
+[63100] actor_loss_base=-0.3776 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0861 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0432 | Time%: env=13.4 grad=63.7 batch=3.4 eval=19.5
+[63200] actor_loss_base=-0.3810 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0865 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0471 | Time%: env=13.4 grad=63.7 batch=3.4 eval=19.4
+[63300] actor_loss_base=-0.3784 critic_loss=0.0001 actor_lr=1.00e-06 residual_l1=0.0860 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0966 | Time%: env=13.4 grad=63.7 batch=3.4 eval=19.4
+[63400] actor_loss_base=-0.3631 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0863 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0365 | Time%: env=13.4 grad=63.8 batch=3.4 eval=19.4
+[63500] actor_loss_base=-0.3699 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0863 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0652 | Time%: env=13.4 grad=63.8 batch=3.4 eval=19.4
+[63600] actor_loss_base=-0.3550 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0856 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0808 | Time%: env=13.4 grad=63.8 batch=3.4 eval=19.3
+[63700] actor_loss_base=-0.3804 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0863 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0369 | Time%: env=13.4 grad=63.8 batch=3.5 eval=19.3
+[63800] actor_loss_base=-0.3745 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0295 | Time%: env=13.4 grad=63.8 batch=3.5 eval=19.3
+[63900] actor_loss_base=-0.3791 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0854 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0656 | Time%: env=13.4 grad=63.8 batch=3.5 eval=19.3
+[64000] actor_loss_base=-0.3576 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0543 | Time%: env=13.4 grad=63.9 batch=3.5 eval=19.2
+[64100] actor_loss_base=-0.3999 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0866 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0328 | Time%: env=13.4 grad=63.9 batch=3.5 eval=19.2
+[64200] actor_loss_base=-0.3794 critic_loss=0.0002 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.1108 | Time%: env=13.4 grad=63.9 batch=3.5 eval=19.2
+[64300] actor_loss_base=-0.3695 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0871 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0922 | Time%: env=13.5 grad=63.9 batch=3.5 eval=19.2
+[64400] actor_loss_base=-0.3767 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0870 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0228 | Time%: env=13.5 grad=63.9 batch=3.5 eval=19.1
+[64500] actor_loss_base=-0.3652 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0868 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0248 | Time%: env=13.5 grad=64.0 batch=3.5 eval=19.1
+[64600] actor_loss_base=-0.3679 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0858 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0235 | Time%: env=13.5 grad=64.0 batch=3.5 eval=19.1
+[64700] actor_loss_base=-0.3952 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0866 residual_l2=0.0081 success_last50=0.02 actor_grad_norm=0.0601 | Time%: env=13.5 grad=64.0 batch=3.5 eval=19.1
+[64800] actor_loss_base=-0.3952 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0862 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0349 | Time%: env=13.5 grad=64.0 batch=3.5 eval=19.1
+[64900] actor_loss_base=-0.3751 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0079 success_last50=0.02 actor_grad_norm=0.0441 | Time%: env=13.5 grad=64.0 batch=3.5 eval=19.0
+[65000] actor_loss_base=-0.3760 critic_loss=0.0000 actor_lr=1.00e-06 residual_l1=0.0864 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.1016 | Time%: env=13.5 grad=64.0 batch=3.5 eval=19.0
+[65100] actor_loss_base=-0.3863 critic_loss=0.0003 actor_lr=1.00e-06 residual_l1=0.0859 residual_l2=0.0080 success_last50=0.02 actor_grad_norm=0.0635 | Time%: env=13.5 grad=64.1 batch=3.5 eval=19.0

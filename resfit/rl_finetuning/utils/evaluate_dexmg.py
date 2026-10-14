@@ -13,7 +13,7 @@ import torch
 from PIL import Image, ImageDraw
 
 import wandb
-from resfit.dexmg.environments.dexmg import VectorizedEnvWrapper
+from resfit.pick_place.vec_env import VectorizedEnvWrapper
 from resfit.rl_finetuning.off_policy.rl.q_agent import QAgent
 
 
@@ -28,6 +28,7 @@ def run_dexmg_evaluation(
     save_q_plots: bool = False,
     run_name: str | None = None,
     output_dir: str | Path | None = "outputs",
+    upload_video: bool = False,
 ) -> tuple[dict[str, float], float]:
     """Extended evaluation to match the richer functionality available in
     the *residual_td3_dexmg* evaluator.  In particular, this version:
@@ -126,7 +127,7 @@ def run_dexmg_evaluation(
         box_data = [q_values_at_progress[f"{int(p * 100)}%"] for p in progress_points]
         box_labels = [f"{int(p * 100)}%" for p in progress_points]
 
-        ax2.boxplot(box_data, labels=box_labels)
+        ax2.boxplot(box_data, tick_labels=box_labels)  # "labels" was renamed "tick_labels" (matplotlib 3.9)
         ax2.set_xlabel("Episode Progress")
         ax2.set_ylabel("Q-Value")
         ax2.set_title("Q-Value Distribution at Different Episode Progress Points")
@@ -162,13 +163,20 @@ def run_dexmg_evaluation(
     all_frames: list[np.ndarray] | None = [] if save_video else None
 
     done_episodes = 0
+    # The same number of episodes in every env: counting the first num_episodes episodes to *finish*
+    # (ResFiT's rule) favours successes, which end before failures (time limit) and leaves the
+    # failures still running out of the count.
+    if num_episodes % num_envs:
+        raise ValueError(f"num_episodes ({num_episodes}) must be a multiple of the number of envs ({num_envs})")
+    per_env = num_episodes // num_envs
+    env_counts = np.zeros(num_envs, dtype=int)
     obs, _ = env.reset()
 
     # Initialize progress display with dots
     progress_dots = ["."] * num_episodes
     print(f"Evaluating {num_episodes} episodes: {''.join(progress_dots)}", end="", flush=True)
 
-    while done_episodes < num_episodes:
+    while (env_counts < per_env).any():
         # --------------------------------------------------------------
         # 1. Policy inference + Q-value prediction ---------------------
         # --------------------------------------------------------------
@@ -210,6 +218,14 @@ def run_dexmg_evaluation(
                 # Episode finished -- aggregate results ----------------
                 ep_return = float(sum(ep_rewards[env_idx]))
                 is_success = bool(reward[env_idx].item() == 1.0)
+                counted = env_counts[env_idx] < per_env
+                env_counts[env_idx] += 1
+                if not counted:  # this env already ran its share of episodes
+                    ep_rewards[env_idx].clear()
+                    ep_q_preds[env_idx].clear()
+                    if frame_buffer is not None:
+                        frame_buffer[env_idx].clear()
+                    continue
 
                 # Update progress display
                 progress_dots[done_episodes] = "✓" if is_success else "✗"
@@ -252,9 +268,6 @@ def run_dexmg_evaluation(
                 ep_q_preds[env_idx].clear()
 
                 done_episodes += 1
-
-                if done_episodes == num_episodes:
-                    break
 
         # Prepare for next loop ----------------------------------------
         obs = next_obs
@@ -327,8 +340,9 @@ def run_dexmg_evaluation(
             writer.append_data(fr)
         writer.close()
 
-        if wandb.run is not None:
+        if upload_video and wandb.run is not None:
             wandb.log({"eval/video": wandb.Video(str(video_path), format="mp4")}, step=global_step)
+        print(f"Saved evaluation video to: {video_path}")
 
     # Restore training mode --------------------------------------------
     agent.train(True)

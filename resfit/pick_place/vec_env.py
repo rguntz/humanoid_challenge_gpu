@@ -60,7 +60,8 @@ class PickPlaceGymEnv(gym.Env):
         self.env = PickPlaceBottleEnv(source_path, horizon=horizon, camera_names=list(CAMERA_KEYS))
         self.action_mode = action_mode
         self.render_mode = "rgb_array"
-        self.metadata = {**self.metadata, "render_fps": self.env.control_freq}
+        # horizon: the episode length limit, read by the residual RL (train_residual_td3.py)
+        self.metadata = {**self.metadata, "render_fps": self.env.control_freq, "horizon": self.env.horizon}
         h, w = self.env.image_size
         self.observation_space = gym.spaces.Dict({
             "observation.state": self.env.observation_space,
@@ -71,6 +72,10 @@ class PickPlaceGymEnv(gym.Env):
         self.action_space = gym.spaces.Box(-1.0, 1.0, (ACTION_DIMS[action_mode],), np.float32)
         self._state = None
         self.episode_steps = 0
+        self.num_layouts = len(self.env.layouts["robot_qpos"])  # one per recorded demo
+        # Demo layouts the next resets start from, in order (autoresets included); empty:
+        # random layouts. Set per env with vec_env.set_attr("demo_queue", [[...], ...]).
+        self.demo_queue = []
 
     def _observe(self, state):
         self._state = state  # end-effector pose and fingers: delta actions are relative to it
@@ -82,8 +87,12 @@ class PickPlaceGymEnv(gym.Env):
         return obs
 
     def reset(self, *, seed=None, options=None):
-        """options={"demo": row} starts from the demo's layout (PickPlaceBottleEnv.reset)."""
+        """options={"demo": row} starts from the demo's layout (PickPlaceBottleEnv.reset);
+        without options, the next layout of demo_queue if any."""
         super().reset(seed=seed)
+        if not options and self.demo_queue:
+            self.demo_queue = list(self.demo_queue)
+            options = {"demo": self.demo_queue.pop(0)}
         state, info = self.env.reset(seed=seed, options=options)
         self.episode_steps = 0
         return self._observe(state), info
@@ -124,6 +133,9 @@ class VectorizedEnvWrapper:
         return obs, info
 
     def step(self, actions):
+        if isinstance(actions, torch.Tensor):
+            # On the CPU: a CUDA tensor sent to the env processes would start CUDA in each (~0.5 GB)
+            actions = actions.detach().float().cpu().numpy()
         obs, rewards, terminated, truncated, info = self.vec_env.step(actions)
         self._last_obs = obs
 

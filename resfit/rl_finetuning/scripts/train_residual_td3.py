@@ -22,13 +22,17 @@ import logging
 import pprint
 import random
 import shutil
+import sys
 import time
-from collections import defaultdict
+from collections import defaultdict, deque
 from contextlib import contextmanager
 from datetime import datetime
 from pathlib import Path
 
-import hydra
+# The repository root on the import path (resfit is not an installed package), as train_bc.py
+sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
+
+import hydra  # noqa: E402
 import numpy as np
 import tensordict
 import torch
@@ -41,10 +45,8 @@ from torchrl.data import LazyTensorStorage, ReplayBuffer, TensorDictPrioritizedR
 from tqdm import tqdm
 
 import wandb
-from resfit.dexmg.environments.dexmg import create_vectorized_env
-from resfit.lerobot.policies.act.configuration_act import ACTConfig
-from resfit.lerobot.policies.act.modeling_act import ACTPolicy
 from resfit.lerobot.utils.load_policy import download_policy_from_wandb, load_policy
+from resfit.pick_place.vec_env import create_vectorized_env
 from resfit.rl_finetuning.config.residual_td3 import ResidualTD3DexmgConfig
 from resfit.rl_finetuning.off_policy.common_utils import utils
 from resfit.rl_finetuning.off_policy.rl.q_agent import QAgent
@@ -130,6 +132,9 @@ if ONLINE_HF_REPO is not None:
 # Falls back to the current directory if unset.
 _CACHE_ROOT = Path(os.environ.get("CACHE_DIR", ".")).expanduser().resolve()
 
+# Online episodes in the logged training success rate (training/success_rate_last50)
+SUCCESS_WINDOW = 50
+
 # Dedicated sub-folders for the different cache types -----------------------
 OFFLINE_CACHE_DIR = _CACHE_ROOT / "offline_buffer_cache"
 ONLINE_CACHE_DIR = _CACHE_ROOT / "online_buffer_cache"
@@ -138,10 +143,9 @@ ONLINE_CACHE_DIR = _CACHE_ROOT / "online_buffer_cache"
 # -----------------------------------------------------------------------------
 # Repository-local imports ------------------------------------------------------
 # -----------------------------------------------------------------------------
-os.environ["MUJOCO_GL"] = "egl"
-
-if "MUJOCO_EGL_DEVICE_ID" in os.environ:
-    del os.environ["MUJOCO_EGL_DEVICE_ID"]
+os.environ.setdefault("MUJOCO_GL", "egl")
+# MUJOCO_EGL_DEVICE_ID is kept: the launch script sets it to the EGL device of the training GPU
+# (resfit/pick_place/egl_device.py). ResFiT deleted it, which rendered on another GPU.
 
 
 def _add_transitions_to_buffer(
@@ -199,10 +203,59 @@ def _add_transitions_to_buffer(
         online_rb.add(td)
 
 
+def _run_inference_only(cfg, env, policy_dir) -> None:
+    """Debug mode (cfg.inference_only): the base policy alone in the training env, the online
+    rollout's code path (BasePolicyVecEnvWrapper, one env, episodes back to back) with a zero
+    residual and no exploration noise; nothing is trained, collected or saved. Logs the success
+    rate of the last SUCCESS_WINDOW episodes (training/success_rate_last50, the metric of the
+    training's online rollouts), which should converge to the base checkpoint's evaluation score
+    (eval_bc.sh), before spending hours on data collection and training."""
+    wandb.init(
+        project=cfg.wandb.project,
+        entity=cfg.wandb.entity,
+        config=OmegaConf.to_container(cfg, resolve=True),
+        name=f"inference_only__{Path(policy_dir).parent.parent.name}__{datetime.now():%Y-%m-%d_%H-%M-%S}",
+        mode=cfg.wandb.mode,
+        group=cfg.wandb.group,
+    )
+    recent_successes: deque[bool] = deque(maxlen=SUCCESS_WINDOW)
+    all_successes: list[bool] = []
+    obs, _ = env.reset()
+    zero_residual = torch.zeros_like(obs["observation.base_action"])
+    global_step = 0
+    print(f"Inference only: {cfg.inference_only_episodes} episodes of the base policy {policy_dir}, "
+          f"zero residual, no noise")
+    while len(all_successes) < cfg.inference_only_episodes:
+        obs, reward, terminated, truncated, _ = env.step(zero_residual)
+        global_step += cfg.num_envs
+        done = terminated | truncated
+        for i in torch.where(done)[0].tolist():
+            success = bool(terminated[i]) and float(reward[i]) == 1.0
+            recent_successes.append(success)
+            all_successes.append(success)
+            # Mean over the last SUCCESS_WINDOW episodes, or over all of them while fewer
+            rate = float(np.mean(recent_successes))
+            wandb.log({f"training/success_rate_last{SUCCESS_WINDOW}": rate,
+                       "training/episode_count": len(all_successes)}, step=global_step)
+            print(f"episode {len(all_successes)}/{cfg.inference_only_episodes}: "
+                  f"{'SUCCESS' if success else 'FAIL'} | success_last{SUCCESS_WINDOW}={rate:.2f} | "
+                  f"all {len(all_successes)} episodes: {np.mean(all_successes):.3f}", flush=True)
+    overall = float(np.mean(all_successes))
+    wandb.summary["inference_only/success_rate_all"] = overall
+    print(f"Inference only: success rate {overall:.3f} over {len(all_successes)} episodes "
+          f"(+-{(overall * (1 - overall) / len(all_successes)) ** 0.5:.3f})")
+    env.close()
+    wandb.finish()
+
+
 # -----------------------------------------------------------------------------
 # Main training loop -----------------------------------------------------------
 # -----------------------------------------------------------------------------
 def main(cfg: ResidualTD3DexmgConfig):
+    if os.environ.get("MUJOCO_GL") == "egl" and "MUJOCO_EGL_DEVICE_ID" not in os.environ:
+        # Without it MuJoCo renders on the first GPU EGL lists, not the one CUDA_VISIBLE_DEVICES
+        # gives the agent (resfit/pick_place/egl_device.py): launch with the .sh script, which sets it
+        raise SystemExit("MUJOCO_EGL_DEVICE_ID is not set: launch with resfit/rl_finetuning/shell/train_residual_td3.sh")
     device_str = "cuda" if torch.cuda.is_available() else "cpu"
     device = torch.device(device_str)
 
@@ -217,30 +270,29 @@ def main(cfg: ResidualTD3DexmgConfig):
     # for residual learning.
     # ---------------------------------------------------------------------
     assert "base_policy" in cfg, "Base policy configuration is required"
-    policy_dir, _ = download_policy_from_wandb(
-        cfg.base_policy.wandb_id,
-        step=cfg.base_policy.wt_type,
-        artifact_version=cfg.base_policy.wt_version,
-    )
+    if cfg.base_policy.path is not None:
+        policy_dir = Path(cfg.base_policy.path)  # a local train_bc.py checkpoint
+    else:
+        policy_dir, _ = download_policy_from_wandb(
+            cfg.base_policy.wandb_id,
+            step=cfg.base_policy.wt_type,
+            artifact_version=cfg.base_policy.wt_version,
+        )
 
-    base_policy: ACTPolicy = load_policy(policy_dir)
+    base_policy = load_policy(policy_dir)
     base_policy.to(device)
     base_policy.eval()
-    eval_base_policy: ACTPolicy = load_policy(policy_dir)
+    eval_base_policy = load_policy(policy_dir)
     eval_base_policy.to(device)
     eval_base_policy.eval()
 
     # Extract the configuration from base policy
     base_cfg = base_policy.config
-
-    if isinstance(base_cfg, ACTConfig):
-        cfg.actor_name = "residual_act"
-    else:
-        raise ValueError(f"Unknown base policy type: {type(base_cfg)}")
+    cfg.actor_name = f"residual_{base_cfg.type}"  # e.g. residual_diffusion (flow matching), residual_act
 
     # Load dataset and get normalization functions early
     print("Loading dataset and setting up normalization...")
-    dataset = LeRobotDataset(cfg.offline_data.name)
+    dataset = LeRobotDataset(cfg.offline_data.name, root=cfg.offline_data.root)
 
     # Create action scaler from dataset statistics
     action_scaler = ActionScaler.from_dataset_stats(
@@ -260,7 +312,7 @@ def main(cfg: ResidualTD3DexmgConfig):
     def get_envs(
         env_name: str,
         num_envs: int,
-        base_policy: ACTPolicy,
+        base_policy,
         device: str,
         video_key: str,
         debug: bool,
@@ -271,8 +323,10 @@ def main(cfg: ResidualTD3DexmgConfig):
         assert state_standardizer is not None, "state_standardizer must be provided for consistent normalization"
 
         # Create the vectorized environment
+        # The pick-and-place env of the offline dataset (its action mode and scene); env_name is
+        # only used in names
         vec_env = create_vectorized_env(
-            env_name=env_name,
+            cfg.offline_data.root,
             num_envs=num_envs,
             device=device,
             video_key=video_key,
@@ -321,6 +375,10 @@ def main(cfg: ResidualTD3DexmgConfig):
         action_scaler=action_scaler,
         state_standardizer=state_standardizer,
     )
+    if cfg.inference_only:
+        _run_inference_only(cfg, env, policy_dir)
+        return
+
     cfg.eval_num_envs = min(cfg.eval_num_envs, cfg.eval_num_episodes)
     num_cpus_available = os.cpu_count() - 1 if os.cpu_count() is not None else 1
     cfg.eval_num_envs = min(num_cpus_available, cfg.eval_num_envs)
@@ -451,7 +509,7 @@ def main(cfg: ResidualTD3DexmgConfig):
         online_cache_dir = dl_dir
 
     loaded_online_from_cache = False
-    if online_cache_dir.exists():
+    if cfg.cache_online_buffer and online_cache_dir.exists():
         print(f"{online_cache_dir} found on disk. Attempting to load...")
         online_rb.sampler._empty()
         optimized_replay_buffer_loads(online_rb, online_cache_dir)
@@ -516,7 +574,7 @@ def main(cfg: ResidualTD3DexmgConfig):
         image_keys: list[str],
         num_episodes: int | None = None,
         use_base_policy_for_base_actions: bool = False,
-        base_policy: ACTPolicy | None = None,
+        base_policy=None,
     ) -> int:
         """
         Iterates through *dataset* sequentially, converts consecutive frames
@@ -544,10 +602,15 @@ def main(cfg: ResidualTD3DexmgConfig):
         transitions = 0
         step_id = 0
 
+        previous_ep_idx = None
         for sample in tqdm(loader, desc="Processing offline dataset"):
             ep_idx = int(sample["episode_index"].item())
             if num_episodes is not None and ep_idx == num_episodes:
                 break
+            if use_base_policy_for_base_actions and ep_idx != previous_ep_idx:
+                # A new episode: clear the base policy's observation history and action queue
+                base_policy.reset()
+            previous_ep_idx = ep_idx
 
             # ------------------------------------------------------------------
             # Build observation and action directly for replay buffer ----------
@@ -644,7 +707,7 @@ def main(cfg: ResidualTD3DexmgConfig):
         "image_keys": image_keys,
         "n_step": cfg.algo.n_step,
         "gamma": cfg.algo.gamma,
-        "base_policy_wandb_id": cfg.base_policy.wandb_id,
+        "base_policy": cfg.base_policy.path or cfg.base_policy.wandb_id,
         "sampling_strategy": cfg.algo.sampling_strategy,
         "normalized_actions": True,
         "batch_size": offline_batch_size,
@@ -725,6 +788,8 @@ def main(cfg: ResidualTD3DexmgConfig):
 
         reward_sum = 0
         episode_count = 0
+        warmup_bar = tqdm(total=cfg.algo.learning_starts, initial=len(online_rb), unit="step",
+                          desc="Warm-up (base policy + noise)", dynamic_ncols=True)
 
         while len(online_rb) < cfg.algo.learning_starts:
             if cfg.algo.use_base_policy_for_warmup:
@@ -771,22 +836,29 @@ def main(cfg: ResidualTD3DexmgConfig):
             # ----------------------------------------------------------
             if len(online_rb) >= next_log_threshold:
                 success_rate = reward_sum / episode_count if episode_count > 0 else 0.0
-                print(
+                tqdm.write(
                     f"[Warm-up] {len(online_rb)} / {cfg.algo.learning_starts} "
                     f"transitions collected, reward_sum={reward_sum:.2f}, "
                     f"success_rate={success_rate:.3f} ({reward_sum}/{episode_count})"
                 )
                 next_log_threshold += 1000
+            warmup_bar.update(len(online_rb) - warmup_bar.n)
+            if episode_count > 0:
+                warmup_bar.set_postfix(episodes=int(episode_count), success=f"{reward_sum / episode_count:.2f}")
 
             obs = next_obs  # roll state
+        warmup_bar.close()
 
-        # Persist freshly-collected buffer (local + HF) --------------------
-        online_cache_dir.mkdir(parents=True, exist_ok=True)
-        optimized_replay_buffer_dumps(online_rb, online_cache_dir)
-        with open(online_cache_dir / "user_metadata.json", "w") as f:
-            json.dump(online_cache_meta, f, indent=2)
-        if ONLINE_HF_REPO is not None:
-            _hf_upload_buffer(ONLINE_HF_REPO, online_cache_dir, online_cache_hash)
+        # Persist freshly-collected buffer (local + HF), only with cfg.cache_online_buffer: the dump
+        # writes the buffer's whole preallocated storage (buffer_size transitions, ~37 GB with two
+        # 128x128 cameras), not just the warm-up's transitions
+        if cfg.cache_online_buffer:
+            online_cache_dir.mkdir(parents=True, exist_ok=True)
+            optimized_replay_buffer_dumps(online_rb, online_cache_dir)
+            with open(online_cache_dir / "user_metadata.json", "w") as f:
+                json.dump(online_cache_meta, f, indent=2)
+            if ONLINE_HF_REPO is not None:
+                _hf_upload_buffer(ONLINE_HF_REPO, online_cache_dir, online_cache_hash)
         print(f"Warm-up done. Online buffer size = {len(online_rb)} transitions")
 
         loaded_online_from_cache = True  # treat as cached going forward
@@ -842,15 +914,28 @@ def main(cfg: ResidualTD3DexmgConfig):
     # Log horizon to wandb summary
     wandb.summary["environment/horizon"] = env.vec_env.metadata["horizon"]
 
-    # Create a timestamped folder in CACHE_DIR for all outputs
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    run_cache_dir = _CACHE_ROOT / f"run_{timestamp}_{run_name}"
-
-    # Create subdirectories for models and outputs
+    # The run folder: checkpoints (models/best, models/latest) and evaluation videos and Q plots
+    # (outputs/), kept after the run (ResFiT deleted it at the end)
+    run_cache_dir = Path(cfg.output_root) / run_name
     model_save_dir = run_cache_dir / "models"
     outputs_dir = run_cache_dir / "outputs"
     model_save_dir.mkdir(parents=True, exist_ok=True)
     outputs_dir.mkdir(parents=True, exist_ok=True)
+    (run_cache_dir / "config.json").write_text(json.dumps(_wandb_config, indent=1, default=str))
+    print(f"Run folder: {run_cache_dir}")
+
+    def save_agent(name: str, eval_metrics: dict) -> None:
+        """The residual agent's weights (actor, critic, encoders) with the evaluation that triggered
+        the save, in models/<name>/ (replaced atomically)."""
+        tmp = model_save_dir / f"{name}.tmp"
+        shutil.rmtree(tmp, ignore_errors=True)
+        tmp.mkdir(parents=True)
+        torch.save(agent.state_dict(), tmp / "agent.pt")
+        (tmp / "eval.json").write_text(json.dumps(
+            {"global_step": global_step, "base_policy": str(policy_dir),
+             **{k: float(v) for k, v in eval_metrics.items()}}, indent=1))
+        shutil.rmtree(model_save_dir / name, ignore_errors=True)
+        tmp.rename(model_save_dir / name)
 
     obs, _ = env.reset()
 
@@ -858,6 +943,8 @@ def main(cfg: ResidualTD3DexmgConfig):
     best_eval_success_rate = 0.0
     training_cum_time = 0.0
     episode_count = 0
+    # Successes of the last SUCCESS_WINDOW online (training) episodes: the rollouts' success rate
+    recent_successes: deque[bool] = deque(maxlen=SUCCESS_WINDOW)
 
     train_start_time = time.time()
 
@@ -868,7 +955,7 @@ def main(cfg: ResidualTD3DexmgConfig):
         agent, online_rb, offline_rb, cfg, device, training_timer, online_batch_size, offline_batch_size
     ):
         """Run critic-only updates for warmup phase."""
-        for i in range(cfg.algo.critic_warmup_steps):
+        for i in tqdm(range(cfg.algo.critic_warmup_steps), desc="Critic warm-up", unit="update", dynamic_ncols=True):
             # Sample mixed online/offline batch
             with training_timer.time("batch_sampling"):
                 # Sample batches from replay buffers
@@ -913,7 +1000,7 @@ def main(cfg: ResidualTD3DexmgConfig):
 
             # Progress logging
             if i % 100 == 0:
-                print(
+                tqdm.write(
                     f"Critic warmup: {i} / {cfg.algo.critic_warmup_steps}, "
                     f"train/critic_qt={metrics['train/critic_qt']:.4f} "
                     f"train/critic_loss={metrics['train/critic_loss']:.4f}"
@@ -936,6 +1023,8 @@ def main(cfg: ResidualTD3DexmgConfig):
         )
         print("Critic warmup completed.")
 
+    rl_bar = tqdm(total=cfg.algo.total_timesteps, initial=global_step, unit="step", desc="Online RL",
+                  dynamic_ncols=True)
     while global_step <= cfg.algo.total_timesteps:
         iter_start = time.time()
         # ------------------------------------------------------------------
@@ -964,11 +1053,17 @@ def main(cfg: ResidualTD3DexmgConfig):
             episode_rewards = reward.cpu().numpy()[episode_indices]
             episode_return = np.mean(discount_factor * episode_rewards)
 
+            # An episode succeeded if it terminated with reward 1 (the env's success), not by the time limit
+            for i in torch.where(done)[0].tolist():
+                recent_successes.append(bool(terminated[i]) and float(reward[i]) == 1.0)
+
             wandb.log(
                 {
                     "training/episode_return": episode_return,
                     "training/episode_steps": episode_steps,
                     "training/episode_count": episode_count,
+                    # Mean over the last SUCCESS_WINDOW episodes, or over all of them while fewer
+                    f"training/success_rate_last{SUCCESS_WINDOW}": float(np.mean(recent_successes)),
                 },
                 step=global_step,
             )
@@ -1007,15 +1102,22 @@ def main(cfg: ResidualTD3DexmgConfig):
                     save_q_plots=cfg.save_video,  # Enable Q-plots when video saving is enabled
                     run_name=run_name,
                     output_dir=outputs_dir,
+                    upload_video=cfg.upload_video,
                 )
 
-                # Handle model saving when success rate improves
+                # Save the latest agent, and the best one when the success rate improves
+                save_agent("latest", eval_metrics)
                 current_success_rate = eval_metrics["eval/success_rate"]
                 if current_success_rate > best_eval_success_rate:
                     print(f"🎉 New best success rate: {current_success_rate:.4f} (prev: {best_eval_success_rate:.4f})")
                     best_eval_success_rate = current_success_rate
+                    save_agent("best", eval_metrics)
 
         global_step += cfg.num_envs
+        rl_bar.update(cfg.num_envs)
+        if recent_successes:
+            rl_bar.set_postfix({f"success_last{SUCCESS_WINDOW}": f"{np.mean(recent_successes):.2f}",
+                                "best_eval": f"{best_eval_success_rate:.2f}"}, refresh=False)
 
         # ------------------------------------------------------------------
         # (4) Updates -------------------------------------------------------
@@ -1157,6 +1259,9 @@ def main(cfg: ResidualTD3DexmgConfig):
             if residual_l1_magnitude is not None and residual_l2_magnitude is not None:
                 print_msg += f" residual_l1={residual_l1_magnitude:.4f} residual_l2={residual_l2_magnitude:.4f}"
 
+            if recent_successes:
+                print_msg += f" success_last{SUCCESS_WINDOW}={np.mean(recent_successes):.2f}"
+
             # Add gradient norms to print statement
             if "train/actor_grad_norm" in metrics:
                 print_msg += f" actor_grad_norm={metrics['train/actor_grad_norm']:.4f}"
@@ -1175,21 +1280,18 @@ def main(cfg: ResidualTD3DexmgConfig):
                     f" | Time%: env={env_pct:.1f} grad={grad_pct:.1f} batch={batch_pct:.1f} eval={eval_pct:.1f}"
                 )
 
-            print(print_msg)
+            tqdm.write(print_msg)
 
     print(f"Training finished in {time.time() - train_start_time:.2f} seconds.")
 
-    # Clean up entire run directory after successful completion (videos/logs are saved to wandb)
-    if run_cache_dir.exists():
-        print(f"Cleaning up run directory: {run_cache_dir}")
-        shutil.rmtree(run_cache_dir)
-        print("Run directory cleaned up successfully.")
+    rl_bar.close()
+    print(f"Best evaluation success rate {best_eval_success_rate:.3f}. Run folder (kept): {run_cache_dir}")
 
 
 # -----------------------------------------------------------------------------
 # Hydra entry point -----------------------------------------------------------
 # -----------------------------------------------------------------------------
-@hydra.main(version_base=None, config_name="residual_td3_dexmg_config")
+@hydra.main(version_base=None, config_name="residual_td3_pick_place_config")
 def hydra_entry(cfg: ResidualTD3DexmgConfig):
     cfg_conf = OmegaConf.structured(cfg)
     main(cfg_conf)

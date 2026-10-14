@@ -16,8 +16,7 @@ import gymnasium as gym
 import numpy as np
 import torch
 
-from resfit.dexmg.environments.dexmg import VectorizedEnvWrapper
-from resfit.lerobot.policies.act.modeling_act import ACTPolicy
+from resfit.pick_place.vec_env import VectorizedEnvWrapper
 
 
 class BasePolicyVecEnvWrapper:
@@ -37,14 +36,16 @@ class BasePolicyVecEnvWrapper:
     def __init__(
         self,
         vec_env: VectorizedEnvWrapper,
-        base_policy: ACTPolicy,
+        base_policy,
         action_scaler,
         state_standardizer,
     ):
         """
         Args:
             vec_env: Vectorized environment from create_vectorized_env
-            base_policy: Base policy (e.g., ACTPolicy) to augment with residual actions
+            base_policy: Base policy (a train_bc.py policy, e.g. flow matching) to augment with residual
+                actions; select_action(obs) returns one action per env, reset(env_ids) clears the
+                given envs' observation history and action queue
             action_scaler: ActionScaler object for scaling/unscaling actions (REQUIRED)
             state_standardizer: StateStandardizer object for standardizing states (REQUIRED)
         """
@@ -144,16 +145,20 @@ class BasePolicyVecEnvWrapper:
         # Store the scaled action for replay buffer (already computed above)
         info["scaled_action"] = combined_naction
 
+        # A new episode starts in every env that terminated (success) or was truncated (time limit),
+        # and raw_obs already shows its first frame (same-step autoreset): clear these envs'
+        # base-policy history and action queue first, so their next base action comes from the new
+        # episode. (ResFiT reset after the next action, and on termination only.)
+        ended = terminated | truncated
+        if ended.any():
+            reset_ids = [int(i) for i in torch.where(ended)[0]]
+            self.base_policy.reset(env_ids=reset_ids)
+
         # Get next base action from the base policy
         with torch.no_grad():
             base_action = self.base_policy.select_action(raw_obs)
 
         base_naction = self.action_scaler.scale(base_action)
-
-        # Handle policy reset for terminated environments
-        if terminated.any():
-            reset_ids = torch.where(terminated)[0]
-            self.base_policy.reset(env_ids=reset_ids)
 
         # Augment observations with base action and apply state standardization
         augmented_obs = self._augment_obs(raw_obs, base_naction)
@@ -184,6 +189,9 @@ class BasePolicyVecEnvWrapper:
 
         for final_obs_dict in info["final_obs"]:
             if final_obs_dict is not None and "observation.state" in final_obs_dict:
+                # Standardized like every other observation's state (ResFiT stored it raw)
+                state = torch.as_tensor(final_obs_dict["observation.state"], device=device, dtype=torch.float32)
+                final_obs_dict["observation.state"] = self.state_standardizer.standardize(state)
                 # Pad with zeros (no action taken at terminal state)
                 final_obs_dict["observation.base_action"] = torch.zeros(
                     self.action_dim, device=device, dtype=torch.float32

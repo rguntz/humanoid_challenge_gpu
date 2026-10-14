@@ -25,6 +25,6 @@ BATCH_SIZE=64 \
 OPTIMIZER=policy \
 GRAD_CLIP_NORM=10 \
 EMA=0 \
-STEPS=30000 \
-EVAL_FREQ=5000 \
+STEPS=100000 \
+EVAL_FREQ=10000 \
 bash "$(dirname "${BASH_SOURCE[0]}")/train_bc.sh"

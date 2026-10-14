@@ -14,6 +14,9 @@ from resfit.rl_finetuning.config.rlpd import ActorConfig, QAgentConfig, RLPDAlgo
 @dataclass
 class OfflineDataConfig:
     name: str = "ankile/robomimic-mh-can-image"
+    # A local LeRobot dataset folder (read instead of the Hugging Face Hub when set). For the
+    # pick-and-place task it also defines the env (action mode and scene, vec_env.py).
+    root: str | None = None
     num_episodes: int | None = 300
     # Offline data action labeling options
     use_base_policy_for_base_actions: bool = True
@@ -35,6 +38,9 @@ class WandBConfig:
 
 @dataclass
 class BasePolicyConfig:
+    # A local policy folder (a train_bc.py checkpoint's policy/, e.g.
+    # outputs/resfit_bc/<run>/best/policy), used instead of the W&B artifact when set.
+    path: str | None = None
     wandb_id: str = "TODO"
     wt_type: str = "best"
     wt_version: str = "latest"
@@ -122,6 +128,22 @@ class ResidualTD3DexmgConfig(RLPDDexmgConfig):
 
     # Whether to run an evaluation pass before training begins (at step 0)
     eval_first: bool = True
+
+    # Where the run folder (checkpoints, evaluation videos, Q plots) is written, and whether the
+    # evaluation videos are also uploaded to W&B (they are always kept locally).
+    output_root: str = "outputs/resfit_residual"
+    upload_video: bool = False
+
+    # Debug mode: only run the base policy in the training env (zero residual, no noise, nothing
+    # trained, collected or saved) for inference_only_episodes episodes, logging the success rate of
+    # the last 50 (it should converge to the base checkpoint's evaluation score).
+    inference_only: bool = False
+    inference_only_episodes: int = 200
+
+    # Save the warm-up's online replay buffer to CACHE_DIR and reload it in later runs with the same
+    # settings. Off: the dump writes the buffer's whole preallocated storage (buffer_size
+    # transitions: ~37 GB with two 128x128 cameras), for ~10 minutes of collection saved.
+    cache_online_buffer: bool = False
 
 
 @dataclass
@@ -267,7 +289,37 @@ class ResidualTD3TwoArmCanSortConfig(ResidualTD3BoxCleanConfig):
 # -----------------------------------------------------------------------------
 # Register with Hydra
 # -----------------------------------------------------------------------------
+@dataclass
+class ResidualTD3PickPlaceConfig(ResidualTD3DexmgConfig):
+    """The bottle pick-and-place task (resfit/pick_place/): the env, the offline transitions and the
+    action/state normalization all come from the local LeRobot dataset offline_data.root; the base
+    policy is a local train_bc.py checkpoint (base_policy.path, set by the launch script)."""
+
+    task: str = "PickPlaceBottle"
+    # Both cameras for the residual agent (the base policy picks its own from its config).
+    rl_camera: list[str] = field(
+        default_factory=lambda: ["observation.images.agentview", "observation.images.wrist"]
+    )
+    video_key: str = "observation.images.agentview"
+    eval_num_envs: int = 25
+    eval_num_episodes: int = 50
+
+    offline_data: OfflineDataConfig = field(
+        default_factory=lambda: OfflineDataConfig(
+            # Episodes end at the demo's first success: the offline transitions reward the last frame.
+            name="local/pick_place_bottle_absolute_6d",
+            root="videos/task/dataset_sim/lerobot/pick_place_bottle_absolute_6d",
+            num_episodes=59,
+        )
+    )
+
+    base_policy: BasePolicyConfig = field(default_factory=BasePolicyConfig)
+
+    wandb: WandBConfig = field(default_factory=lambda: WandBConfig(project="pick-place-residual-td3"))
+
+
 cs = ConfigStore.instance()
+cs.store(name="residual_td3_pick_place_config", node=ResidualTD3PickPlaceConfig)
 cs.store(name="residual_td3_dexmg_config", node=ResidualTD3DexmgConfig)
 cs.store(name="residual_td3_can_config", node=ResidualTD3CanConfig)
 cs.store(name="residual_td3_square_config", node=ResidualTD3SquareConfig)

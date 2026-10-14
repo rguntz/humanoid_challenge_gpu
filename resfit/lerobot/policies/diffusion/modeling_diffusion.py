@@ -268,7 +268,7 @@ class DiffusionModel(nn.Module):
             dt = 1.0 / self.num_inference_steps
             for i in range(self.num_inference_steps):
                 t = torch.full(sample.shape[:1], i * dt, dtype=dtype, device=device)
-                sample = sample + dt * self.unet(sample, t, global_cond=global_cond)
+                sample = sample + dt * self.unet(sample, t * self.config.flow_time_scale, global_cond=global_cond)
             if self.config.clip_sample:
                 sample = sample.clamp(-self.config.clip_sample_range, self.config.clip_sample_range)
             return sample
@@ -392,7 +392,7 @@ class DiffusionModel(nn.Module):
             loss = F.mse_loss(self._regress(batch["action"].shape[0], global_cond), batch["action"], reduction="none")
             if self.config.do_mask_loss_for_padding:
                 loss = loss * ~batch["action_is_pad"].unsqueeze(-1)
-            return loss.mean()
+            return self._reduce_loss(loss, batch)
 
         if self.config.objective == "flow_matching":
             # Velocity of the straight path from noise (t = 0) to the actions (t = 1).
@@ -400,11 +400,11 @@ class DiffusionModel(nn.Module):
             noise = torch.randn(actions.shape, device=actions.device)
             t = torch.rand(actions.shape[0], device=actions.device)
             x_t = (1.0 - t[:, None, None]) * noise + t[:, None, None] * actions
-            pred = self.unet(x_t, t, global_cond=global_cond)
+            pred = self.unet(x_t, t * self.config.flow_time_scale, global_cond=global_cond)
             loss = F.mse_loss(pred, actions - noise, reduction="none")
             if self.config.do_mask_loss_for_padding:
                 loss = loss * ~batch["action_is_pad"].unsqueeze(-1)
-            return loss.mean()
+            return self._reduce_loss(loss, batch)
 
         # Forward diffusion.
         trajectory = batch["action"]
@@ -443,7 +443,17 @@ class DiffusionModel(nn.Module):
             in_episode_bound = ~batch["action_is_pad"]
             loss = loss * in_episode_bound.unsqueeze(-1)
 
-        return loss.mean()
+        return self._reduce_loss(loss, batch)
+
+    def _reduce_loss(self, loss: Tensor, batch: dict[str, Tensor]) -> Tensor:
+        """loss (B, horizon, action_dim) -> scalar. With config.max_padded_actions, only the samples
+        whose chunk has at most that many copy-padded actions (past the episode's end) count: the
+        mean over them of each sample's mean loss, as policy/'s mask_reference_region
+        (update_actor_bc with in_reference_region, masked_mean). Otherwise the plain mean."""
+        if self.config.max_padded_actions is None:
+            return loss.mean()
+        keep = (batch["action_is_pad"].sum(dim=1) <= self.config.max_padded_actions).to(loss.dtype)
+        return (loss.mean(dim=(1, 2)) * keep).sum() / keep.sum().clamp(min=1.0)
 
 
 class SpatialSoftmax(nn.Module):
@@ -534,6 +544,8 @@ class DiffusionRgbEncoder(nn.Module):
                 self.maybe_random_crop = self.center_crop
         else:
             self.do_crop = False
+        self.crop_shape = config.crop_shape
+        self.crop_per_sample = config.crop_per_sample and config.crop_is_random
 
         # Set up backbone.
         backbone_model = getattr(torchvision.models, config.vision_backbone)(weights=config.pretrained_backbone_weights)
@@ -565,6 +577,23 @@ class DiffusionRgbEncoder(nn.Module):
         self.feature_dim = config.spatial_softmax_num_keypoints * 2
         self.out = nn.Linear(config.spatial_softmax_num_keypoints * 2, self.feature_dim)
         self.relu = nn.ReLU()
+        if config.vision_init == "flax":
+            self._flax_init()
+        elif config.vision_init != "torchvision":
+            raise ValueError(f"vision_init must be 'torchvision' or 'flax', got {config.vision_init!r}")
+
+    def _flax_init(self):
+        """Re-initialize the encoder's convolutions and linear layer as policy/'s JAX encoder has
+        them (PlainResNet18Encoder: Flax's defaults): weights LeCun normal (truncated normal at 2
+        standard deviations, variance 1 / fan_in, Flax's lecun_normal), biases 0. GroupNorm stays
+        weight 1, bias 0, as in both. torchvision instead uses kaiming_normal_(mode="fan_out")."""
+        for m in self.modules():
+            if isinstance(m, (nn.Conv2d, nn.Linear)):
+                fan_in = m.weight[0].numel()  # in_channels * kernel_h * kernel_w (in_features for Linear)
+                std = (1.0 / fan_in) ** 0.5 / 0.87962566103423978  # Flax: std of the 2-sigma truncated normal
+                nn.init.trunc_normal_(m.weight, std=std, a=-2 * std, b=2 * std)
+                if m.bias is not None:
+                    nn.init.zeros_(m.bias)
 
     def forward(self, x: Tensor) -> Tensor:
         """
@@ -575,8 +604,10 @@ class DiffusionRgbEncoder(nn.Module):
         """
         # Preprocess: maybe crop (if it was set up in the __init__).
         if self.do_crop:
-            if self.training:
-                x = self.maybe_random_crop(x)
+            if self.training and self.crop_per_sample:
+                x = self._random_crop_per_image(x)
+            elif self.training:
+                x = self.maybe_random_crop(x)  # one offset for the whole batch (torchvision)
             else:
                 # Always use center crop for eval.
                 x = self.center_crop(x)
@@ -584,6 +615,19 @@ class DiffusionRgbEncoder(nn.Module):
         x = torch.flatten(self.pool(self.backbone(x)), start_dim=1)
         # Final linear layer with non-linearity.
         return self.relu(self.out(x))
+
+    def _random_crop_per_image(self, x: Tensor) -> Tensor:
+        """Random crop with its own offset for every image of x (N, C, H, W): every sample and
+        every observation frame, as policy/'s crop_images (robomimic's CropRandomizer).
+        Offsets in [0, H - crop_h) and [0, W - crop_w), the last one excluded, as there."""
+        n, _, h, w = x.shape
+        ch, cw = self.crop_shape
+        oy = (torch.rand(n, device=x.device) * (h - ch)).long()
+        ox = (torch.rand(n, device=x.device) * (w - cw)).long()
+        rows = (oy[:, None] + torch.arange(ch, device=x.device))[:, :, None]  # (N, ch, 1)
+        cols = (ox[:, None] + torch.arange(cw, device=x.device))[:, None, :]  # (N, 1, cw)
+        idx = torch.arange(n, device=x.device)[:, None, None]
+        return x.permute(0, 2, 3, 1)[idx, rows, cols].permute(0, 3, 1, 2).contiguous()
 
 
 def _replace_submodules(

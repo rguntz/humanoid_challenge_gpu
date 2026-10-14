@@ -28,10 +28,14 @@ GRAD_CLIP_NORM="${GRAD_CLIP_NORM:-10}"         # 0: no clipping
 EMA="${EMA:-0}"                         # 1: evaluate and save an EMA of the weights (warmup up to 0.9999)
 NUM_WORKERS="${NUM_WORKERS:-12}"             # data loading processes: 12 give a batch every ~50 ms, faster than
                                      # a training step; each costs ~1 GB of RAM (too many: oomd kills the session)
+IMAGE_NORM="${IMAGE_NORM:-mean_std}"         # mean_std (each channel's dataset mean/std) | minus_one_one (x*2-1, as policy/)
+COLOR_JITTER="${COLOR_JITTER:-1}"           # LeRobot's colour jitter augmentation: 1 on, 0 off (policy/ has none)
 RANDOM_SHIFT="${RANDOM_SHIFT:-0}"           # random image shift augmentation, in pixels (0: off; 4 is usual)
 PRECISION="${PRECISION:-bf16}"             # bf16 (mixed precision, ~1.6-1.9x faster) | fp32
 EVAL_FREQ="${EVAL_FREQ:-10000}"            # evaluate, save latest/ (and best/ if better) every N steps
 EVAL_EPISODES="${EVAL_EPISODES:-64}"           # episodes per evaluation (multiple of EVAL_NUM_ENVS)
+SAVE_EVERY_EVAL="${SAVE_EVERY_EVAL:-0}"      # 1: keep the evaluated policy of every evaluation (checkpoints/step_<N>/)
+EVAL_LAYOUTS="${EVAL_LAYOUTS:-fixed}"        # fixed (same start states every evaluation) | fresh (new ones each time, as policy/)
 EVAL_NUM_ENVS="${EVAL_NUM_ENVS:-16}"           # simulators run in parallel during evaluation
 SEED="${SEED:-0}"
 WANDB_PROJECT="${WANDB_PROJECT:-pick-place-bc}"
@@ -47,7 +51,9 @@ cd "$REPO"
 
 export CUDA_VISIBLE_DEVICES="$GPU"
 export MUJOCO_GL=egl
-export MUJOCO_EGL_DEVICE_ID="$GPU"   # EGL counts every GPU, regardless of CUDA_VISIBLE_DEVICES
+# EGL numbers the GPUs in its own order (not $GPU's): find the one that is this GPU
+MUJOCO_EGL_DEVICE_ID="$(uv run python resfit/pick_place/egl_device.py)"
+export MUJOCO_EGL_DEVICE_ID
 
 ARGS=(--steps "$STEPS")
 if [[ -n "$RESUME" ]]; then
@@ -58,6 +64,8 @@ else
         --policy "$POLICY"
         --normalizer "$NORMALIZER"
         --precision "$PRECISION"
+        --image_norm "$IMAGE_NORM"
+        --color_jitter "$COLOR_JITTER"
         --random_shift "$RANDOM_SHIFT"
         --chunk_size "$CHUNK_SIZE"
         --n_action_steps "$N_ACTION_STEPS"
@@ -69,6 +77,8 @@ else
         --eval_freq "$EVAL_FREQ"
         --eval_episodes "$EVAL_EPISODES"
         --eval_num_envs "$EVAL_NUM_ENVS"
+        --eval_layouts "$EVAL_LAYOUTS"
+        --save_every_eval "$SAVE_EVERY_EVAL"
         --seed "$SEED"
         --wandb_project "$WANDB_PROJECT"
     )

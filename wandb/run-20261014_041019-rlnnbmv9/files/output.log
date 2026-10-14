@@ -1,0 +1,125 @@
+Run folder: outputs/resfit_residual/2026-10-14_04-10-18__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0
+Critic warmup: running 10000 critic-only updates...
+                                                                                                                                                                                          
+Critic warmup: 0 / 10000, train/critic_qt=-0.4115 train/critic_loss=0.3538
+Critic warmup: 100 / 10000, train/critic_qt=-0.3475 train/critic_loss=0.0911
+Critic warmup: 200 / 10000, train/critic_qt=-0.2128 train/critic_loss=0.0288
+Critic warmup: 300 / 10000, train/critic_qt=-0.2361 train/critic_loss=0.0119
+Critic warmup: 400 / 10000, train/critic_qt=-0.2438 train/critic_loss=0.0061
+Critic warmup: 500 / 10000, train/critic_qt=-0.1812 train/critic_loss=0.0079
+Critic warmup: 600 / 10000, train/critic_qt=-0.2328 train/critic_loss=0.0025
+Critic warmup: 700 / 10000, train/critic_qt=-0.1923 train/critic_loss=0.0041
+Critic warmup: 800 / 10000, train/critic_qt=-0.1686 train/critic_loss=0.0103
+Critic warmup: 900 / 10000, train/critic_qt=-0.1652 train/critic_loss=0.0045
+Critic warmup: 1000 / 10000, train/critic_qt=-0.1543 train/critic_loss=0.0074
+Critic warmup: 1100 / 10000, train/critic_qt=-0.1772 train/critic_loss=0.0023
+Critic warmup: 1200 / 10000, train/critic_qt=-0.1464 train/critic_loss=0.0020
+Critic warmup: 1300 / 10000, train/critic_qt=-0.1444 train/critic_loss=0.0021
+Critic warmup: 1400 / 10000, train/critic_qt=-0.1194 train/critic_loss=0.0026
+Critic warmup: 1500 / 10000, train/critic_qt=-0.1033 train/critic_loss=0.0027
+Critic warmup: 1600 / 10000, train/critic_qt=-0.0964 train/critic_loss=0.0024
+Critic warmup: 1700 / 10000, train/critic_qt=-0.0977 train/critic_loss=0.0023
+Critic warmup: 1800 / 10000, train/critic_qt=-0.0921 train/critic_loss=0.0026
+Critic warmup: 1900 / 10000, train/critic_qt=-0.0547 train/critic_loss=0.0016
+Critic warmup: 2000 / 10000, train/critic_qt=-0.0297 train/critic_loss=0.0027
+Critic warmup: 2100 / 10000, train/critic_qt=-0.0562 train/critic_loss=0.0022
+Critic warmup: 2200 / 10000, train/critic_qt=-0.0397 train/critic_loss=0.0016
+Critic warmup: 2300 / 10000, train/critic_qt=-0.0290 train/critic_loss=0.0021
+Critic warmup: 2400 / 10000, train/critic_qt=-0.0267 train/critic_loss=0.0022
+Critic warmup: 2500 / 10000, train/critic_qt=-0.0221 train/critic_loss=0.0018
+Critic warmup: 2600 / 10000, train/critic_qt=0.0029 train/critic_loss=0.0016
+Critic warmup: 2700 / 10000, train/critic_qt=-0.0184 train/critic_loss=0.0012
+Critic warmup: 2800 / 10000, train/critic_qt=0.0226 train/critic_loss=0.0014
+Critic warmup: 2900 / 10000, train/critic_qt=0.0394 train/critic_loss=0.0023
+Critic warmup: 3000 / 10000, train/critic_qt=0.0144 train/critic_loss=0.0013
+Critic warmup: 3100 / 10000, train/critic_qt=0.0359 train/critic_loss=0.0011
+Critic warmup: 3200 / 10000, train/critic_qt=0.0500 train/critic_loss=0.0009
+Critic warmup: 3300 / 10000, train/critic_qt=0.0679 train/critic_loss=0.0009
+Critic warmup: 3400 / 10000, train/critic_qt=0.0974 train/critic_loss=0.0013
+Critic warmup: 3500 / 10000, train/critic_qt=0.0799 train/critic_loss=0.0012
+Critic warmup: 3600 / 10000, train/critic_qt=0.0333 train/critic_loss=0.0011
+Critic warmup: 3700 / 10000, train/critic_qt=0.0418 train/critic_loss=0.0010
+Critic warmup: 3800 / 10000, train/critic_qt=0.1091 train/critic_loss=0.0013
+Critic warmup: 3900 / 10000, train/critic_qt=0.1260 train/critic_loss=0.0010
+Critic warmup: 4000 / 10000, train/critic_qt=0.1390 train/critic_loss=0.0009
+Critic warmup: 4100 / 10000, train/critic_qt=0.0867 train/critic_loss=0.0015
+Critic warmup: 4200 / 10000, train/critic_qt=0.0959 train/critic_loss=0.0011
+Critic warmup: 4300 / 10000, train/critic_qt=0.1097 train/critic_loss=0.0010
+Critic warmup: 4400 / 10000, train/critic_qt=0.1228 train/critic_loss=0.0014
+Critic warmup: 4500 / 10000, train/critic_qt=0.1619 train/critic_loss=0.0018
+Critic warmup: 4600 / 10000, train/critic_qt=0.0871 train/critic_loss=0.0013
+Critic warmup: 4700 / 10000, train/critic_qt=0.1365 train/critic_loss=0.0013
+Critic warmup: 4800 / 10000, train/critic_qt=0.0993 train/critic_loss=0.0015
+Critic warmup: 4900 / 10000, train/critic_qt=0.1415 train/critic_loss=0.0019
+Critic warmup: 5000 / 10000, train/critic_qt=0.1410 train/critic_loss=0.0014
+Critic warmup: 5100 / 10000, train/critic_qt=0.1657 train/critic_loss=0.0017
+Critic warmup: 5200 / 10000, train/critic_qt=0.1596 train/critic_loss=0.0013
+Critic warmup: 5300 / 10000, train/critic_qt=0.1733 train/critic_loss=0.0013
+Critic warmup: 5400 / 10000, train/critic_qt=0.1788 train/critic_loss=0.0015
+Critic warmup: 5500 / 10000, train/critic_qt=0.1673 train/critic_loss=0.0013
+Critic warmup: 5600 / 10000, train/critic_qt=0.1884 train/critic_loss=0.0017
+Critic warmup: 5700 / 10000, train/critic_qt=0.1747 train/critic_loss=0.0015
+Critic warmup: 5800 / 10000, train/critic_qt=0.1691 train/critic_loss=0.0013
+Critic warmup: 5900 / 10000, train/critic_qt=0.1924 train/critic_loss=0.0023
+Critic warmup: 6000 / 10000, train/critic_qt=0.1871 train/critic_loss=0.0010
+Critic warmup: 6100 / 10000, train/critic_qt=0.1617 train/critic_loss=0.0018
+Critic warmup: 6200 / 10000, train/critic_qt=0.1962 train/critic_loss=0.0014
+Critic warmup: 6300 / 10000, train/critic_qt=0.1885 train/critic_loss=0.0016
+Critic warmup: 6400 / 10000, train/critic_qt=0.1981 train/critic_loss=0.0014
+Critic warmup: 6500 / 10000, train/critic_qt=0.1837 train/critic_loss=0.0012
+Critic warmup: 6600 / 10000, train/critic_qt=0.1726 train/critic_loss=0.0011
+Critic warmup: 6700 / 10000, train/critic_qt=0.1811 train/critic_loss=0.0013
+Critic warmup: 6800 / 10000, train/critic_qt=0.1842 train/critic_loss=0.0017
+Critic warmup: 6900 / 10000, train/critic_qt=0.2091 train/critic_loss=0.0012
+Critic warmup: 7000 / 10000, train/critic_qt=0.2152 train/critic_loss=0.0012
+Critic warmup: 7100 / 10000, train/critic_qt=0.2263 train/critic_loss=0.0021
+Critic warmup: 7200 / 10000, train/critic_qt=0.1996 train/critic_loss=0.0011
+Critic warmup: 7300 / 10000, train/critic_qt=0.2194 train/critic_loss=0.0014
+Critic warmup: 7400 / 10000, train/critic_qt=0.2381 train/critic_loss=0.0015
+Critic warmup: 7500 / 10000, train/critic_qt=0.2184 train/critic_loss=0.0014
+Critic warmup: 7600 / 10000, train/critic_qt=0.2432 train/critic_loss=0.0017
+Critic warmup: 7700 / 10000, train/critic_qt=0.2237 train/critic_loss=0.0012
+Critic warmup: 7800 / 10000, train/critic_qt=0.2108 train/critic_loss=0.0010
+Critic warmup: 7900 / 10000, train/critic_qt=0.2160 train/critic_loss=0.0009
+Critic warmup: 8000 / 10000, train/critic_qt=0.2404 train/critic_loss=0.0014
+Critic warmup: 8100 / 10000, train/critic_qt=0.2186 train/critic_loss=0.0012
+Critic warmup: 8200 / 10000, train/critic_qt=0.2179 train/critic_loss=0.0018
+Critic warmup: 8300 / 10000, train/critic_qt=0.2280 train/critic_loss=0.0008
+Critic warmup: 8400 / 10000, train/critic_qt=0.2403 train/critic_loss=0.0013
+Critic warmup: 8500 / 10000, train/critic_qt=0.2354 train/critic_loss=0.0010
+Critic warmup: 8600 / 10000, train/critic_qt=0.2227 train/critic_loss=0.0013
+Critic warmup: 8700 / 10000, train/critic_qt=0.2046 train/critic_loss=0.0011
+Critic warmup: 8800 / 10000, train/critic_qt=0.2370 train/critic_loss=0.0011
+Critic warmup: 8900 / 10000, train/critic_qt=0.2273 train/critic_loss=0.0006
+Critic warmup: 9000 / 10000, train/critic_qt=0.2157 train/critic_loss=0.0009
+Critic warmup: 9100 / 10000, train/critic_qt=0.2388 train/critic_loss=0.0008
+Critic warmup: 9200 / 10000, train/critic_qt=0.2361 train/critic_loss=0.0011
+Critic warmup: 9300 / 10000, train/critic_qt=0.2367 train/critic_loss=0.0012
+Critic warmup: 9400 / 10000, train/critic_qt=0.2265 train/critic_loss=0.0008
+Critic warmup: 9500 / 10000, train/critic_qt=0.2191 train/critic_loss=0.0010
+Critic warmup: 9600 / 10000, train/critic_qt=0.2523 train/critic_loss=0.0006
+Critic warmup: 9700 / 10000, train/critic_qt=0.2786 train/critic_loss=0.0008
+Critic warmup: 9800 / 10000, train/critic_qt=0.2299 train/critic_loss=0.0008
+Critic warmup: 9900 / 10000, train/critic_qt=0.2394 train/critic_loss=0.0008
+Critic warmup completed.
+Online RL:   0%|                                                                                                                                             | 0/300000 [00:00<?, ?step/s]Error executing job with overrides: ['base_policy.path=outputs/resfit_bc/2026-10-13_18-47-18_flow_matching_6d_agentview_To2_Ta16_h8_ema_legacyopt_jaxmatch_fullep_cropps_nojitter_fp32/checkpoints/step_0040000/policy', 'offline_data.name=local/pick_place_bottle_absolute_6d', 'offline_data.root=videos/task/dataset_sim/lerobot/pick_place_bottle_absolute_6d', 'algo.total_timesteps=300000', 'eval_interval_every_steps=10000', 'eval_num_episodes=50', 'eval_num_envs=25', 'agent.actor.action_scale=0.1', 'seed=0', 'wandb.project=pick-place-residual-td3', 'wandb.mode=online', 'inference_only=false', 'inference_only_episodes=200']
+Evaluating 50 episodes: ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✗✗✗✗✗✗✗✗✗✗✗✗✗✗✓✓✗✓✓✗✓✓✗✗✗✓✗✓✗✗✗✗✗✗✗✗Done
+Traceback (most recent call last):
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/scripts/train_residual_td3.py", line 1293, in hydra_entry
+    main(cfg_conf)
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/scripts/train_residual_td3.py", line 1091, in main
+    eval_metrics = run_dexmg_evaluation(
+                   ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/utils/evaluate_dexmg.py", line 314, in run_dexmg_evaluation
+    _create_q_trajectory_plots(
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/utils/evaluate_dexmg.py", line 130, in _create_q_trajectory_plots
+    ax2.boxplot(box_data, labels=box_labels)
+  File "/home/romain/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/matplotlib/_api/deprecation.py", line 477, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/romain/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/matplotlib/__init__.py", line 1531, in inner
+    return func(
+           ^^^^^
+TypeError: Axes.boxplot() got an unexpected keyword argument 'labels'
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

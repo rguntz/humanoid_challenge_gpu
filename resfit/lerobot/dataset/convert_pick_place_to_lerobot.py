@@ -32,6 +32,10 @@ observation.environment_state feature as an input).
 Each episode ends on the demo's first success (bottle released in the container), as
 an env episode does: ResFiT rewards the last frame of each offline episode
 (reward = done), and the env rewards and ends an episode on its first success.
+--full-episodes keeps every frame of the demos instead, the frames after the first success
+included, as policy/ trains on them (behaviour cloning only: the last frame is then no
+longer the success, so not for ResFiT's offline rewards); meta/info.json then has
+"full_episodes": true.
 
 Checks, on the dataset as written (read back with LeRobotDataset):
   1. The actions turned back into the env's absolute targets (action_mode.to_env,
@@ -62,6 +66,8 @@ resfit/pick_place/make_dataset.py runs this conversion after writing its dataset
 this script alone to redo only the LeRobot datasets (all, or the given modes):
     uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py
     uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py --modes absolute_6d
+    uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py --full-episodes \
+        --name pick_place_bottle_full --modes absolute_6d
 The regenerated versions (resfit/pick_place/regenerate_dataset.py, which runs this conversion
 itself), e.g. the one that starts from a fixed home pose:
     uv run resfit/lerobot/dataset/convert_pick_place_to_lerobot.py \
@@ -143,6 +149,8 @@ def parse_args():
     p.add_argument("--name", default="pick_place_bottle", help="datasets are written as <name>_<mode>/")
     p.add_argument("--modes", nargs="+", default=list(ACTION_MODES), choices=ACTION_MODES,
                    help="action modes to write (default: all)")
+    p.add_argument("--full-episodes", action="store_true",
+                   help="keep the frames after each demo's first success (see the module docstring)")
     return p.parse_args()
 
 
@@ -150,7 +158,7 @@ def demo_names(f):
     return sorted(f["data"], key=lambda n: int(n.split("_")[1]))
 
 
-def convert(src, mode, out, repo_id):
+def convert(src, mode, out, repo_id, full_episodes=False):
     with h5py.File(src, "r") as f:
         names = demo_names(f)
         layout_rows = {n: i for i, n in enumerate(json.loads(f["layout"].attrs["demos"]))}
@@ -175,7 +183,8 @@ def convert(src, mode, out, repo_id):
             rewards = d["rewards"][:]
             if not (rewards > 0).any():
                 raise SystemExit(f"{name} never succeeds")
-            T = min(len(rewards), int(np.argmax(rewards > 0)) + 1 + STEPS_AFTER_SUCCESS)
+            T = len(rewards) if full_episodes else \
+                min(len(rewards), int(np.argmax(rewards > 0)) + 1 + STEPS_AFTER_SUCCESS)
             state = episode_state(d, T, mode)
             if mode == "joint":
                 actions = joint_actions(name, d, T)
@@ -193,6 +202,7 @@ def convert(src, mode, out, repo_id):
 
     ds.meta.info["action_mode"] = mode
     ds.meta.info["state_mode"] = STATE_MODES[mode]
+    ds.meta.info["full_episodes"] = full_episodes
     ds.meta.info["source"] = str(Path(src).resolve().relative_to(REPO))
     write_info(ds.meta.info, ds.root)
     (Path(out) / "meta" / "source_demos.json").write_text(json.dumps(sources, indent=1))
@@ -322,7 +332,7 @@ def check(src, out, repo_id):
         raise SystemExit("The decoded video frames do not match the source images.")
 
 
-def convert_all(src, out_dir, modes=ACTION_MODES, name_prefix="pick_place_bottle"):
+def convert_all(src, out_dir, modes=ACTION_MODES, name_prefix="pick_place_bottle", full_episodes=False):
     """Write and check one dataset per action mode (see the module docstring)."""
     for mode in modes:
         name = f"{name_prefix}_{mode}"
@@ -330,13 +340,13 @@ def convert_all(src, out_dir, modes=ACTION_MODES, name_prefix="pick_place_bottle
         print(f"=== {mode} actions -> {out}")
         if out.exists():
             shutil.rmtree(out)
-        convert(src, mode, out, repo_id)
+        convert(src, mode, out, repo_id, full_episodes)
         check(src, out, repo_id)
 
 
 def main():
     args = parse_args()
-    convert_all(args.src, args.out_dir, args.modes, args.name)
+    convert_all(args.src, args.out_dir, args.modes, args.name, args.full_episodes)
 
 
 if __name__ == "__main__":

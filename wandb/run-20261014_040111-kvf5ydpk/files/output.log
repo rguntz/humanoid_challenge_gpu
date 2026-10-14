@@ -1,0 +1,27 @@
+Run folder: outputs/resfit_residual/2026-10-14_04-01-11__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06__seed0
+Critic warmup: running 10000 critic-only updates...
+Critic warm-up:   0%|                                                                                                                                       | 0/10000 [00:00<?, ?update/s]
+Error executing job with overrides: ['base_policy.path=outputs/resfit_bc/2026-10-13_18-47-18_flow_matching_6d_agentview_To2_Ta16_h8_ema_legacyopt_jaxmatch_fullep_cropps_nojitter_fp32/checkpoints/step_0040000/policy', 'offline_data.name=local/pick_place_bottle_absolute_6d', 'offline_data.root=videos/task/dataset_sim/lerobot/pick_place_bottle_absolute_6d', 'algo.total_timesteps=300000', 'eval_interval_every_steps=10000', 'eval_num_episodes=50', 'eval_num_envs=25', 'agent.actor.action_scale=0.1', 'seed=0', 'wandb.project=pick-place-residual-td3', 'wandb.mode=online', 'inference_only=false', 'inference_only_episodes=200']
+Traceback (most recent call last):
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/scripts/train_residual_td3.py", line 1290, in hydra_entry
+    main(cfg_conf)
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/scripts/train_residual_td3.py", line 1007, in main
+    _run_critic_warmup(
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/scripts/train_residual_td3.py", line 969, in _run_critic_warmup
+    metrics = agent.update(batch, stddev=0.0, update_actor=False, bc_batch=None, ref_agent=agent)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/off_policy/rl/q_agent.py", line 616, in update
+    obs["feat"] = self._encode(obs, augment=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/off_policy/rl/q_agent.py", line 234, in _encode
+    feat_cam = self.encoders[cam_idx].forward(data, flatten=False)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/off_policy/networks/encoder.py", line 33, in forward
+    feats: torch.Tensor = self.vit.forward(obs)
+                          ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/romain/Desktop/humanoid_challenge_gpu/resfit/rl_finetuning/off_policy/networks/min_vit.py", line 116, in forward
+    x = x + self.pos_embed
+        ~~^~~~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (225) must match the size of tensor b (81) at non-singleton dimension 1
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.

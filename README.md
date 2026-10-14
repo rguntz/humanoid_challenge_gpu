@@ -328,7 +328,7 @@ Key hyperparameters (all overridable on the CLI):
 (residual off-policy RL on top of a behaviour-cloning policy) to this task, in PyTorch
 with LeRobot. Its behaviour-cloning stage is ported: it trains a base policy on the
 LeRobot datasets and evaluates it in the same simulation as `policy/` (same env, same
-reset protocol). The residual RL stage is not ported yet. Nothing in `resfit/` imports
+reset protocol). The residual RL stage is ported too (see Residual RL below). Nothing in `resfit/` imports
 from `policy/`.
 
 ### Datasets
@@ -352,6 +352,7 @@ demo's first success.
 | `pick_place_bottle_home` | every episode starts from one home pose (the most central demo start); an approach from it to the demo's start is added | `regenerate_dataset.py --home` |
 | `pick_place_bottle_wristcanon` | every demo grasps with the gripper turned the same way (the demos grasp in two groups 180 deg apart about the gripper axis; 13 of 59 are turned) | `regenerate_dataset.py --canonical-wrist` |
 | `pick_place_bottle_home_wristcanon` | both | `regenerate_dataset.py --home --canonical-wrist` |
+| `pick_place_bottle_full` | the demos' full episodes: the frames after the first success are kept, as `policy/` trains on them (behaviour cloning only) | `convert_pick_place_to_lerobot.py --full-episodes --name pick_place_bottle_full` |
 
 ```sh
 uv run resfit/pick_place/regenerate_dataset.py --canonical-wrist                 # all action modes
@@ -409,10 +410,14 @@ bash resfit/lerobot/shell/train_bc_legacy_bc_absolute_6d.sh # a ready-made setup
 | `PRETRAINED` | | `smolvla`: checkpoint to start from (folder or Hugging Face id) |
 | `GRAD_CLIP_NORM` | 10 | 0: no clipping |
 | `EMA` | 0 | 1: evaluate and save an exponential moving average of the weights (decay up to 0.9999) |
+| `IMAGE_NORM` | `mean_std` | images before the vision encoder: each channel's dataset mean/std, or `minus_one_one` (x·2 − 1, as `policy/`) |
+| `COLOR_JITTER` | 1 | LeRobot's colour jitter (brightness, contrast, saturation, hue, sharpness); 0: off, as in `policy/` |
 | `RANDOM_SHIFT` | 0 | random image shift augmentation, in pixels (not for the Diffusion Policy family, which crops) |
 | `PRECISION` | `bf16` | bf16 mixed precision (~1.6-1.9x faster than `fp32` on an RTX 3090) |
 | `NUM_WORKERS` | 12 | data loading processes |
 | `EVAL_FREQ`, `EVAL_EPISODES` | 10000, 64 | evaluation in 16 simulators from fixed start states (`--eval_seed`) |
+| `EVAL_LAYOUTS` | `fixed` | `fixed`: every evaluation from the same start states (`--eval_seed`); `fresh`: new random ones each time, as `policy/` |
+| `SAVE_EVERY_EVAL` | 0 | 1: also keep the evaluated policy of every evaluation in `checkpoints/step_<N>/` (evaluate one with `CHECKPOINT=checkpoints/step_<N>` in `eval_bc.sh`) |
 | `RUN_NAME` | `<date>_<policy>_<dataset>` | W&B run and output folder |
 | `RESUME` | | a run folder to continue |
 | `EXTRA_ARGS` | | anything else, e.g. `--policy_kwargs dim_model=256` |
@@ -428,3 +433,64 @@ check `free -g` before starting several runs.
 Checks: `resfit/pick_place/check_vec_env.py` (the vectorized env against the datasets)
 and `resfit/pick_place/check_rollout_obs.py` (the simulator's observations against the
 dataset's along every replayed demo).
+
+### Evaluating a checkpoint
+
+```sh
+bash resfit/lerobot/shell/eval_bc.sh             # defaults: the SmolVLA unfrozen run's best/, demo layouts, on GPU 0
+RUN=outputs/resfit_bc/<run name> N_ACTION_STEPS="16 8 4" bash resfit/lerobot/shell/eval_bc.sh
+```
+
+Evaluates a saved checkpoint without training, at several execution horizons (actions
+executed from each predicted chunk before the policy is called again), with the same
+evaluation as during training (`train_bc.evaluate`, 25 simulators by default, start states fixed by the
+seed). It reads `<RUN>/<CHECKPOINT>/policy` and the run's dataset (for the env), and writes,
+in `<RUN>/evals_offline/`, one video per horizon (`<checkpoint>_n<N>_<layouts>_seed<seed>.mp4`,
+every episode, both cameras side by side), one line per horizon in `results.jsonl` (success
+rate, its standard error, success rate per round, i.e. each simulator's 1st, 2nd... episode,
+mean episode length) and one line per episode in `episodes.jsonl` (simulator, round, demo,
+success, length). Works for every policy `train_bc.py` saves.
+
+`LAYOUTS=demo` starts the episodes from the layouts of the recorded demos (simulator i, round
+r: demo i + r × `NUM_ENVS`) instead of random ones. High success there but not on random
+layouts points to overfitting; low success on both, to a mismatch between training and the
+simulator.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `GPU` | 0 | GPU for the policy and the rendering |
+| `RUN` | `outputs/resfit_bc/2026-10-12_16-17-59_smolvla_joint_agentview_chunk50_unfrozen` | run folder |
+| `CHECKPOINT` | `best` | `best` or `latest` |
+| `N_ACTION_STEPS` | `10` | execution horizons, each at most the run's chunk size |
+| `EPISODES` | 50 | per horizon, a multiple of `NUM_ENVS` (±6 points at 25 % success; 128: ±4) |
+| `NUM_ENVS` | 25 | simulators run in parallel (2 episodes each) |
+| `SEED` | 1000 | start states; 1000 is the training evaluations' (`--eval_seed`) |
+| `LAYOUTS` | `demo` | `random` or `demo` (the recorded demos' layouts, at most 59 episodes) |
+
+### Residual RL
+
+```sh
+bash resfit/rl_finetuning/shell/train_residual_td3.sh
+```
+
+ResFiT's residual TD3 (`resfit/rl_finetuning/scripts/train_residual_td3.py`) on top of a frozen
+`train_bc.py` policy: a small actor-critic sees both cameras, the state and the base policy's
+action, and adds a correction of at most `ACTION_SCALE` of each normalized action dimension. It
+trains in one simulator, on a mix of its own transitions and the demos' (`DATASET`, whose
+episodes end at the first success, which is rewarded), and evaluates in `EVAL_NUM_ENVS`
+simulators with the same number of episodes each. It writes `outputs/resfit_residual/<run name>/`:
+`models/best` and `models/latest` (the residual agent, `agent.pt`, and the evaluation that saved
+it), `outputs/` (an evaluation video of every episode and Q-value plots at each evaluation) and
+`config.json`; the replay-buffer caches go to `outputs/resfit_residual/cache/`. Videos stay local.
+
+| Setting | Default | Meaning |
+|---|---|---|
+| `GPU` | 1 | GPU for the agent, the base policy and the rendering |
+| `BASE_POLICY` | the flow-matching `..._jaxmatch_fullep_cropps_nojitter_fp32` run's `checkpoints/step_0040000/policy` (49 % on 100 fresh layouts) | a policy folder saved by `train_bc.py` |
+| `DATASET` | `pick_place_bottle_absolute_6d` | offline transitions, normalization, and the env's action mode and scene |
+| `TOTAL_STEPS` | 300000 | environment steps |
+| `EVAL_EVERY`, `EVAL_EPISODES`, `EVAL_NUM_ENVS` | 10000, 50, 25 | evaluation cadence and size |
+| `ACTION_SCALE` | 0.1 | largest residual per normalized action dimension |
+| `SEED`, `WANDB_PROJECT`, `WANDB_MODE` | 0, `pick-place-residual-td3`, `online` | |
+| `INFERENCE_ONLY`, `INFERENCE_EPISODES` | 0, 200 | 1: debug mode, only the base policy in the training rollout loop (zero residual, no noise, nothing trained or saved); `training/success_rate_last50` should converge to the base checkpoint's `eval_bc.sh` score |
+| `EXTRA_ARGS` | | other Hydra overrides of `ResidualTD3PickPlaceConfig` (`resfit/rl_finetuning/config/residual_td3.py`) |

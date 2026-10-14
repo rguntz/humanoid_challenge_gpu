@@ -9,13 +9,17 @@ starts from a checkpoint saved here.
 Every --eval_freq steps the policy is evaluated in --eval_num_envs simulators in
 parallel, over --eval_episodes episodes (each simulator runs the same number of
 episodes, from start states fixed by --eval_seed, so every evaluation sees the same
-episodes and their success rates can be compared). Then, in the run folder
+episodes and their success rates can be compared; with --eval_layouts fresh, new random
+start states at every evaluation instead, as policy/: an unbiased estimate of the success
+rate, not tied to one set of start states). Then, in the run folder
 (outputs/resfit_bc/<run name>/):
   latest/   always overwritten: policy/ (weights + config) and trainer_state.pt
             (step, optimizer, best success rate so far, W&B run id), to resume from
   best/     overwritten when the success rate beats the best so far: policy/ and
             eval.json (step, success rate). This is the checkpoint the residual RL
             starts from. Checkpoints stay local: nothing is uploaded to W&B.
+  checkpoints/step_<N>/  with --save_every_eval 1: the evaluated policy/ and eval.json of
+            every evaluation, never overwritten (to choose another checkpoint than best/)
   evals/    one video per evaluation, every episode with both cameras side by side
             (local only: no video is uploaded to W&B)
 --resume <run folder> continues a run from its latest/ (same W&B run, same step,
@@ -23,11 +27,12 @@ optimizer state and best success rate).
 
 --normalizer per_dim_range normalizes the state and the actions per dimension to
 [-1, 1], the formulation of the earlier JAX pipeline (resfit/pick_place/normalization.py);
-the default, mean_std, is LeRobot's (mean and standard deviation). Images always use
-mean_std.
+the default, mean_std, is LeRobot's (mean and standard deviation). Images use mean_std
+(each channel's mean and standard deviation over the dataset), or with --image_norm
+minus_one_one x * 2 - 1, as policy/ (not for SmolVLA, which scales its images itself).
 
 Image augmentation (training only): LeRobot's colour jitter (3 of brightness, contrast,
-saturation, hue, sharpness per sample), then, with --random_shift N > 0, a random shift
+saturation, hue, sharpness per sample; --color_jitter 0 turns it off, as policy/ has none), then, with --random_shift N > 0, a random shift
 of up to N pixels (edge-padded by N, cropped back to the original size at a random
 offset, independently per camera and per sample: DrQ's shift augmentation).
 
@@ -66,6 +71,7 @@ import math
 import json
 import logging
 import multiprocessing as mp
+import re
 import shutil
 import sys
 import time
@@ -131,6 +137,10 @@ def parse_args():
                    help="state and action normalization (see the module docstring)")
     p.add_argument("--precision", default="bf16", choices=["bf16", "fp32"],
                    help="training forward pass precision (see the module docstring)")
+    p.add_argument("--image_norm", default="mean_std", choices=["mean_std", "minus_one_one"],
+                   help="image normalization before the vision encoder (see the module docstring)")
+    p.add_argument("--color_jitter", type=int, default=1, choices=[0, 1],
+                   help="LeRobot's colour jitter augmentation (1: on; see the module docstring)")
     p.add_argument("--random_shift", type=int, default=0,
                    help="random image shift augmentation, in pixels (0: off; see the module docstring)")
     p.add_argument("--steps", type=int, default=100_000, help="total optimisation steps")
@@ -143,6 +153,11 @@ def parse_args():
     p.add_argument("--eval_episodes", type=int, default=64, help="episodes per evaluation")
     p.add_argument("--eval_num_envs", type=int, default=16, help="simulators run in parallel during evaluation")
     p.add_argument("--eval_seed", type=int, default=1000, help="seed of the evaluation start states")
+    p.add_argument("--save_every_eval", type=int, default=0, choices=[0, 1],
+                   help="1: also keep the evaluated policy of every evaluation, in checkpoints/step_<N>/")
+    p.add_argument("--eval_layouts", default="fixed", choices=["fixed", "fresh"],
+                   help="fixed: every evaluation from the same start states (--eval_seed); fresh: new "
+                        "random start states at every evaluation (seed --eval_seed + step), as policy/")
     p.add_argument("--run_name", default=None, help="run folder name (default: <date>_<policy>_<dataset>)")
     p.add_argument("--resume", default=None, help="run folder to continue (outputs/resfit_bc/<run name>)")
     p.add_argument("--wandb_project", default="pick-place-bc")
@@ -156,23 +171,30 @@ def parse_args():
     return args
 
 
+def _parse_value(value):
+    """'true'/'false' -> bool, then int, float, or the string itself."""
+    if value.lower() in ("true", "false"):
+        return value.lower() == "true"
+    for cast in (int, float):
+        try:
+            return cast(value)
+        except ValueError:
+            pass
+    return value
+
+
 def parse_policy_kwargs(text):
-    """'key=value key=value' -> dict, with ints, floats and booleans converted."""
+    """'key=value key=value' (or comma-separated) -> dict, with ints, floats and booleans
+    converted; a value in brackets is a tuple, e.g. 'down_dims=[512,1024,2048]'."""
     out = {}
-    for token in text.replace(",", " ").split():
+    for token in re.findall(r"[^\s,\[]+(?:\[[^\]]*\])?", text):
         key, _, value = token.partition("=")
         if not _:
             raise ValueError(f"--policy_kwargs: expected key=value, got '{token}'")
-        if value.lower() in ("true", "false"):
-            out[key] = value.lower() == "true"
+        if value.startswith("[") and value.endswith("]"):
+            out[key] = tuple(_parse_value(v) for v in value[1:-1].replace(",", " ").split())
         else:
-            try:
-                out[key] = int(value)
-            except ValueError:
-                try:
-                    out[key] = float(value)
-                except ValueError:
-                    out[key] = value
+            out[key] = _parse_value(value)
     return out
 
 
@@ -297,10 +319,12 @@ def _annotate(frame, text, success, font):
     return np.array(img)
 
 
-def evaluate(policy, env, episodes, seed, video_path, fps):
+def evaluate(policy, env, episodes, seed, video_path, fps, pbar=None, episode_log=None):
     """Run `episodes` episodes, the same number in every simulator, from start states
     fixed by `seed`. Returns the success rate and the mean episode length; writes every
-    counted episode to video_path."""
+    counted episode to video_path. pbar (a tqdm bar, optional) advances by one per episode;
+    episode_log (a list, optional) gets one dict per episode: env, round (the env's 0-based
+    episode number), success, length (frames)."""
     num_envs = env.num_envs
     per_env = episodes // num_envs
     was_training = policy.training
@@ -317,7 +341,8 @@ def evaluate(policy, env, episodes, seed, video_path, fps):
     while (done_count < per_env).any():
         with torch.inference_mode():
             action = policy.select_action(obs)
-        obs, reward, terminated, truncated, info = env.step(action)
+        # On the CPU: a CUDA tensor sent to the env processes would start CUDA in each (~0.5 GB)
+        obs, reward, terminated, truncated, info = env.step(action.float().cpu().numpy())
         # Same-step autoreset: the frame of an env whose episode just ended already
         # shows its next episode's start; it opens that episode's frames.
         rendered = env.render()
@@ -330,9 +355,14 @@ def evaluate(policy, env, episodes, seed, video_path, fps):
                 success = bool(terminated[i]) and float(reward[i]) == 1.0
                 successes += success
                 lengths.append(len(frames[i]))
+                if episode_log is not None:
+                    episode_log.append({"env": i, "round": int(done_count[i]), "success": success,
+                                        "length": len(frames[i])})
                 n = int(done_count.sum()) + 1
                 for f in frames[i]:
                     writer.append_data(_annotate(f, f"env {i} | episode {n}/{episodes}", success, font))
+                if pbar is not None:
+                    pbar.update(1)
             done_count[i] += 1
             frames[i] = [rendered[i]]
         policy.reset(env_ids=[int(i) for i in np.flatnonzero(ended)])
@@ -393,8 +423,17 @@ def main():
         policy_cfg.normalization_mapping = {**policy_cfg.normalization_mapping, "STATE": NormalizationMode.MIN_MAX,
                                             "ACTION": NormalizationMode.MIN_MAX}
         ds_meta.stats = per_dim_range_stats(ds_meta.stats, ds_meta.info["action_mode"])
+    if args.image_norm == "minus_one_one":
+        # x * 2 - 1, as policy/: LeRobot's MIN_MAX with min 0 and max 1 for every channel.
+        if policy_cfg.normalization_mapping.get("VISUAL") is not NormalizationMode.MEAN_STD:
+            raise SystemExit("--image_norm minus_one_one replaces a MEAN_STD image normalization "
+                             f"(this policy's: {policy_cfg.normalization_mapping.get('VISUAL')})")
+        policy_cfg.normalization_mapping = {**policy_cfg.normalization_mapping, "VISUAL": NormalizationMode.MIN_MAX}
+        for key in ds_meta.camera_keys:
+            ds_meta.stats[key] = {**ds_meta.stats[key], "min": np.zeros((3, 1, 1), np.float32),
+                                  "max": np.ones((3, 1, 1), np.float32)}
     delta_timestamps = resolve_delta_timestamps(policy_cfg, ds_meta)
-    image_transforms_cfg = ImageTransformsConfig(enable=True)
+    image_transforms_cfg = ImageTransformsConfig(enable=bool(args.color_jitter))
     # Frames and action chunks read from memory (see cached_dataset.py): same samples as
     # LeRobotDataset, without the per-sample video decoding that bottlenecked training.
     image_transforms = ImageTransforms(image_transforms_cfg)
@@ -498,7 +537,8 @@ def main():
 
         if step % args.eval_freq == 0 or step == args.steps:
             video_path = run_dir / "evals" / f"step_{step:07d}.mp4"
-            success_rate, mean_length, eval_s = evaluate(eval_policy, eval_env, args.eval_episodes, args.eval_seed,
+            eval_seed = args.eval_seed if args.eval_layouts == "fixed" else args.eval_seed + step
+            success_rate, mean_length, eval_s = evaluate(eval_policy, eval_env, args.eval_episodes, eval_seed,
                                                          video_path, eval_env.fps)
             improved = success_rate > best_success_rate
             if improved:
@@ -513,6 +553,10 @@ def main():
                 save_checkpoint(run_dir / "best", eval_policy,
                                 {"eval.json": {"step": step, "success_rate": success_rate}})
                 logger.info(colored(f"New best: saved {run_dir / 'best'}", "magenta"))
+            if args.save_every_eval:
+                # The evaluated policy (EMA weights with --ema), kept to choose another one later
+                save_checkpoint(run_dir / "checkpoints" / f"step_{step:07d}", eval_policy,
+                                {"eval.json": {"step": step, "success_rate": success_rate}})
 
     eval_env.close()
     wandb.finish()

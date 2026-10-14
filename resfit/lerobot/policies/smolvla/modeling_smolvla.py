@@ -1,7 +1,9 @@
 """SmolVLA (LeRobot's lerobot.common.policies.smolvla) for this repository's training script,
 evaluation and residual RL.
 
-LeRobot's SmolVLAPolicy, with four changes:
+LeRobot's SmolVLAPolicy, with five changes:
+  - All weights in fp32 (LeRobot keeps the language model and action expert in bf16, see
+    __init__).
   - select_action / reset(env_ids) keep one action queue per environment (LeRobot's has one
     queue for the whole batch and resets all of it), for vectorized envs whose episodes end
     at different steps; a new chunk is predicted for the environments whose queue is empty.
@@ -36,6 +38,14 @@ NORMALIZATION_PREFIXES = ("normalize_inputs.", "normalize_targets.", "unnormaliz
 class SmolVLAPolicy(LeRobotSmolVLAPolicy):
     config_class = SmolVLAConfig
     name = "smolvla"
+
+    def __init__(self, config: SmolVLAConfig, dataset_stats: dict | None = None):
+        super().__init__(config, dataset_stats)
+        # LeRobot builds the language model and the action expert in bf16 (their config's
+        # torch_dtype): AdamW would then update bf16 weights directly, losing every update
+        # under ~0.4 % of a weight. fp32 weights; train_bc's --precision bf16 still runs the
+        # forward pass in bf16 (autocast). Checkpoints are loaded into these fp32 weights.
+        self.float()
 
     def reset(self, env_ids: list[int] | None = None):
         """Clear the action queues of the given environments (all if None)."""

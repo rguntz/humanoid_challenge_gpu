@@ -13,7 +13,7 @@
 # every launch's name new. Other settings: see train_bc.sh.
 WANDB_PROJECT=pick-place-bc \
 RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_smolvla_6d_agentview_chunk50" \
-GPU=1 \
+GPU=2 \
 POLICY=smolvla \
 PRETRAINED=lerobot/smolvla_base \
 DATASET=pick_place_bottle \
@@ -26,6 +26,6 @@ BATCH_SIZE=64 \
 OPTIMIZER=policy \
 GRAD_CLIP_NORM=10 \
 EMA=0 \
-STEPS=30000 \
-EVAL_FREQ=5000 \
+STEPS=100000 \
+EVAL_FREQ=10000 \
 bash "$(dirname "${BASH_SOURCE[0]}")/train_bc.sh"

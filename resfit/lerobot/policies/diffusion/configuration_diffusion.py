@@ -71,6 +71,14 @@ class DiffusionConfig(PreTrainedConfig):
         vision_backbone: Name of the torchvision resnet backbone to use for encoding images.
         crop_shape: (H, W) shape to crop images to as a preprocessing step for the vision backbone. Must fit
             within the image size. If None, no cropping is done.
+        vision_init: Initial weights of the image encoder (ResNet18, spatial softmax, linear layer).
+            "torchvision" (default): torchvision's (kaiming_normal_, mode="fan_out"), as every run
+            before this option. "flax": policy/'s JAX encoder's (Flax defaults: LeCun normal,
+            truncated at 2 standard deviations, biases 0).
+        crop_per_sample: With crop_is_random, give every image its own random crop offset (every sample
+            and every observation frame, as policy/ and robomimic do) instead of torchvision's
+            RandomCrop, which crops the whole batch at one offset. False (default): the batch-wide
+            crop every run before this option used.
         crop_is_random: Whether the crop should be random at training time (it's always a center crop in eval
             mode).
         pretrained_backbone_weights: Pretrained weights from torchvision to initialize the backbone.
@@ -112,6 +120,11 @@ class DiffusionConfig(PreTrainedConfig):
             Unet: trained to predict the velocity (actions - noise) at x_t = (1 - t) noise + t actions,
             t ~ U(0, 1) given to the Unet as its timestep; sampled by Euler integration from noise,
             num_inference_steps steps from t = 0 to 1. The noise scheduler is unused.
+        flow_time_scale: "flow_matching": t is multiplied by this before the Unet's timestep
+            embedding. The embedding (sinusoidal, frequencies 1 to 1e-4) was made for the diffusion
+            objective's integer timesteps 0 .. num_train_timesteps - 1: with t in [0, 1], only a few
+            of its 128 values change with t. 100 gives t the diffusion timesteps' range. 1.0 (no
+            scaling) is what flow-matching checkpoints trained before it existed used.
             "mlp": no Unet: an MLP (mlp_hidden_dims) maps the observation features of the n_obs_steps
             frames (the Unet's global conditioning, flattened) to the action chunk, trained with an
             MSE loss, one pass to sample: the plain BC of the earlier JAX pipeline
@@ -120,6 +133,12 @@ class DiffusionConfig(PreTrainedConfig):
         actions_from_current_step: The predicted chunk starts at the current step (actions t ..
             t + horizon - 1), as in the earlier JAX pipeline, instead of n_obs_steps - 1 steps
             before it (Diffusion Policy's alignment, the default).
+        max_padded_actions: When set, a sample counts in the loss only if its action chunk has at most
+            this many copy-padded actions (past the episode's end); the loss is then the mean over
+            the counted samples of each one's mean loss. policy/'s BC uses execution_horizon - 1
+            (mask_reference_region, Diffusion Policy's own sampler rule): the samples starting in an
+            episode's last execution_horizon frames are left out, the others keep their padded
+            actions in the loss (with do_mask_loss_for_padding False). None (default): every sample.
         do_mask_loss_for_padding: Whether to mask the loss when there are copy-padded actions. See
             `LeRobotDataset` and `load_previous_and_future_frames` for more information. Note, this defaults
             to False as the original Diffusion Policy implementation does the same.
@@ -147,6 +166,8 @@ class DiffusionConfig(PreTrainedConfig):
     vision_backbone: str = "resnet18"
     crop_shape: tuple[int, int] | None = (240, 240)
     crop_is_random: bool = True
+    crop_per_sample: bool = False
+    vision_init: str = "torchvision"
     pretrained_backbone_weights: str | None = None
     use_group_norm: bool = True
     spatial_softmax_num_keypoints: int = 32
@@ -172,9 +193,11 @@ class DiffusionConfig(PreTrainedConfig):
 
     # Loss computation
     objective: str = "diffusion"
+    flow_time_scale: float = 1.0
     mlp_hidden_dims: tuple[int, ...] = (256, 256)
     actions_from_current_step: bool = False
     do_mask_loss_for_padding: bool = False
+    max_padded_actions: int | None = None
 
     # Training presets
     optimizer_lr: float = 1e-4
