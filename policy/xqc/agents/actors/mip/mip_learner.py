@@ -40,8 +40,24 @@ class MIPLearner(ChunkedPolicyLearner):
         norm_type: str = "l2",
         loss_scale: float = 100.0,
         target_mode: str = "approx",
+        # squash_actions/squash_scale: same as MFLearner (xqc/agents/actors/mf/
+        # mf_learner.py) - see MIP.squash_actions. squash_scale (needs
+        # squash_actions=True), computed per action dim on
+        # z = safe_arctanh(normalized action) over the whole dataset:
+        # "none" (s=1, mu=0); "rms": s_i = max(RMS(z_i), 1); "standardize":
+        # mu_i = mean(z_i), s_i = max(std(z_i), 1). The floor of 1 leaves dims
+        # arctanh doesn't inflate (and near-constant ones) unamplified.
+        squash_actions: bool = False,
+        squash_scale: str = "none",
         **kwargs: Any,
     ):
+        if squash_scale not in ("none", "rms", "standardize"):
+            raise ValueError(f"Unknown squash_scale {squash_scale!r}, expected 'none', 'rms' or 'standardize'")
+        if squash_scale != "none" and not squash_actions:
+            raise ValueError("squash_scale requires squash_actions=True")
+        # Read by _data_dependent_network_kwargs, which super().__init__
+        # calls once the dataset's action normalization is known.
+        self.squash_scale = squash_scale
         super().__init__(
             seed=seed,
             observations=observations,
@@ -59,6 +75,25 @@ class MIPLearner(ChunkedPolicyLearner):
                 norm_type=norm_type,
                 loss_scale=loss_scale,
                 target_mode=target_mode,
+                squash_actions=squash_actions,
             ),
             **kwargs,
         )
+
+    def _data_dependent_network_kwargs(self, network_extra_kwargs: dict, normalized_actions: np.ndarray) -> dict:
+        if self.squash_scale == "none":
+            return network_extra_kwargs
+        z = np.arctanh(np.clip(normalized_actions, -0.999, 0.999))  # same clip as safe_arctanh
+        if self.squash_scale == "rms":
+            scale = np.maximum(np.sqrt(np.mean(z ** 2, axis=0)), 1.0)
+            print(f"MIPLearner squash_scale='rms': scale={np.round(scale, 3).tolist()}")
+            return {**network_extra_kwargs, "squash_scale": tuple(float(s) for s in scale)}
+        offset = np.mean(z, axis=0)
+        scale = np.maximum(np.std(z, axis=0), 1.0)
+        print(f"MIPLearner squash_scale='standardize': offset={np.round(offset, 3).tolist()} "
+              f"scale={np.round(scale, 3).tolist()}")
+        return {
+            **network_extra_kwargs,
+            "squash_scale": tuple(float(s) for s in scale),
+            "squash_offset": tuple(float(m) for m in offset),
+        }

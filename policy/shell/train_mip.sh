@@ -26,12 +26,14 @@ SEED=0
 PRIOR_MSE=3.0  # coefficient of the live-vs-prior MIP MSE (0 = off)
 POLICY_DELAY=3  # actor step every POLICY_DELAY critic steps (online)
 
-RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_mip_xqc_style_prior_mse${PRIOR_MSE}_delay${POLICY_DELAY}_seed${SEED}"
+RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_mip_squash_std_xqc_style_prior_mse${PRIOR_MSE}_delay${POLICY_DELAY}_seed${SEED}"
 SAVE_DIR="checkpoints/MIP/${RUN_NAME}"
 mkdir -p "$SAVE_DIR"
 
 CUDA_VISIBLE_DEVICES="$GPU" uv run policy/train_parallel_chunking.py \
     agent=mip_vision_abs \
+    agent.squash_actions=true \
+    agent.squash_scale=standardize \
     agent.actor_pre_training_steps=100_000 \
     agent.critic_kwargs.critic_pre_training_steps=100_000 \
     agent.pretrain_use_sarsa=true \

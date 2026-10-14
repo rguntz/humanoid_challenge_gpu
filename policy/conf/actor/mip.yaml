@@ -29,3 +29,11 @@ loss_scale: 100.0
 # section for the train/inference-mismatch tradeoff this introduces for
 # act_pred_1.
 target_mode: approx
+
+# squash_actions/squash_scale (xqc/agents/actors/mip/mip.py MIP.squash_actions,
+# mip_learner.py): false/none = train on and output the normalized action
+# directly. squash_actions=true trains on safe_arctanh(action), normalized
+# per dim by squash_scale ("none" | "rms" | "standardize", computed from the
+# dataset), and sample() returns tanh(...) - actions bounded to (-1, 1).
+squash_actions: false
+squash_scale: none

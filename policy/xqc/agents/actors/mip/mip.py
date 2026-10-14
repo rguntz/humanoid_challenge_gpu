@@ -22,6 +22,7 @@ import flax.linen as nn
 
 from xqc.agents.common.loss_masking import masked_mean
 from xqc.agents.common.network import ChiUNet
+from xqc.agents.common.squashing import safe_arctanh
 
 
 def _get_norm(x: jnp.ndarray, norm_type: str) -> jnp.ndarray:
@@ -60,6 +61,18 @@ class MIP(nn.Module):
     # act_pred_0 regresses to t_two_step*act instead - see loss()'s own
     # docstring for the full derivation/tradeoff.
     target_mode: str = "approx"
+    # squash_actions (same convention as MeanFlow, xqc/agents/actors/mf/
+    # mean_flow.py): False (default) - MIP trains on and outputs the
+    # normalized action directly (unbounded output). True - loss() trains on
+    # the pre-tanh coordinate (safe_arctanh(act) - squash_offset) /
+    # squash_scale, and sample() maps the network output back with
+    # tanh(y * squash_scale + squash_offset), so actions are hard-bounded to
+    # (-1, 1) and the online Q-gradient through sample() saturates near the
+    # bounds. squash_scale/squash_offset: per-action-dim tuples computed from
+    # the dataset by MIPLearner (its squash_scale arg) - None = 1 / 0.
+    squash_actions: bool = False
+    squash_scale: Optional[Tuple[float, ...]] = None
+    squash_offset: Optional[Tuple[float, ...]] = None
 
     def setup(self):
         self.net = ChiUNet(
@@ -107,7 +120,17 @@ class MIP(nn.Module):
         centered at the mathematically correct intermediate point
         t_two_step*act instead of `act` - keeps act_pred_1 trained on
         inputs centered at whatever point act_pred_0 is pushed toward,
-        avoiding a train/inference mismatch either way)."""
+        avoiding a train/inference mismatch either way).
+
+        squash_actions: act is mapped to the pre-tanh training coordinate
+        first (see the field comment), so the losses and the mse_*
+        diagnostics are all in that coordinate."""
+        if self.squash_actions:
+            act = safe_arctanh(act)
+            if self.squash_offset is not None:
+                act = act - jnp.asarray(self.squash_offset, dtype=act.dtype)
+            if self.squash_scale is not None:
+                act = act / jnp.asarray(self.squash_scale, dtype=act.dtype)
         bs = act.shape[0]
         s = jnp.zeros((bs,))
         t = jnp.full((bs,), self.t_two_step)
@@ -167,4 +190,11 @@ class MIP(nn.Module):
         act_0 = jnp.zeros(shape)
         act_pred_0 = self.get_velocity(s, act_0, cond)
         act_pred_1 = self.get_velocity(t, act_pred_0, cond)
-        return act_pred_1
+        if not self.squash_actions:
+            return act_pred_1
+        y = act_pred_1
+        if self.squash_scale is not None:
+            y = y * jnp.asarray(self.squash_scale, dtype=y.dtype)
+        if self.squash_offset is not None:
+            y = y + jnp.asarray(self.squash_offset, dtype=y.dtype)
+        return jnp.tanh(y)
