@@ -239,7 +239,13 @@ class ParallelEnv:
         render_num_envs=1,
         render_episodes=1,
         verbose=False,
+        ema_rate=None,
     ):
+        # ema_rate: forwarded to the agent's sample_actions (None = the
+        # agent's own default; train_parallel_chunking.py's run_eval passes
+        # 1.0 for the live-weights eval). Only passed when set, so agents
+        # whose sample_actions has no ema_rate (e.g. XQCLearner) are unaffected.
+        sample_kwargs = {} if ema_rate is None else {"ema_rate": ema_rate}
         n_rollouts = np.zeros(self.num_tasks)
         returns = np.zeros(self.num_tasks)
         goals = np.zeros(self.num_tasks)
@@ -287,10 +293,10 @@ class ParallelEnv:
             # Opt-in only: agents without a camera_keys attribute (e.g. XQCLearner) are unaffected.
             if getattr(agent, "camera_keys", None):
                 actions = agent.sample_actions(
-                    observations, temperature=temperature, images=self.get_images(agent.camera_keys)
+                    observations, temperature=temperature, images=self.get_images(agent.camera_keys), **sample_kwargs
                 )
             else:
-                actions = agent.sample_actions(observations, temperature=temperature)
+                actions = agent.sample_actions(observations, temperature=temperature, **sample_kwargs)
             if hasattr(agent, "round_trip_error") and i % getattr(agent, "execution_horizon", 1) == 0:
                 round_trip_errors.append(np.asarray(agent.round_trip_error()))
             next_observations, rewards, terms, truncs, success = self.step(actions)

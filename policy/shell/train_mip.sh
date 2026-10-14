@@ -16,26 +16,36 @@
 #         train.log) and a W&B run named <RUN_NAME>.
 #
 # Run from anywhere:
-#     bash policy/shell/train_mip.sh            # GPU 0
+#     bash policy/shell/train_mip.sh            # GPU 2
 #     GPU=1 bash policy/shell/train_mip.sh
+# Training (JAX) and every env worker (training + eval rendering, MuJoCo EGL)
+# use only GPU $GPU: JAX sees just that device via CUDA_VISIBLE_DEVICES, and
+# EGL renders on it via MUJOCO_EGL_DEVICE_ID (conf/config.yaml's env_set sets
+# the same value; the spawned env workers inherit both).
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 
-GPU="${GPU:-0}"
+GPU="${GPU:-2}"
 SEED=0
 PRIOR_MSE=3.0  # coefficient of the live-vs-prior MIP MSE (0 = off)
 POLICY_DELAY=3  # actor step every POLICY_DELAY critic steps (online)
+# Actor-BC-only test: CRITIC_PRE_STEPS=0 (no critic update) and MAX_STEPS=0
+# (no online RL). Full run: CRITIC_PRE_STEPS=100_000, MAX_STEPS=200_000.
+CRITIC_PRE_STEPS=0
+MAX_STEPS=0
 
-RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_mip_squash_std_xqc_style_prior_mse${PRIOR_MSE}_delay${POLICY_DELAY}_seed${SEED}"
+RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_mip_squash_std_critic${CRITIC_PRE_STEPS}_online${MAX_STEPS}_xqc_style_prior_mse${PRIOR_MSE}_delay${POLICY_DELAY}_seed${SEED}"
 SAVE_DIR="checkpoints/MIP/${RUN_NAME}"
 mkdir -p "$SAVE_DIR"
 
-CUDA_VISIBLE_DEVICES="$GPU" uv run policy/train_parallel_chunking.py \
+export CUDA_VISIBLE_DEVICES="$GPU" MUJOCO_GL=egl MUJOCO_EGL_DEVICE_ID="$GPU"
+
+uv run policy/train_parallel_chunking.py \
     agent=mip_vision_abs \
     agent.squash_actions=true \
     agent.squash_scale=standardize \
     agent.actor_pre_training_steps=100_000 \
-    agent.critic_kwargs.critic_pre_training_steps=100_000 \
+    agent.critic_kwargs.critic_pre_training_steps=$CRITIC_PRE_STEPS \
     agent.pretrain_use_sarsa=true \
     agent.offline_data_ratio=0.5 \
     agent.policy_delay=$POLICY_DELAY \
@@ -48,7 +58,7 @@ CUDA_VISIBLE_DEVICES="$GPU" uv run policy/train_parallel_chunking.py \
     agent.rollout_best_of_n=1 \
     agent.fix_reward_normalization_scale_jump=true \
     reset_to_ema_at_transition=true \
-    max_steps=200_000 \
+    max_steps=$MAX_STEPS \
     start_training_critic=0 \
     start_training_actor=0 \
     rollout_warmup_steps=10_000 \
