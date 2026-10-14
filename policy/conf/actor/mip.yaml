@@ -1,0 +1,31 @@
+defaults:
+  - chunking@_here_: chunking # choices: single, chunking (conf/agent/chunking/)
+  - obs@_here_: vision # choices: state, vision (conf/agent/obs/)
+  - training@_here_: vision # choices: state, vision (conf/agent/training/) - shared training/architecture config, matches conf/agent/dp.yaml
+  - base_actor@_here_ # shared actor-architecture defaults (conf/actor/base_actor.yaml)
+  - _self_
+
+# Deterministic 2-step flow-map BC policy (MIPLearner, xqc/agents/actors/mip/).
+# Online RL fine-tuning needs a critic (agent.critic_name, e.g.
+# conf/agent/mip_vision_abs.yaml): without one, max_steps > 0 raises
+# NotImplementedError - run with max_steps=0 for BC pretraining only.
+#
+# Nothing below is MIP-specific except the MIP.loss/MIP.sample block
+# (xqc/agents/mip/mip.py) - everything else comes from
+# conf/agent/training/vision.yaml, deliberately matching DP (MIP's own
+# original upstream reference is not what this repo benchmarks against).
+name: MIP
+
+# MIP.loss / MIP.sample (xqc/agents/mip/mip.py)
+t_two_step: 0.9
+norm_type: l2
+loss_scale: 100.0
+# "approx" (default): act_pred_0 (queried at the fixed noise point act_0=0)
+# regresses directly to `act`, a simplification that's only exact in the
+# t_two_step->1 limit - the true intermediate target is t_two_step*act (see
+# mip.py's loss() mse_mid_point diagnostic, which already reads out this
+# bias regardless of target_mode). "exact": act_pred_0 regresses to
+# t_two_step*act instead - see mip.py's loss() docstring "target_mode"
+# section for the train/inference-mismatch tradeoff this introduces for
+# act_pred_1.
+target_mode: approx

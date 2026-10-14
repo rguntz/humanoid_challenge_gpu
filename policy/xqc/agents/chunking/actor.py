@@ -40,6 +40,7 @@ import jax.numpy as jnp
 import optax
 
 from xqc.agents.common.obs_encoder import encode_observation_from_models
+from xqc.agents.common.policy_loglik_core import log1m_tanh_sq, split_tanh_loglik
 from xqc.networks.common import Model, norm_network
 from xqc.networks.distribution_utils import kl_divergence
 from xqc.replay_buffer.chunked_qc_buffer import ChunkedBatch
@@ -116,7 +117,16 @@ def _apply_joint_gradients(
 
 
 
-@functools.partial(jax.jit, static_argnums=(3, 12, 13, 14, 16, 17, 18, 19, 20, 21, 26, 28, 29, 30, 31))
+# Actors whose .sample() is a deterministic function of (rng, shape, cond), so
+# the shared-rng student/teacher pairing in update_actor's
+# wasserstein_regularization/offline_prior_mse is well-defined. MF: shared z.
+# MIP: .sample() ignores rng entirely (fixed act_0=0, two forward passes), so
+# the penalty is a plain squared distance between the live MIP's chunk and its
+# frozen BC prior's chunk at the same observation.
+_PRIOR_MSE_ACTORS = ("MFLearner", "MIPLearner")
+
+
+@functools.partial(jax.jit, static_argnums=(3, 12, 13, 14, 16, 17, 18, 19, 20, 21, 26, 28, 29, 30, 31, 33))
 def update_actor(
     network_model: Model,
     vision_models: Dict[str, Model],
@@ -142,6 +152,8 @@ def update_actor(
     actor_weight: float = 1.0,
     kl_regularization: Optional[float] = None,
     use_weight_norm: bool = False,
+    actions=None,
+    bc_regularization: Optional[float] = None,
 ):
     """DDPG-style actor update: sample an action from the network
     (differentiably - MeanFlow's own .sample() is one forward pass, not an
@@ -250,6 +262,42 @@ def update_actor(
     not, the collapse seen in wasserstein-regularized runs isn't purely a
     "Q-term overpowers a working distillation pull" story.
 
+    bc_regularization/actions (explicit request - see conversation
+    history: the reference repo this session is reproducing keeps training
+    the actor via plain BC against the CURRENT replay buffer - a mix of
+    offline demo data and newly-collected online data - even during online
+    RL, no Q-maximization involved in that term at all). None/0 (default):
+    off, a true no-op - actions is never read, no second forward pass
+    through the network. Else: an ADDITIONAL loss term, `network_model`'s
+    own `.loss()` method (the EXACT SAME mechanism update_actor_bc uses for
+    offline pretraining - no architecture-specific gate needed, unlike
+    wasserstein_regularization/kl_regularization above, since every actor
+    in this family already implements .loss() for BC) evaluated against
+    `actions` - the REAL recorded action for this same batch (NOT a
+    re-sampled/generated one, unlike the Q-maximization term's own
+    sampled_action). `actions` must already be in the SAME normalized
+    units sampled_action/executed_action are in - the caller's job
+    (chunked_learner.py's own _update passes critic_batch.actions
+    straight through, already normalized earlier in update()'s own
+    per-iteration loop, unlike update_actor_bc's own actor_batch.actions,
+    which arrives in real/raw units and gets normalized internally - two
+    different batches, two different conventions, see each call site).
+    mask_reference_region reuses the SAME in_reference_region this
+    function's own Q-maximization term already weights by (consistent
+    "don't train on the padded region" intent, matching update_actor_bc's
+    own identically-named flag). rng is split ONLY when bc_regularization
+    is actually truthy (`rng, bc_rng = jax.random.split(rng)` right before
+    the Q-maximization sampling below) - RELIED ON for the no-op
+    guarantee: if this split happened unconditionally, every existing
+    caller (bc_regularization left at its default None) would get a
+    DIFFERENT Q-maximization sample than before this parameter existed,
+    a real behavior change for a supposedly-off feature. Useful as a
+    standalone BC-regularization knob too, independent of the best-of-N
+    "optimal policy" use case that motivated it (explicit request) -
+    e.g. actor_weight=0.0 + bc_regularization>0 turns this into "pure BC
+    fine-tuning on the growing buffer, no RL objective at all" for any
+    online run, not just one paired with best_of_n.
+
     MF-only for now (explicit request - the shared-z trick generalizes to
     any actor whose .sample() is a deterministic, rng-seeded map, but
     that's unverified for DP/FM/MIP/NF/BC/AF today). Deliberately NOT
@@ -342,9 +390,9 @@ def update_actor(
                 "actually run (see train_parallel_chunking.py's own first_online_transition block)."
             )
     if wasserstein_regularization:
-        if actor_name != "MFLearner":
+        if actor_name not in _PRIOR_MSE_ACTORS:
             raise ValueError(
-                f"wasserstein_regularization is only implemented for MF (got actor_name={actor_name!r}) "
+                f"wasserstein_regularization is only implemented for MF/MIP (got actor_name={actor_name!r}) "
                 "- see conversation history. Either turn wasserstein_regularization off for this agent, "
                 "or verify+extend the shared-z coupling trick in update_actor for this actor type first."
             )
@@ -355,6 +403,11 @@ def update_actor(
                 "These are only populated once the offline->online transition has actually run "
                 "(see train_parallel_chunking.py's own first_online_transition block)."
             )
+    if bc_regularization and actions is None:
+        raise ValueError(
+            "bc_regularization>0 needs actions (the real recorded action for this batch, already "
+            "normalized - see this function's own docstring) - got None."
+        )
 
     vision_params = {cam: m.params for cam, m in vision_models.items()}
     has_batch_stats = network_model.batch_stats is not None
@@ -369,6 +422,22 @@ def update_actor(
         batch_size = obs_window.shape[0]
         act_shape = (batch_size, Ta, act_dim)
         network_variables = {"params": network_params}
+        # sample_rng/bc_rng (explicit request - see this function's own
+        # docstring): split ONLY when bc_regularization is actually active.
+        # Deliberately a NEW name, not a reassignment of the outer `rng`
+        # itself (a real bug caught via smoke test - see conversation
+        # history: `rng, bc_rng = jax.random.split(rng)` inside this nested
+        # closure makes Python treat `rng` as local to the WHOLE function
+        # body, including the Q-max sampling/wasserstein-teacher calls
+        # further down that still read bare `rng` - UnboundLocalError the
+        # moment bc_regularization is falsy, since that branch never runs).
+        # sample_rng replaces every one of those downstream `rng` reads
+        # instead - identical to `rng` itself when bc_regularization is
+        # off (true no-op), the first split half otherwise.
+        sample_rng = rng
+        bc_rng = None
+        if bc_regularization:
+            sample_rng, bc_rng = jax.random.split(rng)
         if has_batch_stats:
             network_variables["batch_stats"] = network_model.batch_stats
 
@@ -391,14 +460,14 @@ def update_actor(
             else:
                 dist = result
                 new_network_batch_stats = None
-            sampled_action = dist.sample(seed=rng).reshape(act_shape)
+            sampled_action = dist.sample(seed=sample_rng).reshape(act_shape)
         elif has_batch_stats:
             sampled_action, network_mutated = network_model.apply_fn.apply(
-                network_variables, rng, act_shape, obs, method="sample", mutable=["batch_stats"]
+                network_variables, sample_rng, act_shape, obs, method="sample", mutable=["batch_stats"]
             )
             new_network_batch_stats = network_mutated["batch_stats"]
         else:
-            sampled_action = network_model.apply_fn.apply(network_variables, rng, act_shape, obs, method="sample")
+            sampled_action = network_model.apply_fn.apply(network_variables, sample_rng, act_shape, obs, method="sample")
             new_network_batch_stats = None
         executed_action = sampled_action[:, :execution_horizon]
 
@@ -492,7 +561,7 @@ def update_actor(
         # ever None for an agent built before that attribute existed (old
         # checkpoints - see chunked_learner.py's own getattr default).
         teacher_action = None
-        if actor_name == "MFLearner" and prior_network_model is not None:
+        if actor_name in _PRIOR_MSE_ACTORS and prior_network_model is not None:
             # Teacher encodes obs through its OWN frozen vision/obs_encoder
             # (never the live/training ones) - matches xqc/agents/xqc/
             # actor.py's own prior_dist computation (prior_actor.apply
@@ -526,7 +595,7 @@ def update_actor(
                 prior_network_variables["batch_stats"] = prior_network_model.batch_stats
             teacher_action = jax.lax.stop_gradient(
                 prior_network_model.apply_fn.apply(
-                    prior_network_variables, rng, act_shape, prior_obs, method="sample"
+                    prior_network_variables, sample_rng, act_shape, prior_obs, method="sample"
                 )
             )
 
@@ -634,6 +703,33 @@ def update_actor(
             actor_loss = actor_loss + kl_regularization * kl_penalty
             loss_info["actor_loss"] = actor_loss
             loss_info["kl_penalty"] = kl_penalty
+
+        if bc_regularization:
+            # bc_rng already split off above (see this function's own
+            # docstring) - independent noise from whatever the Q-max
+            # branch's own sampled_action/dist draw used, same obs. `mask`
+            # reuses the SAME in_reference_region the Q-max term above
+            # already weights by - matches update_actor_bc's own
+            # identically-named/identically-sourced mask convention.
+            # new_network_batch_stats gets OVERWRITTEN here (a second
+            # forward pass through the same network, so a second batch_stats
+            # mutation) - this is the authoritative one actually applied
+            # below, since it runs last; harmless when bc_regularization is
+            # off (this whole block never runs, new_network_batch_stats
+            # stays whatever the Q-max branch above set).
+            bc_mask = in_reference_region if mask_reference_region else None
+            if has_batch_stats:
+                (bc_loss, bc_infos), bc_network_mutated = network_model.apply_fn.apply(
+                    network_variables, actions, obs, bc_rng, mask=bc_mask, method="loss", mutable=["batch_stats"],
+                )
+                new_network_batch_stats = bc_network_mutated["batch_stats"]
+            else:
+                bc_loss, bc_infos = network_model.apply_fn.apply(
+                    network_variables, actions, obs, bc_rng, mask=bc_mask, method="loss"
+                )
+            actor_loss = actor_loss + bc_regularization * bc_loss
+            loss_info["actor_loss"] = actor_loss
+            loss_info["bc_regularization_loss"] = bc_loss
 
         return actor_loss, (loss_info, new_vision_batch_stats, new_network_batch_stats)
 
@@ -822,7 +918,7 @@ def val_loss(
     return loss
 
 
-@functools.partial(jax.jit, static_argnums=(8, 9, 15, 16, 18))
+@functools.partial(jax.jit, static_argnums=(8, 9, 15, 16, 18, 20, 21))
 def infer(
     network_model: Model, vision_models: Dict[str, Model], obs_encoder_model: Model,
     network_params, vision_params, obs_encoder_params,
@@ -832,6 +928,8 @@ def infer(
     temperature: float = 1.0,
     network_accepts_temperature: bool = False,
     network_batch_stats=None,
+    best_of_n: int = 1,
+    score_fn=None,
 ):
     """network_params/vision_params/obs_encoder_params are plain dicts (not
     read off the Model objects), so the caller can pass either the live
@@ -887,7 +985,216 @@ def infer(
     if network_batch_stats is not None:
         network_variables["batch_stats"] = network_batch_stats
     temperature_kwarg = {"temperature": temperature} if network_accepts_temperature else {}
-    action = network_model.apply_fn.apply(
-        network_variables, rng, act_shape, obs, method="sample", **temperature_kwarg
-    )
+
+    # best_of_n/score_fn (explicit request - see conversation history: the
+    # rollout-side counterpart of bootstrap_next_actions's own best_of_n -
+    # same "optimal policy" ranking, no actor gradient involved). 1
+    # (default) takes the exact single-.sample() path this function always
+    # took before - score_fn is never built/called by the one caller that
+    # uses this (ChunkedPolicyLearner.sample_actions), a true no-op. >1
+    # samples that many candidates (normalized units, matching score_fn's
+    # own expected input - the caller's job, typically self.compute_q_fn),
+    # ranks them, and only THEN rescales the winner to real units below -
+    # scoring must happen in normalized units since that's what the critic
+    # was trained on.
+    #
+    # NO jax.vmap (explicit fix - see conversation history and
+    # bootstrap_next_actions's own docstring: a live py-spy trace on a real
+    # run showed the process stuck for over an hour just TRACING a vmap
+    # wrapping this exact call - vmap-under-jit tracing cost scales with
+    # how large the wrapped network is, and a full ChiUNet-family forward
+    # pass is large). Instead: tile obs/cond by best_of_n along axis 0
+    # (jnp.repeat - groups each original row's own best_of_n candidates
+    # consecutively) and sample ONCE at the bigger (B*best_of_n,) batch
+    # size - .sample()'s own single jax.random.normal(rng, shape) draw
+    # already gives independent noise per row once shape's batch dim is
+    # bigger, with no vmap machinery at all. score_fn must accept this
+    # same flat (B*best_of_n, Ta, act_dim) tensor in one call and return a
+    # flat (B*best_of_n,) score array - same convention as
+    # bootstrap_next_actions's own score_fn contract.
+    if best_of_n > 1:
+        if score_fn is None:
+            raise ValueError("infer: best_of_n>1 needs a score_fn to rank candidates against.")
+        batch_size, Ta_, act_dim_ = act_shape
+        tiled_obs = jnp.repeat(obs, best_of_n, axis=0)
+        flat_candidates = network_model.apply_fn.apply(
+            network_variables, rng, (batch_size * best_of_n, Ta_, act_dim_), tiled_obs, method="sample", **temperature_kwarg
+        )  # (B*N, Ta, act_dim)
+        flat_scores = score_fn(flat_candidates)  # (B*N,)
+        candidates = flat_candidates.reshape(batch_size, best_of_n, Ta_, act_dim_)
+        scores = flat_scores.reshape(batch_size, best_of_n)
+        best_idx = jnp.argmax(scores, axis=1)  # (B,)
+        action = jnp.take_along_axis(candidates, best_idx[:, None, None, None], axis=1)[:, 0]
+    else:
+        action = network_model.apply_fn.apply(
+            network_variables, rng, act_shape, obs, method="sample", **temperature_kwarg
+        )
     return action * action_scale + action_offset
+
+
+@functools.partial(
+    jax.jit, static_argnames=("camera_keys", "random_crop", "crop_shape", "act_shape", "num_spread_samples", "jac_chunk"),
+)
+def policy_loglik(
+    network_model: Model, vision_models: Dict[str, Model], obs_encoder_model: Model,
+    network_params, vision_params, obs_encoder_params,
+    obs_window, images, obs_offset, obs_scale, rng,
+    camera_keys, random_crop, crop_shape, act_shape, num_spread_samples, jac_chunk,
+    network_batch_stats=None,
+):
+    """Per-state policy log-likelihood/entropy diagnostic (explicit request
+    - see conversation history: measures how concentrated the policy is at
+    a state, to compare training-data states against online-rollout states
+    for stationarity). Only for networks with a flow_map method (MeanFlow).
+
+    For each state (one noise draw e ~ N(0, I) each), y = flow_map(e) (the
+    pre-tanh value; flow_map already applies squash_scale/squash_offset) and
+    the final action a = tanh(y) with squash_actions (a = y without) - exactly
+    what sample() returns, in normalized action units. By the
+    change-of-variables formula,
+        log p(a | c) = log N(e) - log|det dy/de| - sum log(1 - a^2)
+    computed by xqc/agents/common/policy_loglik_core.py's split_tanh_loglik -
+    a dependency-free file stationarity/compare_stationarity_mf.py loads
+    directly, so the toy validates these exact lines. The Jacobian stops at y
+    and the tanh term is added analytically from y (stable form): taking the
+    Jacobian through the tanh is the same value mathematically, but goes to
+    +inf in float32 once an action rounds to exactly +-1 (y above ~9) - see
+    that file's docstring. Its mean over states is -entropy. No inversion
+    needed: the density is evaluated at the policy's OWN sample, not at a
+    recorded action. Exact D x D Jacobian (D = Ta * act_dim) via jax.jacfwd,
+    computed jac_chunk states at a time (lax.map over chunks) so memory stays
+    bounded at jac_chunk * D forward passes.
+
+    spread: num_spread_samples plain samples per state (no Jacobian), std
+    across samples in normalized action units, averaged over the Ta *
+    act_dim coordinates - a cheap cross-check of the Jacobian-based number.
+
+    Same BN pairing/eval-mode convention as infer() (train=False: running
+    stats, so samples - and Jacobian rows - stay independent).
+
+    Full float32 matmul/conv precision (this function's trace only -
+    training is untouched): on Ampere GPUs JAX defaults to TF32, and log|det|
+    of this near-singular Jacobian (a confident policy collapses some
+    directions, e.g. the gripper) amplifies that rounding to ~5 nats per
+    state, with batch-shape-dependent results - measured: jac_chunk 16 vs 7
+    differed by up to 5.2 nats under TF32, 0.02-0.14 nats under float32.
+
+    sign: about half the determinants are negative even at full precision
+    (measured ~0.5 on a BC-pretrained MF actor) - not noise: in collapsed
+    directions the exact flow's derivative is ~0 and the one-step map's
+    learned one lands on either side of it, i.e. the map folds there. log|det|
+    is still used as-is; the fraction is logged only to watch for change."""
+    with jax.default_matmul_precision("float32"):
+        return _policy_loglik_impl(
+            network_model, vision_models, obs_encoder_model, network_params, vision_params, obs_encoder_params,
+            obs_window, images, obs_offset, obs_scale, rng,
+            camera_keys, random_crop, crop_shape, act_shape, num_spread_samples, jac_chunk, network_batch_stats,
+        )
+
+
+def _policy_loglik_impl(
+    network_model, vision_models, obs_encoder_model, network_params, vision_params, obs_encoder_params,
+    obs_window, images, obs_offset, obs_scale, rng,
+    camera_keys, random_crop, crop_shape, act_shape, num_spread_samples, jac_chunk, network_batch_stats,
+):
+    obs, _ = encode_observation_from_models(
+        vision_models, vision_params, obs_encoder_model, obs_encoder_params,
+        obs_window, images, obs_offset, obs_scale, camera_keys, train=False,
+        random_crop=random_crop, crop_shape=crop_shape,
+    )
+    variables = {"params": network_params}
+    if network_batch_stats is not None:
+        variables["batch_stats"] = network_batch_stats
+    module = network_model.apply_fn
+    squash = module.squash_actions
+    B = obs.shape[0]
+    Ta, act_dim = act_shape
+
+    def pre_tanh_batch(e, c):  # noise -> y: e (N, Ta, act_dim), c (N, To, cond_dim)
+        return module.apply(variables, e, c, method="flow_map")
+
+    def pre_tanh(e, c):  # one state: e (Ta, act_dim), c (To, cond_dim) -> (Ta, act_dim)
+        return pre_tanh_batch(e[None], c[None])[0]
+
+    rng_e, rng_s = jax.random.split(rng)
+    e = jax.random.normal(rng_e, (B, Ta, act_dim))
+
+    # Pad B up to a multiple of jac_chunk, lax.map over chunks, vmap inside.
+    n_chunks = -(-B // jac_chunk)
+    pad = n_chunks * jac_chunk - B
+    e_p = jnp.concatenate([e, jnp.zeros((pad, Ta, act_dim), e.dtype)]) if pad else e
+    obs_p = jnp.concatenate([obs, jnp.repeat(obs[:1], pad, axis=0)]) if pad else obs
+
+    def chunk_fn(args):
+        e_c, obs_c = args
+        loglik_c, sign_c, logabsdet_c, _ = split_tanh_loglik(pre_tanh, e_c, obs_c, squash=squash)
+        return loglik_c, sign_c, logabsdet_c
+
+    loglik_action, sign, logabsdet = jax.lax.map(
+        chunk_fn,
+        (e_p.reshape(n_chunks, jac_chunk, Ta, act_dim), obs_p.reshape(n_chunks, jac_chunk, *obs.shape[1:])),
+    )
+    loglik_action = loglik_action.reshape(-1)[:B]
+    sign = sign.reshape(-1)[:B]
+    logabsdet = logabsdet.reshape(-1)[:B]
+
+    e_s = jax.random.normal(rng_s, (num_spread_samples, B, Ta, act_dim))
+    y_s = jax.vmap(lambda e_m: pre_tanh_batch(e_m, obs))(e_s)
+    a_s = jnp.tanh(y_s) if squash else y_s
+    spread = jnp.mean(jnp.std(a_s, axis=0), axis=(1, 2))
+
+    return {
+        "loglik_action": loglik_action,
+        "logabsdet": logabsdet,
+        "sign": sign,
+        "spread": spread,
+    }
+
+
+@functools.partial(jax.jit, static_argnames=("camera_keys", "random_crop", "crop_shape", "num_spread_samples"))
+def distribution_policy_loglik(
+    network_model: Model, vision_models: Dict[str, Model], obs_encoder_model: Model,
+    network_params, vision_params, obs_encoder_params,
+    obs_window, images, obs_offset, obs_scale, rng,
+    camera_keys, random_crop, crop_shape, num_spread_samples,
+    network_batch_stats=None,
+):
+    """policy_loglik's counterpart for actors that ARE an explicit
+    distribution - XQCFD (xqc/agents/actors/xqc/xqcfd.py), a Normal(loc,
+    scale) pushed through tanh (xqc/networks/hetstat.py). Same outputs and
+    the same definitions as policy_loglik, so the training loop treats both
+    alike, but exact: no Jacobian and no folding (a Gaussian through tanh is
+    one-to-one). For each state, one sample y ~ Normal(loc, scale), a = tanh(y):
+        log p(a | s) = Normal.log_prob(y) - sum log(1 - a^2)
+    (analytic - XQCFD has no noise -> action network to differentiate; only
+    the final-action value is returned, as policy_loglik does).
+    Deliberately NOT the distribution's own TanhTransformedDistribution.
+    log_prob: that one clips actions at +-0.999 and returns the AVERAGE
+    density of the whole clipped tail there - which would cap exactly the
+    saturated (gripper) dimensions. temperature 1.0 = the online rollout's
+    own sampling distribution. sign is all ones (no Jacobian here)."""
+    obs, _ = encode_observation_from_models(
+        vision_models, vision_params, obs_encoder_model, obs_encoder_params,
+        obs_window, images, obs_offset, obs_scale, camera_keys, train=False,
+        random_crop=random_crop, crop_shape=crop_shape,
+    )
+    variables = {"params": network_params}
+    if network_batch_stats is not None:
+        variables["batch_stats"] = network_batch_stats
+    dist = network_model.apply_fn.apply(variables, obs, training=False, method="distribution")
+    normal = dist.distribution.distribution  # Independent -> TanhTransformedDistribution -> Normal
+
+    rng_y, rng_s = jax.random.split(rng)
+    y = normal.sample(seed=rng_y)  # (B, Ta * act_dim)
+    # log(1 - tanh(y)^2), numerically stable form - shared with policy_loglik.
+    loglik_action = jnp.sum(normal.log_prob(y), axis=-1) - jnp.sum(log1m_tanh_sq(y), axis=-1)
+
+    a_s = jnp.tanh(normal.sample(num_spread_samples, seed=rng_s))  # (M, B, Ta * act_dim)
+    spread = jnp.mean(jnp.std(a_s, axis=0), axis=-1)
+
+    return {
+        "loglik_action": loglik_action,
+        "logabsdet": jnp.zeros_like(loglik_action),
+        "sign": jnp.ones_like(loglik_action),
+        "spread": spread,
+    }

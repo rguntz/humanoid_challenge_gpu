@@ -86,14 +86,40 @@ def normalize(observations, rms, epsilon=1e-5):
 
 
 class RewardNormalizer:
-    def __init__(self, n_seeds, gamma):
+    def __init__(self, n_seeds, gamma, fix_offline_online_scale_jump: bool = False):
         self.gamma = gamma
         self.G = np.zeros(n_seeds)
-        self.online_G_rms = RunningMeanStd(shape=(n_seeds,))
+        self.online_G_rms = RunningMeanStd(shape=(n_seeds,)) # initialized with ones inside RunningMeanStd
         self.offline_G_rms = RunningMeanStd(shape=(n_seeds,))
         self.offline_G_var_max = np.full(shape=(n_seeds,), fill_value=-np.inf)
 
         self.epsilon = 1e-8
+        # fix_offline_online_scale_jump (explicit request - see conversation
+        # history): False (default) reproduces the EXACT original behavior
+        # - online_G_rms.var starts at its RunningMeanStd default (1.0) and
+        # is only ever updated inside the online rollout loop, never
+        # offline, so normalize()'s own max(online_std, offline_std) below
+        # silently uses that untouched 1.0 placeholder throughout the
+        # entire offline phase whenever the real offline_G_var_max is
+        # smaller than 1.0 (very plausible for a sparse, mostly-zero
+        # reward) - producing a real, reproducible ~constant-factor jump in
+        # the effective reward scale (and everything downstream: TD
+        # targets, Q-values) the moment online_G_rms starts seeing real
+        # data and its estimate drops below that placeholder. Kept as the
+        # default specifically because existing XQCFD runs were trained
+        # with this behavior and converged fine - changing the default
+        # would silently change behavior for every existing/resumed run.
+        # True: normalize() skips the online term entirely for any seed
+        # whose online_G_rms has not yet seen a real update
+        # (self.online_G_rms.count == 0 - i.e. the whole offline phase, and
+        # the handful of online steps before the very first .update() call)
+        # - using offline_G_var_max alone there instead of maxing it
+        # against the meaningless placeholder, so the reward scale is
+        # already correct and continuous across the offline->online
+        # transition. Once a seed's online tracker has real data
+        # (count>0), behavior is IDENTICAL to the original either way -
+        # this only ever changes what happens before that point.
+        self.fix_offline_online_scale_jump = fix_offline_online_scale_jump
 
     def update(self, reward, done):
         self.G = self.gamma * (1 - done) * self.G + reward
@@ -101,7 +127,12 @@ class RewardNormalizer:
 
     def normalize(self, rewards, **kwargs):
         if self.offline_G_var_max is not None:
-            denum = np.maximum(np.sqrt(self.online_G_rms.var), np.sqrt(self.offline_G_var_max))
+            online_std = np.sqrt(self.online_G_rms.var)
+            offline_std = np.sqrt(self.offline_G_var_max)
+            if self.fix_offline_online_scale_jump:
+                denum = np.where(self.online_G_rms.count > 0, np.maximum(online_std, offline_std), offline_std)
+            else:
+                denum = np.maximum(online_std, offline_std)
         else:
             denum = np.sqrt(self.online_G_rms.var)
         # Was a hardcoded np.expand_dims(denum, axis=(1, 2)) - assumes

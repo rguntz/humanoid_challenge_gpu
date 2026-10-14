@@ -144,6 +144,7 @@ def categorical_critic_loss_fn(
     act_dim: int = 0,
     actor_rng: Optional[jnp.ndarray] = None,
     offline_mask: Optional[jnp.ndarray] = None,
+    best_of_n: int = 1,
 ) -> Tuple[jnp.ndarray, InfoDict]:
     obs, next_obs, new_vision_batch_stats = _encode_current_and_next(
         vision_models, vision_params, obs_encoder_model, obs_encoder_params,
@@ -151,10 +152,41 @@ def categorical_critic_loss_fn(
         obs_offset, obs_scale, camera_keys, random_crop, crop_shape, crop_key, train, batch,
     )
     actions = _flatten(batch.actions)
+
+    # best_of_n>1 "optimal policy" ranking (explicit request - see
+    # conversation history and bootstrap_next_actions's own docstring): the
+    # TARGET critic (frozen this step, same one the TD target itself uses
+    # just below) scores each candidate next-action chunk at the critic's
+    # OWN already-encoded next_obs - reusing next_obs directly here (instead
+    # of going through this file's own compute_q, which would redundantly
+    # re-run vision encoding per candidate) since it's already available
+    # from _encode_current_and_next above. min-over-ensemble (jnp.min(...,
+    # axis=0)) matches next_q_values's own aggregation a few lines below -
+    # same TD3-style pessimistic convention, not a new choice.
+    # score_fn now receives the FULL FLAT (B*best_of_n, ...) candidate
+    # tensor in one call (explicit fix - see bootstrap_next_actions's own
+    # docstring: no jax.vmap any more, a real run's py-spy trace showed
+    # vmap-tracing this large a network taking well over an hour) - so
+    # next_obs is tiled ONCE here (jnp.repeat, matching bootstrap_next_
+    # actions's own grouping convention exactly) rather than per-candidate.
+    score_fn = None
+    if best_of_n > 1:
+        tiled_next_obs = jnp.repeat(next_obs, best_of_n, axis=0)
+
+        def score_fn(flat_candidates):
+            flat_candidate = _flatten(flat_candidates)
+            (candidate_q, _), _ = critic.apply(
+                target_critic.params, tiled_next_obs, flat_candidate,
+                batch_stats=target_critic.batch_stats, mutable=["batch_stats", "attributes", "activations"],
+                capture_intermediates=lambda mdl, method_name: isinstance(mdl, nn.Dense),
+                training=True,
+            )
+            return jnp.min(candidate_q, axis=0)
+
     next_actions = bootstrap_next_actions(
         batch, actor_network_model, actor_vision_models, actor_obs_encoder_model,
         actor_obs_offset, actor_obs_scale, actor_camera_keys, Ta, execution_horizon, act_dim, actor_rng,
-        flatten=True,
+        flatten=True, best_of_n=best_of_n, score_fn=score_fn,
     )
 
     concat_obs = jnp.concatenate((obs, next_obs), axis=0)
@@ -182,7 +214,16 @@ def categorical_critic_loss_fn(
     target_log_probs = jax.vmap(lambda x, i: x[i], in_axes=[1, 0])(
         target_log_probs, min_indices
     )
-    target_log_probs = jnp.repeat(target_log_probs[None], repeats=2, axis=0)
+    # repeats=catted_qs.shape[0] (fix - was hardcoded to 2, a real bug found
+    # via a crash with n_critics=5 - see conversation history): the
+    # min-selected target distribution needs to be broadcast back out to
+    # match pred_log_probs's own ensemble dimension below (every ensemble
+    # member regresses toward the SAME pessimistic target, standard
+    # clipped-double-Q convention) - that dimension is n_critics, not a
+    # fixed 2. catted_qs.shape[0] (the ensemble axis of this SAME
+    # critic.apply call just above) is exactly n_critics, already in scope,
+    # so this needs no new parameter threaded in.
+    target_log_probs = jnp.repeat(target_log_probs[None], repeats=catted_qs.shape[0], axis=0)
 
     (catted_current_qs, critic_infos), state_updates = critic.apply(
         critic_params,
@@ -309,6 +350,7 @@ def mse_critic_loss_fn(
     act_dim: int = 0,
     actor_rng: Optional[jnp.ndarray] = None,
     offline_mask: Optional[jnp.ndarray] = None,
+    best_of_n: int = 1,
 ) -> Tuple[jnp.ndarray, InfoDict]:
     obs, next_obs, new_vision_batch_stats = _encode_current_and_next(
         vision_models, vision_params, obs_encoder_model, obs_encoder_params,
@@ -316,10 +358,36 @@ def mse_critic_loss_fn(
         obs_offset, obs_scale, camera_keys, random_crop, crop_shape, crop_key, train, batch,
     )
     actions = _flatten(batch.actions)
+
+    # best_of_n>1 ranking - see categorical_critic_loss_fn's own identical
+    # comment above for the full rationale; only the critic.apply return
+    # shape differs (this variant's critic_model.__call__ already returns a
+    # decoded scalar Q directly, same as categorical_critic_loss_fn's own
+    # first output - no categorical-specific unpacking needed either way).
+    # score_fn now receives the FULL FLAT (B*best_of_n, ...) candidate
+    # tensor in one call (explicit fix - see bootstrap_next_actions's own
+    # docstring: no jax.vmap any more, a real run's py-spy trace showed
+    # vmap-tracing this large a network taking well over an hour) - so
+    # next_obs is tiled ONCE here (jnp.repeat, matching bootstrap_next_
+    # actions's own grouping convention exactly) rather than per-candidate.
+    score_fn = None
+    if best_of_n > 1:
+        tiled_next_obs = jnp.repeat(next_obs, best_of_n, axis=0)
+
+        def score_fn(flat_candidates):
+            flat_candidate = _flatten(flat_candidates)
+            (candidate_q, _), _ = critic.apply(
+                target_critic.params, tiled_next_obs, flat_candidate,
+                batch_stats=target_critic.batch_stats, mutable=["batch_stats", "attributes", "activations"],
+                capture_intermediates=lambda mdl, method_name: isinstance(mdl, nn.Dense),
+                training=True,
+            )
+            return jnp.min(candidate_q, axis=0)
+
     next_actions = bootstrap_next_actions(
         batch, actor_network_model, actor_vision_models, actor_obs_encoder_model,
         actor_obs_offset, actor_obs_scale, actor_camera_keys, Ta, execution_horizon, act_dim, actor_rng,
-        flatten=True,
+        flatten=True, best_of_n=best_of_n, score_fn=score_fn,
     )
 
     concat_obs = jnp.concatenate((obs, next_obs), axis=0)
@@ -413,6 +481,7 @@ def update_critic(
     act_dim: int = 0,
     actor_rng: Optional[jnp.ndarray] = None,
     offline_mask: Optional[jnp.ndarray] = None,
+    best_of_n: int = 1,
 ) -> Tuple[Model, Dict[str, Model], Model, InfoDict]:
     """actor_network_model, when given, switches the bootstrap from
     chunked-SARSA (default - batch.next_actions, the real recorded next
@@ -456,6 +525,7 @@ def update_critic(
         actor_camera_keys=actor_camera_keys,
         Ta=Ta, execution_horizon=execution_horizon, act_dim=act_dim,
         actor_rng=actor_rng,
+        best_of_n=best_of_n,
     )
     vision_params = {cam: m.params for cam, m in vision_models.items()}
     (loss, info), (critic_grads, vision_grads, obs_encoder_grads) = jax.value_and_grad(

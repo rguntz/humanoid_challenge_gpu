@@ -158,6 +158,7 @@ def hlgauss_critic_loss_fn(
     execution_horizon: int = 0,
     act_dim: int = 0,
     actor_rng: Optional[jnp.ndarray] = None,
+    best_of_n: int = 1,
 ) -> Tuple[jnp.ndarray, InfoDict]:
     # `training` gates both the CURRENT half's vision encode (random-crop/
     # batch_stats mutation off at eval, same reasoning as mlp/xqc_style's
@@ -182,9 +183,30 @@ def hlgauss_critic_loss_fn(
     # Target critic: deterministic (no dropout), no gradient. Min-aggregated
     # over the ensemble - matches the reference's own aggr="min" (clipped
     # double-Q / TD3-style target selection).
+    # best_of_n>1 ranking - see xqc_style/critic.py's own
+    # categorical_critic_loss_fn for the full rationale. No _flatten here
+    # (this variant's VMapTransformerCritic consumes the (B, execution_
+    # horizon, act_dim) sequence shape directly, matching next_actions's
+    # own flatten=False below) and the HL-Gauss decode (softmax + support
+    # expectation) instead of a categorical/plain-scalar critic output.
+    # score_fn now gets the FULL FLAT (B*best_of_n, execution_horizon,
+    # act_dim) candidate tensor in one call, no jax.vmap (see
+    # bootstrap_next_actions's own docstring) - next_obs tiled ONCE to
+    # match.
+    score_fn = None
+    if best_of_n > 1:
+        tiled_next_obs = jnp.repeat(next_obs, best_of_n, axis=0)
+
+        def score_fn(flat_candidates):
+            candidate_logits = critic.apply(target_critic.params, tiled_next_obs, flat_candidates, training=False)
+            candidate_probs = jax.nn.softmax(candidate_logits, axis=-1)
+            candidate_q_per_critic = hlgauss_transform_from_probs(candidate_probs, support)
+            return jnp.min(candidate_q_per_critic, axis=0)
+
     next_actions = bootstrap_next_actions(
         batch, actor_network_model, actor_vision_models, actor_obs_encoder_model,
         actor_obs_offset, actor_obs_scale, actor_camera_keys, Ta, execution_horizon, act_dim, actor_rng,
+        best_of_n=best_of_n, score_fn=score_fn,
     )
     next_logits = critic.apply(
         target_critic.params, next_obs, next_actions, training=False
@@ -270,6 +292,7 @@ def update_critic(
     execution_horizon: int = 0,
     act_dim: int = 0,
     actor_rng: Optional[jnp.ndarray] = None,
+    best_of_n: int = 1,
 ) -> Tuple[Model, Dict[str, Model], Model, InfoDict]:
     """actor_network_model, when given, switches the bootstrap from
     chunked-SARSA (default - batch.next_actions, the real recorded next
@@ -304,6 +327,7 @@ def update_critic(
         actor_camera_keys=actor_camera_keys,
         Ta=Ta, execution_horizon=execution_horizon, act_dim=act_dim,
         actor_rng=actor_rng,
+        best_of_n=best_of_n,
     )
     vision_params = {cam: m.params for cam, m in vision_models.items()}
     (loss, info), (critic_grads, vision_grads, obs_encoder_grads) = jax.value_and_grad(

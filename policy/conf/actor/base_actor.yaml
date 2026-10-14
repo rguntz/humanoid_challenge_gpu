@@ -185,6 +185,12 @@ ema_schedule: warmup
 ema_power: 0.75
 ema_max_value: 0.9999
 
+# ema_rate_online: null (default) - every sample_actions call (offline eval,
+# online eval, online data collection) uses ema_rate above. Set e.g. 1.0 to put
+# only the online rollout (the one filling the replay buffer) on the LIVE
+# weights (train_parallel_chunking.py).
+ema_rate_online: null
+
 # How many BC steps the actor trains for before the online loop begins
 # (train_parallel_chunking.py's own lr_schedule decay_steps too - see
 # ChunkedPolicyLearner.__init__). Independent of the critic's own
@@ -205,8 +211,9 @@ log_gradient_metrics: false
 # kl_regularization, using a fixed coefficient (no learned auto-tuned
 # temperature here, unlike that reference - see xqc/agents/chunking/
 # actor.py's own update_actor docstring for the full math/rationale).
-# null/0 (default) = off. MF-only for now - setting this for any other
-# actor type crashes loudly at construction (see conversation history).
+# null/0 (default) = off. MF and MIP only - setting this for any other
+# actor type crashes loudly at construction. For MIP (deterministic .sample)
+# the penalty is a plain squared distance between the live and prior chunks.
 wasserstein_regularization:
 
 # wasserstein_offline_only (explicit request - see xqc/agents/chunking/
@@ -234,3 +241,9 @@ wasserstein_offline_only: false
 # its BC starting point, does train/online/offline_prior_mse actually
 # converge toward 0) independent of whatever the Q-term does.
 actor_weight: 1.0
+
+# bc_regularization: an ADDITIONAL plain BC loss (the actor's own .loss())
+# on the current batch's recorded actions (mixed offline+online buffer)
+# during online RL (xqc/agents/chunking/actor.py update_actor). Every actor,
+# no actor_name gate. null (default) = off.
+bc_regularization:

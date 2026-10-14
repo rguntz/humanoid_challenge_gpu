@@ -1,0 +1,50 @@
+# Base config for the chunked-SARSA critic-only diagnostic (see
+# train_critic_sarsa.py, xqc/agents/critics/{xqc_style,mlp,transformer}).
+# Mirrors conf/agent/base_agent.yaml's own role: fields shared across every
+# critic variant live here once; each variant's own conf/critic/*.yaml
+# composes `defaults: [base_critic, _self_]` and adds only its own
+# architecture-specific fields (see mlp.yaml/xqc_style.yaml/
+# transformer.yaml).
+#
+# `data.*` holds ChunkedOfflineReplayBuffer construction args and the
+# training-loop cadence (train_critic_sarsa.py) - kept nested under `data`
+# specifically so it's never accidentally unpacked into a Learner
+# constructor call (see train_critic_sarsa.py: only the top-level fields of
+# a resolved critic config - critic_lr/weight_decay/tau/
+# target_net_update_freq here, plus each variant's own additions - are
+# passed as **kwargs to the Learner class; `data` and `name` are popped
+# first).
+data:
+  camera_keys: [] # e.g. [agentview_image, robot0_eye_in_hand_image] - vision trained from scratch on the critic, see conversation history
+  n_demos: 200
+  To: 2 # observation history length - kept at 2 for consistency with MIP/MF/FM's own conditioning window, not the reference's own To=1 state-experiment choice (see conversation history)
+  h: 8 # action chunk / execution_horizon length - the h in Q(obs_window_t, action_chunk_t) <- reward_t:t+h + gamma^h * Q(...)
+  discount: 0.99
+  val_ratio: 0.15 # proportion of the val dataset => 15%
+  abs_action: true # true for low_dim_abs.hdf5-style datasets - see ChunkedOfflineReplayBuffer's own docstring
+  batch_size: 256
+  num_steps: 100000
+  log_every: 200
+  val_every: 1000
+
+seed: 0
+
+# Optimizer / target-network cadence - same name AND meaning across all
+# three Learner classes' own constructors (xqc_style/mlp/transformer).
+critic_lr: 3e-4
+weight_decay: 0.0
+tau: 0.005
+target_net_update_freq: 1
+
+# How many offline steps the critic trains for in the COMBINED actor+critic
+# agent layer (conf/agent/mf_<critic>[_vision].yaml) before it freezes
+# (stops updating) - read directly off cfg.agent.critic_kwargs by
+# train_parallel_chunking.py's own pretraining loop, not consumed by
+# ChunkedPolicyLearner's constructor itself (see conversation history).
+# Independent of the actor's own actor_pre_training_steps (conf/actor/
+# base_actor.yaml, typically larger - the actor keeps training after the
+# critic freezes) and of data.num_steps above (that's train_critic_sarsa.py's
+# own standalone-harness step count, a completely different training loop -
+# unused/ignored here, just carried along harmlessly like the rest of
+# `data`/`seed` when this file is composed into critic_kwargs).
+critic_pre_training_steps: 20_000

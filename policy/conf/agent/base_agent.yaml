@@ -23,6 +23,11 @@ critic_kwargs: {}
 # unrelated to any specific actor or critic architecture.
 reset_freq: 0 # choices: 0 (no reset), 250_000 (default)
 reward_normalization: true
+# fix_reward_normalization_scale_jump: true seeds the online return-variance
+# tracker with the offline variance instead of a 1.0 placeholder, removing
+# the reward/Q scale jump at the offline->online transition
+# (xqc/normalization/normalization.py). false (default) = original formula.
+fix_reward_normalization_scale_jump: false
 
 # Mix offline data into the critic's own training batch - only meaningful
 # once a critic exists (see conversation history). Shared here rather than
@@ -47,6 +52,16 @@ n_demos: 200
 # chunked_learner.py's own _update). Only meaningful once a critic exists
 # (critic_name is not null).
 pretrain_use_sarsa: true
+
+# critic_bootstrap_use_ema: the critic's TD target bootstraps off the EMA
+# actor instead of the live one (only a change when ema_rate < 1).
+critic_bootstrap_use_ema: false
+# critic_bootstrap_best_of_n: N > 1 samples N candidate next chunks and keeps
+# the one the target critic ranks best (min over ensemble) for the TD target.
+critic_bootstrap_best_of_n: 1
+# rollout_best_of_n: same for the online rollout's executed action, ranked by
+# the live critic. 1 = a single sample.
+rollout_best_of_n: 1
 
 # actor_pre_training_steps/critic_pre_training_steps moved to
 # conf/actor/base_actor.yaml/conf/critic/base_critic.yaml respectively -

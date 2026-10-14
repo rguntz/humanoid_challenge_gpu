@@ -1,0 +1,37 @@
+defaults:
+  - base_agent
+  - /actor@_here_: mip_vision_abs # MIP, vision + absolute actions (conf/actor/mip_vision_abs.yaml)
+  - /critic@critic_kwargs: xqc_style_vision # critic, nested under agent.critic_kwargs (conf/critic/xqc_style_vision.yaml)
+  - _self_
+
+# MIP (xqc/agents/actors/mip/mip.py): a deterministic 2-step flow-map policy on
+# the same ChiUNet as DP/FM. Same data, observations and actions as
+# fm_vision_abs.yaml.
+#
+# One run of policy/train_parallel_chunking.py does both phases:
+#   1. offline: BC pretraining of the actor (actor_pre_training_steps) and
+#      SARSA pretraining of the critic on the demos (critic_kwargs.
+#      critic_pre_training_steps);
+#   2. online (max_steps > 0): the actor maximizes the critic's Q through its
+#      own (differentiable) 2-step sample, plus
+#      wasserstein_regularization * ||a_live - a_prior||^2, the squared
+#      distance between the live MIP's action chunk and the frozen
+#      BC-pretrained MIP's chunk at the same observation (prior snapshotted at
+#      the offline->online transition; MIP.sample is deterministic, so this
+#      is a plain MSE). null/0 = no regularization.
+critic_name: xqc_style
+# Actor optimizer step every policy_delay updates (1 = every update); the
+# launch script (policy/shell/train_mip.sh) sets it.
+policy_delay: 1
+
+# Robot-base-frame dataset written by policy/make_dataset.py (its layout/ group and
+# env_scene.xml also define the evaluation env, see xqc/envs/pick_place.py).
+offline_data_path: ${repo_root:}/videos/task/dataset_sim/policy/pick_place_bottle_base.hdf5
+# null = every demo in the dataset (train_parallel_chunking.py counts them).
+n_demos: null
+
+# One camera (see dp_vision_abs.yaml); the critic uses the same one
+# (critic_kwargs.camera_keys unset = the actor's camera_keys).
+camera_keys: [agentview_image]
+# The demos' images are 128 x 128; the random crop keeps ~90 % of the image.
+crop_shape: [116, 116]

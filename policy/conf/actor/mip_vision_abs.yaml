@@ -1,0 +1,10 @@
+defaults:
+  - mip_vision
+  - _self_
+
+# Absolute-action variant of mip_vision.yaml - see conf/agent/dp_vision_abs.yaml's
+# own comments for the full abs_action mechanism and the image_abs.hdf5
+# conversion/fidelity check (unchanged here, shared/agent-agnostic).
+name: MIP
+
+abs_action: true

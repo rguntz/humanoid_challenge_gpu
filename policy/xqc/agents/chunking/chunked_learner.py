@@ -63,7 +63,7 @@ import numpy as np
 import optax
 import orbax.checkpoint as ocp
 
-from xqc.agents.chunking.actor import infer, update_actor, update_actor_bc, val_loss
+from xqc.agents.chunking.actor import distribution_policy_loglik, infer, policy_loglik, update_actor, update_actor_bc, val_loss
 from xqc.agents.common.chunk_execution import ChunkExecutor
 from xqc.agents.common.chunked_critic_target import layer_norm_ratios, per_layer_norms, split_dense_and_batchnorm_norms
 from xqc.agents.common.ema import ema_decay as _ema_decay, ema_update as _ema_update
@@ -118,11 +118,52 @@ def _model_checkpoint_dict(model: Model) -> Dict[str, Any]:
     return {"params": model.params, "opt_state": model.opt_state, "step": model.step, "batch_stats": model.batch_stats}
 
 
+def _adam_moment_norms(opt_state) -> Dict[str, float]:
+    """Global norm of Adam's own first/second-moment accumulators (mu/nu)
+    found anywhere inside opt_state (explicit request - see conversation
+    history: comparing an MF run against xqcfd_chunked_square_floriant at
+    the offline->online transition, specifically whether
+    reset_optimizers's own opt_state=tx.init(...) - MFLearner only, a
+    no-op for XQCFDLearner, see reset_optimizers's own docstring - visibly
+    zeroes momentum there).
+
+    Found by LEAF PATH NAME, not by assuming a fixed nesting depth -
+    optax.scale_by_adam's own ScaleByAdamState names these fields 'mu'/
+    'nu' no matter how deeply optax.adamw's own chain is wrapped
+    (optax.conditionally_mask for policy_delay>1 - see _maybe_delay_tx -
+    adds one more level of nesting on top, confirmed directly: a quick
+    standalone check of optax.conditionally_mask(optax.adamw(...), ...)'s
+    own init() shows mu/nu landing at .inner_state[0].mu/.nu, one level
+    deeper than plain adamw's own .mu/.nu - this walks past that
+    automatically rather than hardcoding either depth). Returns 0.0 for
+    either if no such leaf exists (lr_schedule="constant" still uses
+    adamw, so this should always find them for every agent in this repo
+    today, but kept safe rather than assuming)."""
+    mu_leaves, nu_leaves = [], []
+    for path, leaf in jax.tree_util.tree_leaves_with_path(opt_state):
+        # 'mu'/'nu' name an inner GetAttrKey, not path[-1] - path[-1] is
+        # whatever key structure params/mu/nu themselves have (e.g. a
+        # DictKey('w') for a {'w': array} param pytree) - confirmed
+        # directly against optax.adamw's own ScaleByAdamState nesting
+        # (see this function's own docstring), so every entry in path
+        # needs checking, not just the last one.
+        path_names = {getattr(p, "name", None) for p in path}
+        if "mu" in path_names:
+            mu_leaves.append(leaf)
+        elif "nu" in path_names:
+            nu_leaves.append(leaf)
+    return {
+        "actor_adam_mu_norm": optax.global_norm(mu_leaves) if mu_leaves else jnp.asarray(0.0),
+        "actor_adam_nu_norm": optax.global_norm(nu_leaves) if nu_leaves else jnp.asarray(0.0),
+    }
+
+
 @functools.partial(
     jax.jit,
     static_argnames=(
         "update_actor_bc_fn", "update_actor_fn", "update_critic_fn", "critic_name", "pre_train",
         "camera_keys", "Ta", "execution_horizon", "act_dim", "update_actor", "pretrain_use_sarsa",
+        "critic_bootstrap_best_of_n",
     ),
 )
 def _update(
@@ -143,6 +184,10 @@ def _update(
     prior_vision_models: Optional[Dict[str, Model]] = None,
     prior_obs_encoder_model: Optional[Model] = None,
     offline_mask=None,
+    critic_bootstrap_network_model: Optional[Model] = None,
+    critic_bootstrap_vision_models: Optional[Dict[str, Model]] = None,
+    critic_bootstrap_obs_encoder_model: Optional[Model] = None,
+    critic_bootstrap_best_of_n: int = 1,
 ):
     """The chunking-family equivalent of xqc_learner.py's own _update -
     critic updates FIRST, then the actor updates using that SAME-STEP,
@@ -233,19 +278,31 @@ def _update(
         # Uses the PRE-this-step actor Models (network_model/vision_models/
         # obs_encoder_model, not yet updated below - the actor update
         # happens AFTER this), matching xqc's own critic bootstrap using
-        # the actor's LIVE (not target) params.
+        # the actor's LIVE (not target) params - UNLESS critic_bootstrap_
+        # network_model/vision_models/obs_encoder_model were given (explicit
+        # request - see conversation history and ChunkedPolicyLearner's own
+        # critic_bootstrap_use_ema docstring): update()'s own call site
+        # builds those as .replace()'d EMA-params copies of the same Models
+        # when self.critic_bootstrap_use_ema is True, None (default)
+        # otherwise - so this `or` falls back to the live network_model/
+        # vision_models/obs_encoder_model exactly as before whenever the
+        # toggle is off, a true no-op.
+        bootstrap_network_model = critic_bootstrap_network_model if critic_bootstrap_network_model is not None else network_model
+        bootstrap_vision_models = critic_bootstrap_vision_models if critic_bootstrap_vision_models is not None else vision_models
+        bootstrap_obs_encoder_model = critic_bootstrap_obs_encoder_model if critic_bootstrap_obs_encoder_model is not None else obs_encoder_model
         actor_bootstrap_kwargs = (
             {}
             if (pre_train and pretrain_use_sarsa)
             else dict(
-                actor_network_model=network_model,
-                actor_vision_models=vision_models,
-                actor_obs_encoder_model=obs_encoder_model,
+                actor_network_model=bootstrap_network_model,
+                actor_vision_models=bootstrap_vision_models,
+                actor_obs_encoder_model=bootstrap_obs_encoder_model,
                 actor_obs_offset=obs_offset,
                 actor_obs_scale=obs_scale,
                 actor_camera_keys=camera_keys,
                 Ta=Ta, execution_horizon=execution_horizon, act_dim=act_dim,
                 actor_rng=actor_bootstrap_rng,
+                best_of_n=critic_bootstrap_best_of_n,
             )
         )
         new_critic, new_critic_vision, new_critic_obs_encoder, critic_info = update_critic_fn(
@@ -322,6 +379,16 @@ def _update(
             # to here, rather than through critic_batch - see actor.py's own
             # update_actor docstring and this module's own update() method.
             offline_mask=offline_mask,
+            # bc_regularization's own target (explicit request - see
+            # actor.py's own update_actor docstring): critic_batch.actions
+            # is already normalized by this point (update()'s own
+            # per-iteration loop does `batch_i = batch_i._replace(actions=
+            # (batch_i.actions - self.action_offset)/self.action_scale,
+            # ...)` BEFORE batch_i/critic_batch ever reaches _update) -
+            # matches sampled_action/executed_action's own units exactly,
+            # no further conversion needed here. Harmless to always pass
+            # (bc_regularization=None/0 means update_actor never reads it).
+            actions=critic_batch.actions,
         )
 
     if update_actor:
@@ -336,6 +403,12 @@ def _update(
         actor_info["actor_dense_norm"] = actor_split["dense_norm"]
         actor_info["actor_batchnorm_norm"] = actor_split["batchnorm_norm"]
         actor_info.update({f"actor_layer_norm/{k}": v for k, v in per_layer_norms(new_network.params).items()})
+        # actor_adam_mu_norm/actor_adam_nu_norm (explicit request - see
+        # _adam_moment_norms' own docstring): read AFTER this step's update
+        # (new_network.opt_state, not the pre-update network_model.opt_state)
+        # so a reset_optimizers() call earlier this same transition already
+        # shows up as exactly 0 here, not one step stale.
+        actor_info.update(_adam_moment_norms(new_network.opt_state))
 
     return (
         rng, new_network, new_vision, new_obs_encoder,
@@ -422,30 +495,36 @@ class ChunkedPolicyLearner:
         lr_schedule: str = "cosine_warmup",
         lr_warmup_steps: int = 500,
         # num_interactions/updates_per_step/lr_end (explicit request - see
-        # conversation history): pulled out of **kwargs specifically for
-        # XQCFDLearner's own actor LR schedule below (type(self).__name__==
-        # "XQCFDLearner" gate) - reproduces xqc/agents/xqc/xqc_learner.py's
-        # own lr_schedule_fn EXACTLY: ONE continuous optax.linear_schedule
-        # (no warmup) spanning num_interactions*updates_per_step steps -
-        # num_interactions is train_parallel_chunking.py's own
-        # int(cfg.max_steps/cfg.env.action_repeat) (the ONLINE budget only,
-        # NOT actor_pre_training_steps - already passed into agent_kwargs by
-        # the driver for every agent, previously silently absorbed and
-        # unused here), counting BOTH offline pretraining steps AND online
-        # steps against the SAME schedule, uninterrupted - see
-        # reset_optimizers's own matching XQCFDLearner branch below for why
-        # this makes the actor's LR already partway decayed by the time
-        # online begins, deliberately matching the reference (traced/
-        # verified empirically - see conversation history). Every other
-        # agent ignores all three (still silently absorbed via **kwargs
-        # otherwise - these three are the only ones now named explicitly).
+        # conversation history - this used to be read ONLY inside a
+        # hardcoded `type(self).__name__ == "XQCFDLearner"` branch, a
+        # special case reproducing xqc/agents/xqc/xqc_learner.py's own
+        # lr_schedule_fn by hand; unified below into the SAME formula every
+        # agent uses, no agent-type branch): num_interactions is
+        # train_parallel_chunking.py's own int(cfg.max_steps/
+        # cfg.env.action_repeat) - already passed into agent_kwargs for
+        # EVERY agent regardless of type, previously only consumed by
+        # XQCFDLearner. None (default) for any construction path that
+        # doesn't pass it at all (not every caller runs through
+        # train_parallel_chunking.py) - treated as 0 below, same as a
+        # pure-offline agent's own script explicitly setting max_steps=0.
         num_interactions: Optional[int] = None,
         updates_per_step: int = 1,
-        lr_end: float = 3e-5,
+        # lr_end (explicit request - see conversation history): 0.0
+        # (default) reproduces today's cosine_warmup/linear behavior for
+        # every agent that doesn't override it - was 3e-5 here purely
+        # because that used to be the ONLY value XQCFDLearner's own
+        # special-cased branch ever read; now that cosine_warmup/linear
+        # both honor it uniformly, keeping that nonzero default would have
+        # silently changed every OTHER agent's end-of-schedule LR from 0 to
+        # 3e-5. XQCFD_CHUNKED's own actor yaml (conf/actor/xqcfd_state.yaml)
+        # now sets lr_end=3e-5 explicitly instead, to keep ITS behavior
+        # unchanged.
+        lr_end: float = 0.0,
         ema_rate: float = 0.995,
         ema_schedule: str = "warmup",
         ema_power: float = 0.75,
         ema_max_value: float = 0.9999,
+        ema_rate_online: Optional[float] = None,
         actor_pre_training_steps: int = 500_000,
         mask_reference_region: bool = False,
         wasserstein_regularization: Optional[float] = None,
@@ -457,6 +536,65 @@ class ChunkedPolicyLearner:
         # always uses regardless of this flag - see this module's own
         # _update docstring/comments.
         pretrain_use_sarsa: bool = True,
+        # critic_bootstrap_use_ema (explicit request - see conversation
+        # history, supervisor's own suggestion): only meaningful together
+        # with pretrain_use_sarsa=False (the actor-bootstrap TD-target path -
+        # see this module's own _update docstring), since that's the only
+        # path that ever queries the actor for a next-action at all. False
+        # (default): today's behavior exactly - the critic's TD target
+        # bootstraps off the LIVE actor (self.network/self.vision/
+        # self.obs_encoder), same object the actor update itself trains that
+        # same step. True: the SAME bootstrap call instead queries a
+        # .replace()'d copy of those Models with EMA params/batch_stats
+        # swapped in (self.network_ema_params/self.network_ema_batch_stats/
+        # self.vision_ema_params/self.obs_encoder_ema_params - already
+        # maintained every step whenever self.ema_rate<1, see _ema_update's
+        # own call site below) - apply_fn/tx/opt_state/step stay the live
+        # Model's own (bootstrap_next_actions never reads those). Applies
+        # uniformly to BOTH the pretrain_use_sarsa=False offline-BC path and
+        # the always-actor-bootstrap online-RL path (same shared
+        # actor_bootstrap_kwargs dict in _update - no pre_train-specific
+        # split here, by explicit request). Only a real behavioral change
+        # when self.ema_rate<1 - XQCFD_CHUNKED's own default ema_rate=1.0
+        # makes this a harmless no-op (EMA and live are already the same
+        # tensor) unless ema_rate is ALSO lowered.
+        critic_bootstrap_use_ema: bool = False,
+        # critic_bootstrap_best_of_n (explicit request - see conversation
+        # history: the "optimal policy" the supervisor described - sample N
+        # candidate chunks from the actor, rank by the TARGET critic's own
+        # Q, min-over-ensemble, keep the best. NO actor gradient update is
+        # involved at all - this is purely a sampling-time ranking wrapper
+        # around bootstrap_next_actions's existing single-.sample() call,
+        # same shared-across-{mlp,xqc_style,transformer} mechanism
+        # critic_bootstrap_use_ema above plugs into. 1 (default): the exact
+        # single-sample path bootstrap_next_actions already took before
+        # this was added - score_fn is never built/called, a true no-op.
+        # >1: candidates are sampled from whichever actor the
+        # critic_bootstrap_network_model/etc. fallback above resolves to
+        # (live, or EMA when critic_bootstrap_use_ema=True - the two
+        # toggles compose freely), then ranked by the critic. Same
+        # pretrain_use_sarsa-gated scope as critic_bootstrap_use_ema: only
+        # ever reaches bootstrap_next_actions at all when pretrain_use_sarsa
+        # =False (offline) or always (online, unconditionally) - see this
+        # module's own _update docstring.
+        critic_bootstrap_best_of_n: int = 1,
+        # rollout_best_of_n (explicit request - see conversation history):
+        # the ACTING-side counterpart of critic_bootstrap_best_of_n above -
+        # same "optimal policy" (sample N, rank by Q, no actor gradient
+        # update), but for sample_actions's own online-rollout call
+        # (train_parallel_chunking.py's own agent.sample_actions(...) call
+        # site, the one that actually picks the action executed in the
+        # env) rather than the critic's TD target. A SEPARATE knob, not
+        # reused from critic_bootstrap_best_of_n, because the two rank
+        # against different critics by design: the TD target ranks against
+        # the FROZEN target critic (matching the TD target's own
+        # bootstrap-off-target-network convention), while rollout should
+        # always act on the most up-to-date LIVE critic - see
+        # sample_actions's own docstring. 1 (default): today's exact
+        # single-sample behavior, a true no-op. Set equal to
+        # critic_bootstrap_best_of_n if symmetric N is what's wanted -
+        # nothing stops that, they're just independently defaulted.
+        rollout_best_of_n: int = 1,
         # wasserstein_offline_only (conf/actor/base_actor.yaml, explicit
         # request - see xqc/agents/chunking/actor.py's own update_actor
         # docstring for the full rationale): False (default) regularizes the
@@ -489,6 +627,24 @@ class ChunkedPolicyLearner:
         # reproducing), gated the same way wasserstein_regularization is
         # gated to MFLearner just below.
         kl_regularization: Optional[float] = None,
+        # bc_regularization (conf/actor/base_actor.yaml, explicit request -
+        # see xqc/agents/chunking/actor.py's own update_actor docstring for
+        # the full rationale): an ADDITIONAL plain BC loss term, against the
+        # CURRENT batch's own real recorded action (critic_batch.actions,
+        # the mixed offline+online buffer during online RL) - the reference
+        # repo this session is reproducing keeps training the actor this way
+        # throughout online RL, not just during offline pretraining. Unlike
+        # wasserstein_regularization/kl_regularization, this needs NO
+        # actor_name gate - every actor in this family already implements
+        # .loss() for offline BC, so this generalizes to all of them, not
+        # just MF/XQCFD. None/0 (default): off, a true no-op (actor.py's own
+        # update_actor never even reads critic_batch.actions in that case).
+        # Useful standalone too (e.g. actor_weight=0.0 + bc_regularization>0
+        # = pure BC fine-tuning on the growing buffer, no RL objective at
+        # all for that step) - not only paired with critic_bootstrap_best_of_n/
+        # rollout_best_of_n above, though that pairing was the motivating
+        # case (see conversation history).
+        bc_regularization: Optional[float] = None,
         # use_weight_norm (conf/actor/base_actor.yaml, explicit request):
         # renormalizes the ACTOR network's own Dense-layer kernels after
         # every actor gradient step (xqc/agents/chunking/actor.py's own
@@ -557,6 +713,21 @@ class ChunkedPolicyLearner:
         self.ema_schedule = ema_schedule
         self.ema_power = ema_power
         self.ema_max_value = ema_max_value
+        # ema_rate_online (explicit request - see conversation history):
+        # None (default) changes nothing for any existing script - every
+        # sample_actions call keeps gating off self.ema_rate exactly as
+        # before. Set e.g. agent.ema_rate_online=1.0 to force the ONLINE
+        # rollout's own sample_actions call (train_parallel_chunking.py's
+        # online loop, the one that actually fills the replay buffer) onto
+        # LIVE weights specifically, while offline-phase eval rollouts, the
+        # EMA buffer's own maintenance (_ema_update below), and any other
+        # sample_actions caller (e.g. eval, both phases) stay governed by
+        # self.ema_rate, untouched - see _inference_params's own ema_rate
+        # param. Kept as a separate field (not a mutation of ema_rate
+        # itself) specifically so it shows up as its own entry in the
+        # wandb config dump, next to ema_rate, instead of overloading one
+        # field with two meanings.
+        self.ema_rate_online = ema_rate_online
         self.grad_clip_norm = grad_clip_norm
         # Ablation knob (default off - see xqc/agents/common/loss_masking.py
         # and ChunkedBatch's own in_reference_region docstring): sampling
@@ -565,6 +736,9 @@ class ChunkedPolicyLearner:
         # here), only the BC loss's per-sample weighting changes.
         self.mask_reference_region = mask_reference_region
         self.pretrain_use_sarsa = pretrain_use_sarsa
+        self.critic_bootstrap_use_ema = critic_bootstrap_use_ema
+        self.critic_bootstrap_best_of_n = critic_bootstrap_best_of_n
+        self.rollout_best_of_n = rollout_best_of_n
         # Fail fast at construction (before any pretraining compute is
         # spent) rather than only at the first online-RL actor update -
         # see actor.py's own update_actor docstring/matching runtime check
@@ -572,9 +746,9 @@ class ChunkedPolicyLearner:
         # crashes loudly for any other actor type rather than silently
         # skipping the regularization).
         self.wasserstein_regularization = wasserstein_regularization
-        if wasserstein_regularization and type(self).__name__ != "MFLearner":
+        if wasserstein_regularization and type(self).__name__ not in ("MFLearner", "MIPLearner"):
             raise ValueError(
-                f"wasserstein_regularization is only implemented for MF (got {type(self).__name__}) - "
+                f"wasserstein_regularization is only implemented for MF/MIP (got {type(self).__name__}) - "
                 "see conversation history. Either turn wasserstein_regularization off for this agent, "
                 "or verify+extend the shared-z coupling trick in xqc/agents/chunking/actor.py's own "
                 "update_actor for this actor type first."
@@ -594,6 +768,7 @@ class ChunkedPolicyLearner:
         # there, XQCFD-only here - see xqc/agents/chunking/actor.py's own
         # update_actor docstring).
         self.kl_regularization = kl_regularization
+        self.bc_regularization = bc_regularization
         if kl_regularization and type(self).__name__ != "XQCFDLearner":
             raise ValueError(
                 f"kl_regularization is only implemented for XQCFD (got {type(self).__name__}) - "
@@ -643,47 +818,88 @@ class ChunkedPolicyLearner:
         # global RNG.
         self._dataset_rng = np.random.default_rng(seed=seed)
 
+        # actor_optimizer_resets_online (explicit request - see
+        # conversation history): named condition for reset_optimizers' own
+        # early-return check below, kept as a real attribute (not just
+        # inlined there) purely so reset_optimizers itself stays readable/
+        # callable on its own terms. NOT read by train_parallel_chunking.py
+        # any more - its offline->online transition no longer calls
+        # reset_optimizers for ANY agent (every agent's own lr_schedule_fn
+        # now already spans its correct combined offline+online budget
+        # from construction - see this __init__'s own _schedule_span
+        # comment below - so there's nothing left to reset), and its
+        # online lr-logging now always queries agent.network.step/
+        # agent.critic.step (the real, never-reset counters) unconditionally
+        # instead of branching on this. Kept (both this attribute and
+        # reset_optimizers itself) purely so that decision can be revisited
+        # later without rewriting this from scratch - see
+        # reset_optimizers's own docstring for why it's otherwise currently
+        # dead code, deliberately.
+        self.actor_optimizer_resets_online = type(self).__name__ != "XQCFDLearner"
+
         # Optimizer definition - shared lr/weight_decay/grad_clip config,
         # but a SEPARATE optax instance per component below (network,
         # each vision camera, obs_encoder) rather than one instance shared
         # across all of them. See this file's own module docstring for why
         # this reproduces today's exact joint-training dynamics by default.
         #
-        # XQCFDLearner (explicit request - see conversation history):
-        # bypasses lr_schedule entirely (cosine_warmup/constant below,
-        # unaffected for every other agent) in favor of reproducing xqc/
-        # agents/xqc/xqc_learner.py's own lr_schedule_fn EXACTLY - see this
-        # __init__'s own num_interactions/updates_per_step/lr_end docstring
-        # above for the full rationale (one continuous, no-warmup linear
-        # schedule spanning num_interactions*updates_per_step, counting
-        # pretraining AND online steps together against the same budget).
-        if type(self).__name__ == "XQCFDLearner":
-            if num_interactions is None:
-                raise ValueError(
-                    "XQCFDLearner needs num_interactions (train_parallel_chunking.py's own "
-                    "int(cfg.max_steps/cfg.env.action_repeat), already passed into agent_kwargs "
-                    "for every agent) to build its reference-matching linear LR schedule."
-                )
-            lr_or_schedule = optax.linear_schedule(
-                init_value=lr, end_value=lr_end, transition_steps=max(num_interactions * updates_per_step, 1),
-            )
-        elif lr_schedule == "cosine_warmup":
-            # optax internally computes decay_steps - warmup_steps for the
-            # cosine phase itself - raises if that's <= 0. Always true
-            # before this session (actor_pre_training_steps was always
-            # >> lr_warmup_steps), but actor_pre_training_steps=0 (a
-            # critic-only run - see conversation history) breaks it. The
-            # actor never takes a gradient step in that regime anyway (see
-            # update_actor gating below), so the schedule's actual shape is
-            # irrelevant there - just needs to construct without crashing.
+        # _schedule_span (explicit request - see conversation history: this
+        # used to be a hardcoded XQCFDLearner-only special case with its
+        # own separate formula - unified into ONE span every lr_schedule
+        # mode below uses, and went through a real wrong turn on the way
+        # here too - see below for the fix and why the first version of
+        # this was still wrong):
+        #   - actor_pre_training_steps + (num_interactions or 0) *
+        #     updates_per_step: a SUM, not a max (explicit request - see
+        #     conversation history, a real bug caught directly from a
+        #     live run's own logged LR curve: with the max() this used to
+        #     be, a real online-RL run's schedule hit end_value/flatlined
+        #     tens of thousands of steps BEFORE the run's actual end,
+        #     because the counter this schedule is queried with
+        #     (agent.network.step/agent.critic.step, see those fields' own
+        #     construction-site comments) is NEVER reset - it keeps
+        #     counting through BOTH the offline pretraining budget AND the
+        #     online one, back to back, so the schedule's own span has to
+        #     cover BOTH added together, not just whichever one happens to
+        #     be larger. A pure-offline agent/script (no online RL phase,
+        #     so num_interactions=0 for its own run) still collapses this
+        #     to exactly actor_pre_training_steps, today's unchanged value
+        #     - (num_interactions or 0) is 0 there, same as before.
+        #     num_interactions = train_parallel_chunking.py's own
+        #     int(cfg.max_steps/cfg.env.action_repeat), already passed into
+        #     agent_kwargs for every agent - None here only for a
+        #     construction path that never passes it at all, treated as 0.
+        #     Letting the SAME schedule span the whole offline+online run
+        #     (now actually correctly sized to do so) means no reset is
+        #     needed at the transition (see reset_optimizers's own
+        #     docstring: no longer called from train_parallel_chunking.py's
+        #     offline->online transition for ANY agent, kept defined/
+        #     callable only in case this decision gets revisited).
+        #   - max(..., lr_warmup_steps + 1): optax's own
+        #     warmup_cosine_decay_schedule requires decay_steps >
+        #     warmup_steps internally - this floor only matters for
+        #     actor_pre_training_steps=0 AND num_interactions=0 together (a
+        #     critic-only run - see conversation history), where the actor
+        #     never takes a gradient step anyway (see update_actor gating
+        #     below) so the schedule's actual shape is irrelevant, just
+        #     needs to construct without crashing.
+        _schedule_span = max(actor_pre_training_steps + (num_interactions or 0) * updates_per_step, lr_warmup_steps + 1)
+        if lr_schedule == "cosine_warmup":
             lr_or_schedule = optax.warmup_cosine_decay_schedule(
                 init_value=0.0, peak_value=lr, warmup_steps=lr_warmup_steps,
-                decay_steps=max(actor_pre_training_steps, lr_warmup_steps + 1), end_value=0.0,
+                decay_steps=_schedule_span, end_value=lr_end,
             )
+        elif lr_schedule == "linear":
+            # No warmup - matches xqc_learner.py's own lr_schedule_fn
+            # exactly (XQCFD_CHUNKED's own actor yaml, conf/actor/
+            # xqcfd_state.yaml, sets lr_schedule="linear" specifically for
+            # this - see conversation history for why that reference has
+            # no warmup phase at all, unlike every ChiUNet-backed actor).
+            lr_or_schedule = optax.linear_schedule(init_value=lr, end_value=lr_end, transition_steps=_schedule_span)
         elif lr_schedule == "constant":
             lr_or_schedule = lr
         else:
-            raise ValueError(f"Unknown lr_schedule {lr_schedule!r}, expected 'cosine_warmup' or 'constant'")
+            raise ValueError(f"Unknown lr_schedule {lr_schedule!r}, expected 'cosine_warmup', 'linear', or 'constant'")
         # Exposed so callers (train_parallel.py) can log the actual current
         # LR value, matching the reference's own per-step
         # `lr_scheduler.get_last_lr()[0]` logging - optax schedules are
@@ -719,38 +935,27 @@ class ChunkedPolicyLearner:
         # instead, across all three gradient trees at once, in actor.py's
         # own _apply_joint_gradients (see its docstring), using this
         # class's own self.grad_clip_norm.
-        # policy_delay (explicit request - see conversation history):
-        # self.policy_delay is understood as the ONLINE-RL delay only for
-        # every agent EXCEPT XQCFDLearner - pre-training always updates
-        # every step (delay 1) for those agents, regardless of what
-        # policy_delay was constructed with, so _maybe_delay_tx is
-        # deliberately NOT applied to this INITIAL (pre-training-phase)
-        # actor_tx/encoder_tx construction for them.
-        # reset_optimizers(online_steps=...) - called exactly once, at the
-        # offline->online transition (train_parallel_chunking.py) - rebuilds
-        # actor_tx/encoder_tx from scratch via _maybe_delay_tx further down
-        # this file, which is where self.policy_delay's real (possibly >1)
-        # value first takes effect for those agents.
-        #
-        # XQCFDLearner is the one exception (explicit request - see
-        # conversation history): its own reset_optimizers call is a
-        # documented no-op (its actor LR schedule already spans pretraining
-        # AND online together in one continuous optax.linear_schedule, built
-        # above - nothing to rebuild at that transition), so if
-        # _maybe_delay_tx were skipped here the same way as every other
-        # agent, policy_delay would never actually apply at ANY point for
-        # this agent - a real regression, not matching
-        # xqc/agents/xqc/xqc_learner.py's own reference (TD3-style delayed
-        # actor updates active from the very start, not just online - see
-        # conf/actor/xqcfd_state.yaml's own policy_delay field comment).
-        # Applying it immediately here instead reproduces that reference
-        # behavior exactly: delay active for pre-training AND online alike.
-        if type(self).__name__ == "XQCFDLearner":
-            actor_tx = self._maybe_delay_tx(optax.adamw(lr_or_schedule, b1=beta1, b2=beta2, weight_decay=weight_decay))
-            encoder_tx = self._maybe_delay_tx(optax.adamw(lr_or_schedule, b1=beta1, b2=beta2, weight_decay=weight_decay))
-        else:
-            actor_tx = optax.adamw(lr_or_schedule, b1=beta1, b2=beta2, weight_decay=weight_decay)
-            encoder_tx = optax.adamw(lr_or_schedule, b1=beta1, b2=beta2, weight_decay=weight_decay)
+        # policy_delay / undelayed_until (explicit request - see
+        # conversation history - this went through a real wrong turn
+        # first, see _maybe_delay_tx's own docstring for the full story):
+        # XQCFDLearner wants the delay active from the very first step,
+        # matching its own reference (TD3-style delay active during
+        # pre-training too, not just online - see conf/actor/
+        # xqcfd_state.yaml's own policy_delay field comment) -
+        # undelayed_until=0 (this method's own default) reproduces that.
+        # Every OTHER agent (MF included) wants pre-training completely
+        # undelayed on purpose - every offline BC step is a real actor
+        # update regardless of policy_delay - with the configured delay
+        # only taking effect once online RL starts - undelayed_until=
+        # actor_pre_training_steps reproduces THAT. One optax transform,
+        # built once here, that already knows how to do both (see
+        # _maybe_delay_tx's own docstring for why no separate rebuild is
+        # needed at the offline->online transition any more - that used to
+        # be reset_optimizers's job before this session's own LR-schedule
+        # unification removed its only remaining caller).
+        _undelayed_until = 0 if type(self).__name__ == "XQCFDLearner" else actor_pre_training_steps
+        actor_tx = self._maybe_delay_tx(optax.adamw(lr_or_schedule, b1=beta1, b2=beta2, weight_decay=weight_decay), _undelayed_until)
+        encoder_tx = self._maybe_delay_tx(optax.adamw(lr_or_schedule, b1=beta1, b2=beta2, weight_decay=weight_decay), _undelayed_until)
 
         # Raw (pre-crop) per-camera resolution read straight from the loaded
         # dataset rather than assumed - sample_actions' own _image_history
@@ -800,6 +1005,10 @@ class ChunkedPolicyLearner:
         # MIP, etc.) lives in network_extra_kwargs, built by each concrete
         # subclass's own __init__ - keeps this base class agnostic to which
         # architecture-specific fields a given network_cls actually accepts.
+        network_extra_kwargs = self._data_dependent_network_kwargs(
+            network_extra_kwargs,
+            (np.asarray(raw_actions_all) - np.asarray(self.action_offset)) / np.asarray(self.action_scale),
+        )
         network_def = network_cls(
             act_dim=act_dim,
             Ta=Ta,
@@ -1015,28 +1224,38 @@ class ChunkedPolicyLearner:
             # specific (XQCFDLearner's own linear-no-warmup branch above vs
             # every other agent's own cosine_warmup, kept deliberately
             # unchanged - explicit request). No warmup phase (unlike the
-            # actor never had one for the critic either), transition_steps=
-            # num_interactions*updates_per_step (the ONLINE budget, NOT
-            # critic_pre_training_steps - matches xqc_learner.py's own
-            # lr_schedule_fn(critic_lr) exactly, counting straight through
-            # BOTH offline pretraining and online together, no restart at
-            # the transition - see reset_optimizers's own docstring for the
-            # matching no-op-for-the-critic change below), end_value=lr_end
-            # (was hardcoded 0.0 - lr_end is xqc_base_agent.yaml's own
-            # default value, 3e-5, reused here as this class's own default
-            # too so nothing changes for an agent that never sets it).
-            # Stashed for reset_optimizers(online_steps=...) below - same
-            # reasoning as the actor's own _actor_peak_lr/etc above.
+            # actor never had one for the critic either).
+            #
+            # _critic_schedule_span (explicit request - see conversation
+            # history, and the actor's own _schedule_span comment above for
+            # the full story of the bug this fixes): critic_pre_training_steps
+            # + (num_interactions or 0) * updates_per_step - a SUM, not just
+            # num_interactions*updates_per_step alone. agent.critic.step
+            # (the real counter this schedule is queried with) is never
+            # reset - it counts through critic_pre_training_steps worth of
+            # offline updates FIRST, then keeps going into the online
+            # phase's own updates - so the schedule's span has to cover
+            # both, or it hits end_value early (confirmed directly from a
+            # real run's own logged critic_lr curve flatlining tens of
+            # thousands of steps before the run's actual end - the online-
+            # only span was consistently smaller than what the counter
+            # actually reaches by the time online finishes). end_value=
+            # lr_end (was hardcoded 0.0 - lr_end is xqc_base_agent.yaml's
+            # own default value, 3e-5, reused here as this class's own
+            # default too so nothing changes for an agent that never sets
+            # it). Stashed for reset_optimizers(online_steps=...) below -
+            # same reasoning as the actor's own _actor_peak_lr/etc above.
             self._critic_peak_lr = critic_lr
             self._critic_vision_lr = critic_vision_lr
             self._critic_weight_decay = critic_weight_decay
+            _critic_schedule_span = max(critic_pre_training_steps + (num_interactions or 0) * updates_per_step, 1)
             self.critic_lr_schedule_fn = optax.linear_schedule(
-                init_value=critic_lr, end_value=lr_end, transition_steps=max(num_interactions * updates_per_step, 1),
+                init_value=critic_lr, end_value=lr_end, transition_steps=_critic_schedule_span,
             )
             critic_tx = optax.adamw(self.critic_lr_schedule_fn, weight_decay=critic_weight_decay)
             critic_encoder_tx = optax.adamw(
                 self.critic_lr_schedule_fn if critic_vision_lr is None else optax.linear_schedule(
-                    init_value=critic_vision_lr, end_value=lr_end, transition_steps=max(num_interactions * updates_per_step, 1),
+                    init_value=critic_vision_lr, end_value=lr_end, transition_steps=_critic_schedule_span,
                 ),
                 weight_decay=critic_weight_decay,
             )
@@ -1250,6 +1469,7 @@ class ChunkedPolicyLearner:
                 actor_weight=self.actor_weight,
                 kl_regularization=self.kl_regularization,
                 use_weight_norm=self.use_weight_norm,
+                bc_regularization=self.bc_regularization,
             )
 
     def _build_critic_bound_fns(self) -> None:
@@ -1420,6 +1640,32 @@ class ChunkedPolicyLearner:
             else:
                 actor_batch = None
 
+            # critic_bootstrap_use_ema (explicit request - see conversation
+            # history and this class's own __init__ docstring for the full
+            # rationale): built fresh each inner iteration (self.network_ema_*
+            # itself updates at the end of THIS loop body, below) rather than
+            # once per update() call, same granularity as self.network/
+            # self.vision/self.obs_encoder themselves. .replace() only swaps
+            # params/batch_stats - apply_fn/tx/opt_state/step stay the live
+            # Model's own (_update's own bootstrap_network_model fallback
+            # logic, and bootstrap_next_actions itself, never read those).
+            # None (default, toggle off) reproduces today's behavior exactly
+            # - _update's own `critic_bootstrap_network_model if ... is not
+            # None else network_model` falls back to the live network_model/
+            # vision_models/obs_encoder_model, unchanged.
+            if self.critic_bootstrap_use_ema:
+                critic_bootstrap_network_model = self.network.replace(
+                    params=self.network_ema_params, batch_stats=self.network_ema_batch_stats
+                )
+                critic_bootstrap_vision_models = {
+                    cam: self.vision[cam].replace(params=self.vision_ema_params[cam]) for cam in self.vision
+                }
+                critic_bootstrap_obs_encoder_model = self.obs_encoder.replace(params=self.obs_encoder_ema_params)
+            else:
+                critic_bootstrap_network_model = None
+                critic_bootstrap_vision_models = None
+                critic_bootstrap_obs_encoder_model = None
+
             (
                 self.rng, self.network, self.vision, self.obs_encoder,
                 self.critic, self.target_critic, self.critic_vision, self.critic_target_vision,
@@ -1453,6 +1699,10 @@ class ChunkedPolicyLearner:
                 prior_vision_models=getattr(self, "prior_vision", None),
                 prior_obs_encoder_model=getattr(self, "prior_obs_encoder", None),
                 offline_mask=offline_mask_i,
+                critic_bootstrap_network_model=critic_bootstrap_network_model,
+                critic_bootstrap_vision_models=critic_bootstrap_vision_models,
+                critic_bootstrap_obs_encoder_model=critic_bootstrap_obs_encoder_model,
+                critic_bootstrap_best_of_n=self.critic_bootstrap_best_of_n,
             )
 
             if "weight_norm" in infos:
@@ -1628,24 +1878,64 @@ class ChunkedPolicyLearner:
         # _build_actor_bound_fns's own docstring) so they don't stay stale.
         self._build_actor_bound_fns()
 
-    def _maybe_delay_tx(self, tx: optax.GradientTransformation) -> optax.GradientTransformation:
+    def _data_dependent_network_kwargs(self, network_extra_kwargs: dict, normalized_actions: np.ndarray) -> dict:
+        """Hook for subclasses whose network needs fields derived from the
+        dataset (e.g. MFLearner's squash_scale). normalized_actions: every
+        transition's action, (N, act_dim), already normalized exactly as the
+        network sees it. Default: network_extra_kwargs unchanged."""
+        return network_extra_kwargs
+
+    def _maybe_delay_tx(self, tx: optax.GradientTransformation, undelayed_until: int = 0) -> optax.GradientTransformation:
         """Wraps `tx` in optax.conditionally_mask (TD3-style delayed actor
         updates - see self.policy_delay's own __init__ docstring) only when
         policy_delay>1 - the default (1, every step) returns `tx` completely
         UNWRAPPED rather than wrapped-but-numerically-a-no-op, specifically
         so every existing agent's actor/encoder opt_state pytree shape (and
         hence checkpoint compatibility - see load()) stays exactly what it
-        was before policy_delay existed. Called at both actor_tx/encoder_tx
-        construction sites (__init__ and reset_optimizers below) so the two
-        never drift out of sync (a real risk before this helper existed -
-        see conversation history: reset_optimizers used to rebuild these
-        two independently, in a separate inline optax.adamw(...) call)."""
+        was before policy_delay existed.
+
+        undelayed_until (explicit request - see conversation history: a
+        real regression caught before it shipped - see this method's own
+        git history/conversation history for the full story of what went
+        wrong first): 0 (default) means the delay is active from the very
+        first call, matching XQCFDLearner's own reference convention
+        (TD3-style delay active during pre-training too, not just online -
+        see conf/actor/xqcfd_state.yaml's own policy_delay field comment).
+        Every OTHER agent (MF included) wants pre-training completely
+        undelayed on purpose (every offline BC step is a real actor
+        update, regardless of policy_delay) and the configured delay
+        active once online RL starts - __init__ passes
+        undelayed_until=actor_pre_training_steps for those. This is ONE
+        optax transformation, built once, that already knows how to do
+        both - no separate rebuild at the offline->online transition
+        needed (confirmed directly: optax.conditionally_mask's own
+        predicate is called with a step counter that increments on EVERY
+        call, masked-off ones included, continuously from construction -
+        never resets - so `step < undelayed_until` correctly identifies
+        "still inside the known offline budget" using the exact same
+        continuous counter the LR schedule's own _schedule_span already
+        relies on, see this file's own module docstring for that
+        decision)."""
         if self.policy_delay <= 1:
             return tx
-        return optax.conditionally_mask(tx, lambda step: jnp.mod(step, self.policy_delay) == 0)
+        if undelayed_until <= 0:
+            return optax.conditionally_mask(tx, lambda step: jnp.mod(step, self.policy_delay) == 0)
+        return optax.conditionally_mask(
+            tx, lambda step: jnp.logical_or(step < undelayed_until, jnp.mod(step, self.policy_delay) == 0)
+        )
 
     def reset_optimizers(self, online_steps: Optional[int] = None) -> None:
-        """Resets every live (non-target) Model's own optimizer STATE
+        """NOT CALLED from train_parallel_chunking.py's offline->online
+        transition any more, for ANY agent (explicit request - see
+        conversation history: superseded by __init__'s own _schedule_span,
+        which sizes every agent's lr_schedule_fn to its correct combined
+        offline+online budget from construction, so there's nothing left
+        that NEEDS resetting at the transition). Kept, fully working,
+        purely so this can be reinstated later without rewriting it from
+        scratch if that decision gets revisited - the rest of this
+        docstring describes what it actually does, unchanged.
+
+        Resets every live (non-target) Model's own optimizer STATE
         (momentum/variance accumulators) back to a fresh, zero-initialized
         start, while leaving its trained params exactly as they are -
         matches xqc_learner.py's own reset_optimizers, which re-runs
@@ -1708,8 +1998,20 @@ class ChunkedPolicyLearner:
         linear schedule built once in __init__ (see its own docstring)
         keeps counting straight through the offline->online transition,
         already partway decayed by whatever actor_pre_training_steps/
-        critic_pre_training_steps consumed, exactly like the reference."""
-        if type(self).__name__ == "XQCFDLearner":
+        critic_pre_training_steps consumed, exactly like the reference.
+
+        See self.actor_optimizer_resets_online's own construction-site
+        comment (__init__) for why this early-return condition is exposed
+        as a plain attribute too, not just inlined here - a caller logging
+        lr_schedule_fn's current value from outside this class needs to
+        know, without duplicating this exact check, whether to query it at
+        update_count (meaningful only once opt_state has actually been
+        reset to 0, i.e. this method didn't early-return for this agent)
+        or at agent.network.step (the real, never-reset counter - the
+        right one for XQCFDLearner, and for the critic's own schedule too,
+        see this method's own critic-section comment below: the critic is
+        NEVER reset, for ANY agent, not just XQCFDLearner)."""
+        if not self.actor_optimizer_resets_online:
             return
         if online_steps is not None and self._lr_schedule_mode == "cosine_warmup":
             transition_steps = max(online_steps, 1)
@@ -1853,7 +2155,7 @@ class ChunkedPolicyLearner:
             return None
         return self.evaluate_critic(val_batch)
 
-    def _inference_params(self, use_ema: bool):
+    def _inference_params(self, use_ema: bool, ema_rate: Optional[float] = None):
         """Returns (network_params, network_batch_stats, vision_params,
         obs_encoder_params). network_batch_stats (explicit request - see
         conversation history and self.network_ema_batch_stats's own
@@ -1862,8 +2164,16 @@ class ChunkedPolicyLearner:
         batch_stats (or live with live) never mixes two different-speed
         summaries of the network's history - see every caller of this
         method, all updated to thread network_batch_stats through instead
-        of reaching for self.network.batch_stats directly."""
-        if use_ema and self.ema_rate < 1:
+        of reaching for self.network.batch_stats directly.
+
+        ema_rate (explicit request - see conversation history and
+        self.ema_rate_online's own construction-site comment): None
+        (default) gates off self.ema_rate, unchanged. A caller may pass a
+        different rate here (e.g. sample_actions's own online-rollout call
+        site passing self.ema_rate_online) to gate THIS call only, without
+        touching self.ema_rate or the EMA buffer's own maintenance."""
+        effective_ema_rate = self.ema_rate if ema_rate is None else ema_rate
+        if use_ema and effective_ema_rate < 1:
             return self.network_ema_params, self.network_ema_batch_stats, self.vision_ema_params, self.obs_encoder_ema_params
         return (
             self.network.params, self.network.batch_stats,
@@ -1898,7 +2208,9 @@ class ChunkedPolicyLearner:
         )
         return float(jnp.mean((jnp.asarray(action_pred) - jnp.asarray(action_window)) ** 2))
 
-    def compute_action_range(self, obs_window: np.ndarray, images: Dict[str, np.ndarray]) -> Dict[str, float]:
+    def compute_action_range(
+        self, obs_window: np.ndarray, images: Dict[str, np.ndarray], ema_rate: Optional[float] = None,
+    ) -> Dict[str, float]:
         """Plain output-range diagnostic (mean/max/min, NORMALIZED/network-
         output units - explicit request, see conversation history: the
         point is to see the network's own raw output scale directly, to
@@ -1924,10 +2236,20 @@ class ChunkedPolicyLearner:
         once-per-epoch diagnostic call - no existing differentiable
         forward pass to reuse the way update_actor's own online-phase
         version does, since update_actor_bc's own loss() operates on a
-        noised version of the recorded action, never a full sample)."""
+        noised version of the recorded action, never a full sample).
+
+        ema_rate (explicit request - see conversation history): forwarded
+        straight to _inference_params - None (default) reproduces today's
+        behavior exactly (self.ema_rate). Pass 1.0 to force LIVE weights
+        instead, for a direct, same-batch comparison against the EMA'd
+        call above - e.g. to check whether the live network's own raw
+        output is saturating/collapsing in a way the EMA'd one isn't,
+        rather than inferring that indirectly from eval success rate."""
         images_jnp = rescale_images(images)
         act_shape = (obs_window.shape[0], self.Ta, self.act_dim)
-        network_params, network_batch_stats, vision_params, obs_encoder_params = self._inference_params(use_ema=True)
+        network_params, network_batch_stats, vision_params, obs_encoder_params = self._inference_params(
+            use_ema=True, ema_rate=ema_rate,
+        )
         self.rng, infer_rng = jax.random.split(self.rng)
         action_pred_real = jnp.asarray(self.infer_fn(
             self.network, self.vision, self.obs_encoder,
@@ -1942,6 +2264,69 @@ class ChunkedPolicyLearner:
             "max": float(action_pred.max()),
             "min": float(action_pred.min()),
         }
+
+    @property
+    def supports_policy_loglik(self) -> bool:
+        """True when the actor network has a flow_map (MeanFlow: actor.py's
+        policy_loglik, via its Jacobian) or is an explicit distribution
+        (XQCFD: actor.py's distribution_policy_loglik, exact)."""
+        return hasattr(self.network.apply_fn, "flow_map") or hasattr(self.network.apply_fn, "distribution")
+
+    def compute_policy_loglik(
+        self, obs_window: np.ndarray, images: Dict[str, np.ndarray], rng: jax.Array,
+        num_spread_samples: int = 8, jac_chunk: int = 16, use_prior: bool = False,
+    ) -> Dict[str, np.ndarray]:
+        """Per-state log-likelihood/spread diagnostic - see actor.py's
+        policy_loglik (flow_map networks) / distribution_policy_loglik
+        (explicit-distribution networks, jac_chunk unused). Uses exactly the
+        params the ONLINE rollout samples with (ema_rate=self.ema_rate_online,
+        as train_parallel_chunking.py's own rollout call), so it measures the
+        policy actually being run. rng is passed in (not split off self.rng)
+        so enabling this diagnostic leaves the training RNG stream untouched.
+
+        use_prior (explicit request - see conversation history): False
+        (default) is the behavior above, unchanged. True swaps in
+        self.prior_network/prior_vision/prior_obs_encoder's own params/
+        batch_stats instead - the frozen BC-pretrained snapshot taken once
+        at the offline->online transition (train_parallel_chunking.py's
+        own first_online_transition block), never gradient-updated after
+        that (tx=None - see this class's own __init__). Same exact
+        diagnostic computation either way, just evaluated at a different,
+        fixed set of params - this is the policy wasserstein_regularization/
+        kl_regularization's own teacher snapshot is pulled toward (or
+        measured against), and the one we'd hope stays stationary (its own
+        p(own sample|state) shouldn't drift, since nothing ever updates it)
+        across online rollout - any drift here would point at the
+        snapshot/batch_stats plumbing, not the policy itself, since a
+        truly frozen set of params has no mechanism to change its own
+        likelihood of its own samples over time."""
+        if use_prior:
+            network_params = self.prior_network.params
+            network_batch_stats = self.prior_network.batch_stats
+            vision_params = {cam: m.params for cam, m in self.prior_vision.items()}
+            obs_encoder_params = self.prior_obs_encoder.params
+        else:
+            network_params, network_batch_stats, vision_params, obs_encoder_params = self._inference_params(
+                use_ema=True, ema_rate=self.ema_rate_online,
+            )
+        if not hasattr(self.network.apply_fn, "flow_map"):
+            out = distribution_policy_loglik(
+                self.network, self.vision, self.obs_encoder,
+                network_params, vision_params, obs_encoder_params,
+                jnp.asarray(obs_window), rescale_images(images), self.obs_offset, self.obs_scale, rng,
+                camera_keys=self.camera_keys, random_crop=self.random_crop, crop_shape=self.crop_shape,
+                num_spread_samples=num_spread_samples, network_batch_stats=network_batch_stats,
+            )
+            return {k: np.asarray(v) for k, v in out.items()}
+        out = policy_loglik(
+            self.network, self.vision, self.obs_encoder,
+            network_params, vision_params, obs_encoder_params,
+            jnp.asarray(obs_window), rescale_images(images), self.obs_offset, self.obs_scale, rng,
+            camera_keys=self.camera_keys, random_crop=self.random_crop, crop_shape=self.crop_shape,
+            act_shape=(self.Ta, self.act_dim), num_spread_samples=num_spread_samples, jac_chunk=jac_chunk,
+            network_batch_stats=network_batch_stats,
+        )
+        return {k: np.asarray(v) for k, v in out.items()}
 
     def reset_policy(self) -> None:
         """Full reset of chunk-execution state. Call once at the start of a
@@ -1960,10 +2345,17 @@ class ChunkedPolicyLearner:
         temperature: float = 1.0,
         images: Optional[Dict[str, np.ndarray]] = None,
         use_ema: bool = True,
+        ema_rate: Optional[float] = None,
+        best_of_n: int = 1,
     ) -> np.ndarray:
         """Denoising/flow-map solve, executed as a receding-horizon action
         chunk (bookkeeping in ChunkExecutor; this method's own job is only
         to supply the actual network inference as a callback).
+
+        ema_rate: forwarded straight to _inference_params - see its own
+        ema_rate param docstring and self.ema_rate_online's construction-
+        site comment. None (default) changes nothing for any existing
+        caller.
 
         temperature (explicit request - see conversation history, and
         xqc/agents/chunking/actor.py's own infer() docstring for the full
@@ -1979,19 +2371,63 @@ class ChunkedPolicyLearner:
         XQCFD's own network actually uses this value (network_accepts_
         temperature, bound below) - every other actor in this family has a
         deterministic .sample() with no temperature concept, so this stays
-        a complete no-op for DP/FM/MF/MIP/NF/BC/AF exactly as before."""
+        a complete no-op for DP/FM/MF/MIP/NF/BC/AF exactly as before.
+
+        best_of_n (explicit request - see conversation history: the
+        rollout-side counterpart of ChunkedPolicyLearner's own
+        critic_bootstrap_best_of_n/_update's actor-bootstrap ranking - same
+        "optimal policy", no actor gradient update involved, just sample N
+        candidate chunks from the actor and keep the one the LIVE critic
+        (self.critic/self.critic_vision/self.critic_obs_encoder, NOT the
+        target critic - rollout should always act on the most up-to-date Q
+        estimate, unlike the TD target which deliberately uses the frozen
+        target) scores highest. 1 (default) is a true no-op - score_fn is
+        never built, infer_fn takes the exact single-.sample() path it
+        always took. >1 needs self.critic to exist (raises otherwise - no
+        sane ranking without one). Scoring reuses self.compute_q_fn
+        (already bound by _build_critic_bound_fns, the SAME function
+        update_actor's own Q-maximization term calls) at the SAME obs
+        window/images this call's own actor encoding already uses - safe
+        since this codebase has exactly one shared self.To for both actor
+        and critic (no separate critic-side window length - see
+        self.critic_camera_keys's own construction-site comment), scored
+        on the execution_horizon-sliced prefix of each candidate (matching
+        what the critic was actually trained on - see ChunkedBatch's own
+        actions field), min-over-ensemble (TD3-style pessimism, same
+        convention bootstrap_next_actions's own score_fn callers use)."""
 
         def infer_chunk_fn(obs_history: np.ndarray, image_history: Dict[str, np.ndarray]) -> np.ndarray:
             images_jnp = {key: jnp.asarray(arr) for key, arr in image_history.items()}
             act_shape = (obs_history.shape[0], self.Ta, self.act_dim)
-            network_params, network_batch_stats, vision_params, obs_encoder_params = self._inference_params(use_ema=use_ema)
+            network_params, network_batch_stats, vision_params, obs_encoder_params = self._inference_params(use_ema=use_ema, ema_rate=ema_rate)
             self.rng, infer_rng = jax.random.split(self.rng)
+            score_fn = None
+            if best_of_n > 1:
+                if self.critic is None:
+                    raise ValueError("sample_actions: best_of_n>1 needs a critic to rank candidates against.")
+                # Tiled by best_of_n to match infer()'s own flat
+                # (B*best_of_n, ...) candidate batch (explicit fix - see
+                # infer()'s own docstring: no jax.vmap any more) - obs_window/
+                # images must have the SAME leading batch size as the
+                # candidate action this gets paired with below.
+                obs_history_tiled = jnp.repeat(jnp.asarray(obs_history), best_of_n, axis=0)
+                images_tiled = {k: jnp.repeat(v, best_of_n, axis=0) for k, v in images_jnp.items()}
+
+                def score_fn(flat_candidates):
+                    candidate_slice = flat_candidates[:, :self.execution_horizon]
+                    q = self.compute_q_fn(
+                        self.critic, self.critic_vision, self.critic_obs_encoder,
+                        obs_window=obs_history_tiled, images=images_tiled, action=candidate_slice,
+                    )
+                    return jnp.min(q, axis=0)
+
             return self.infer_fn(
                 self.network, self.vision, self.obs_encoder,
                 network_params, vision_params, obs_encoder_params,
                 jnp.asarray(obs_history), images_jnp,
                 act_shape=act_shape, rng=infer_rng, temperature=temperature,
                 network_batch_stats=network_batch_stats,
+                best_of_n=best_of_n, score_fn=score_fn,
             )
 
         return self._executor.sample_actions(observations, images, infer_chunk_fn)

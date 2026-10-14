@@ -53,9 +53,10 @@ this same logging, have been deleted - see conversation history) to log a
 full per-layer breakdown (and, learner-side, a per-layer ratio-to-init)
 under train/layer_norm/<layer path> and train/layer_norm_ratio/<layer path>.
 """
-from typing import Dict, List, Optional, Sequence, Union
+from typing import Callable, Dict, List, Optional, Sequence, Union
 
 import flax.traverse_util
+import jax
 import jax.numpy as jnp
 import optax
 
@@ -87,6 +88,8 @@ def bootstrap_next_actions(
     act_dim: int,
     actor_rng: Optional[jnp.ndarray],
     flatten: bool = False,
+    best_of_n: int = 1,
+    score_fn: Optional[Callable[[jnp.ndarray], jnp.ndarray]] = None,
 ) -> jnp.ndarray:
     """Shared by every critic variant's own {mse,categorical,hlgauss}_
     critic_loss_fn - the TD target's own bootstrap action, either
@@ -113,6 +116,44 @@ def bootstrap_next_actions(
     (obs_window, action_chunk) inputs); flatten=False (transformer) keeps
     the (B, execution_horizon, act_dim) sequence shape VMapTransformerCritic
     consumes directly.
+
+    best_of_n/score_fn (explicit request - see conversation history: the
+    "optimal policy" = sample N candidate chunks from the (possibly frozen)
+    actor, rank by Q, keep the best - no actor gradient update involved at
+    all): best_of_n=1 (default) takes the EXACT same single-.sample() code
+    path as before this was added - score_fn is never even looked at, let
+    alone called, so this is a true no-op for every existing caller.
+    best_of_n>1 draws that many i.i.d. candidate FULL Ta-length chunks -
+    WITHOUT jax.vmap (explicit fix - see conversation history: a live
+    py-spy stack trace on a real run showed the process stuck for over an
+    hour still just TRACING a jax.vmap wrapping the full actor network's
+    forward pass, not executing - nesting vmap inside an already-jitted
+    function has Python-level tracing cost that scales with how large the
+    wrapped computation is, and a full ChiUNet-family forward pass is
+    large). Instead, the batch is TILED by best_of_n along axis 0
+    (jnp.repeat, grouping each original row's own best_of_n candidates
+    consecutively) and sampled via ONE non-vmapped .sample() call at the
+    bigger (B*best_of_n,) batch size - MeanFlow's own sample(rng, shape,
+    cond) draws a single jax.random.normal(rng, shape) internally, so
+    expanding shape's own batch dim directly gives independent noise per
+    row, identical in effect to vmapping over best_of_n separate rngs, but
+    as one plain forward pass with no extra tracing machinery at all. The
+    single-candidate (best_of_n=1) case is untouched, kept as its own
+    branch rather than folded into "tile by 1", to guarantee that path
+    stays byte-for-byte identical to pre-best_of_n code.
+
+    score_fn's own calling convention changes to match (explicit request -
+    see each critic variant's own *_critic_loss_fn, which builds score_fn):
+    it now receives the FULL FLAT (B*best_of_n, execution_horizon, act_dim)
+    tensor in one call and must return a FLAT (B*best_of_n,) score array -
+    not a single-candidate (B, ...)->( B,) function called once per
+    candidate via vmap as before. The caller's own score_fn body barely
+    changes either way (same critic.apply call, just over a bigger batch)
+    - the only real adjustment needed at each call site is tiling ITS OWN
+    captured next_obs by best_of_n once, to match this flat batch size.
+    Reduced to (B, best_of_n) and argmax'd over axis 1 here. Raises if
+    best_of_n>1 but score_fn is None - there is no sane default ranking
+    without a caller-supplied critic to rank against.
 
     Lives here, alongside sarsa_td_target, rather than in vision_utils.py -
     despite calling encode_observation_from_models - because this is TD-
@@ -149,9 +190,28 @@ def bootstrap_next_actions(
         actor_variables = {"params": actor_network_model.params}
         if actor_network_model.batch_stats is not None:
             actor_variables["batch_stats"] = actor_network_model.batch_stats
-        sampled_next_action = actor_network_model.apply_fn.apply(
-            actor_variables, actor_rng, (batch_size, Ta, act_dim), actor_next_obs, method="sample"
-        )
+
+        if best_of_n > 1:
+            if score_fn is None:
+                raise ValueError("bootstrap_next_actions: best_of_n>1 needs a score_fn to rank candidates against.")
+            # jnp.repeat (not jnp.tile): groups each original row's own N
+            # candidates consecutively - [o0]*N + [o1]*N + ... - so a plain
+            # .reshape(B, N, ...) right back out (no transpose) recovers
+            # the correct (B, N) grouping, matching the batch_size*best_of_n
+            # flat shape score_fn's own tiled next_obs must be built with.
+            tiled_obs = jnp.repeat(actor_next_obs, best_of_n, axis=0)
+            flat_candidates = actor_network_model.apply_fn.apply(
+                actor_variables, actor_rng, (batch_size * best_of_n, Ta, act_dim), tiled_obs, method="sample"
+            )  # (B*N, Ta, act_dim)
+            flat_scores = score_fn(flat_candidates[:, :execution_horizon])  # (B*N,)
+            candidates = flat_candidates.reshape(batch_size, best_of_n, Ta, act_dim)
+            scores = flat_scores.reshape(batch_size, best_of_n)
+            best_idx = jnp.argmax(scores, axis=1)  # (B,)
+            sampled_next_action = jnp.take_along_axis(candidates, best_idx[:, None, None, None], axis=1)[:, 0]
+        else:
+            sampled_next_action = actor_network_model.apply_fn.apply(
+                actor_variables, actor_rng, (batch_size, Ta, act_dim), actor_next_obs, method="sample"
+            )
         next_actions = sampled_next_action[:, :execution_horizon]
     return next_actions.reshape(next_actions.shape[0], -1) if flatten else next_actions
 

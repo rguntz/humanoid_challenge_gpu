@@ -138,6 +138,7 @@ def mse_critic_loss_fn(
     execution_horizon: int = 0,
     act_dim: int = 0,
     actor_rng: Optional[jnp.ndarray] = None,
+    best_of_n: int = 1,
 ) -> Tuple[jnp.ndarray, InfoDict]:
     # train=False (eval_critic) disables random-crop AND vision batch_stats
     # mutation (see encode_condition's own `if random_crop and train`/`if
@@ -161,10 +162,32 @@ def mse_critic_loss_fn(
     obs = _flatten(obs)
     next_obs = _flatten(next_obs)
     actions = _flatten(batch.actions)
+
+    # best_of_n>1 ranking - see xqc_style/critic.py's own
+    # categorical_critic_loss_fn for the full rationale (identical pattern
+    # here, just this variant's own plain-scalar critic output - no
+    # categorical unpacking needed). score_fn now gets the FULL FLAT
+    # (B*best_of_n, ...) candidate tensor in one call, no jax.vmap (see
+    # bootstrap_next_actions's own docstring) - next_obs (already
+    # flattened above) tiled ONCE to match.
+    score_fn = None
+    if best_of_n > 1:
+        tiled_next_obs = jnp.repeat(next_obs, best_of_n, axis=0)
+
+        def score_fn(flat_candidates):
+            flat_candidate = _flatten(flat_candidates)
+            (candidate_q, _), _ = critic.apply(
+                target_critic.params, tiled_next_obs, flat_candidate,
+                batch_stats=target_critic.batch_stats, mutable=["batch_stats", "attributes", "activations"],
+                capture_intermediates=lambda mdl, method_name: isinstance(mdl, nn.Dense),
+                training=True,
+            )
+            return jnp.min(candidate_q, axis=0)
+
     next_actions = bootstrap_next_actions(
         batch, actor_network_model, actor_vision_models, actor_obs_encoder_model,
         actor_obs_offset, actor_obs_scale, actor_camera_keys, Ta, execution_horizon, act_dim, actor_rng,
-        flatten=True,
+        flatten=True, best_of_n=best_of_n, score_fn=score_fn,
     )
 
     concat_obs = jnp.concatenate((obs, next_obs), axis=0)
@@ -255,6 +278,7 @@ def update_critic(
     execution_horizon: int = 0,
     act_dim: int = 0,
     actor_rng: Optional[jnp.ndarray] = None,
+    best_of_n: int = 1,
 ) -> Tuple[Model, Dict[str, Model], Model, InfoDict]:
     """actor_network_model, when given, switches the bootstrap from
     chunked-SARSA (default - batch.next_actions, the real recorded next
@@ -286,6 +310,7 @@ def update_critic(
         actor_camera_keys=actor_camera_keys,
         Ta=Ta, execution_horizon=execution_horizon, act_dim=act_dim,
         actor_rng=actor_rng,
+        best_of_n=best_of_n,
     )
     vision_params = {cam: m.params for cam, m in vision_models.items()}
     (loss, info), (critic_grads, vision_grads, obs_encoder_grads) = jax.value_and_grad(

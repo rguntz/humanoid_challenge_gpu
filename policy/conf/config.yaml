@@ -6,6 +6,12 @@ defaults:
 # Top-level params (training, logging)
 seed: 0
 num_seeds: 1
+# reset_to_ema_at_transition: at the offline->online transition (first time
+# only), set BOTH the live actor and the frozen prior/teacher to the EMA
+# weights (params/batch_stats only - Adam state and the LR-schedule step are
+# untouched). false (default) = both stay on the live weights. Only does
+# anything when agent.ema_rate < 1 (train_parallel_chunking.py).
+reset_to_ema_at_transition: false
 # eval_num_seeds (explicit request - see conversation history):
 # train_parallel_chunking.py's own eval_env construction used to share
 # num_seeds with the training env unconditionally - harmless for a
@@ -52,6 +58,11 @@ start_training_actor: ${start_training}
 # insertion/updates begin as soon as start_training_critic/
 # start_training_actor themselves allow).
 rollout_warmup_steps: 0
+# actor_pretrain_target_success_rate: null (default) = the offline phase runs
+# its full budget. A fraction (e.g. 0.4) ends it the first time an offline
+# EMA eval's success rate ("goal") reaches it - start online RL from an
+# under-trained actor. Pair with a small eval_interval_offline.
+actor_pretrain_target_success_rate:
 # Online RL steps after the offline pretraining. 0 = actor BC pretraining only
 # (agent.actor_pre_training_steps steps; the online loop does not run).
 max_steps: 0
