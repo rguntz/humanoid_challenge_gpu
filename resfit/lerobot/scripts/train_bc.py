@@ -311,11 +311,15 @@ def _font():
         return ImageFont.load_default()
 
 
-def _annotate(frame, text, success, font):
+STATUS_COLOURS = {"SUCCESS": (0, 200, 0), "FAIL": (220, 0, 0), "FELL": (255, 140, 0)}
+
+
+def _annotate(frame, text, status, font):
+    """status: SUCCESS, FAIL, or FELL (ended because the bottle fell, env option terminate_on_fall)."""
     img = Image.fromarray(frame)
     draw = ImageDraw.Draw(img)
     draw.text((4, 2), text, fill=(255, 255, 255), font=font)
-    draw.text((4, 14), "SUCCESS" if success else "FAIL", fill=(0, 200, 0) if success else (220, 0, 0), font=font)
+    draw.text((4, 14), status, fill=STATUS_COLOURS[status], font=font)
     return np.array(img)
 
 
@@ -353,14 +357,18 @@ def evaluate(policy, env, episodes, seed, video_path, fps, pbar=None, episode_lo
                 continue
             if done_count[i] < per_env:
                 success = bool(terminated[i]) and float(reward[i]) == 1.0
+                # Ended because the bottle fell (env option terminate_on_fall): the episode's final info
+                final = info.get("final_info", {})
+                fell = bool("fell" in final and final["_fell"][i] and final["fell"][i])
+                status = "SUCCESS" if success else "FELL" if fell else "FAIL"
                 successes += success
                 lengths.append(len(frames[i]))
                 if episode_log is not None:
                     episode_log.append({"env": i, "round": int(done_count[i]), "success": success,
-                                        "length": len(frames[i])})
+                                        "fell": fell, "length": len(frames[i])})
                 n = int(done_count.sum()) + 1
                 for f in frames[i]:
-                    writer.append_data(_annotate(f, f"env {i} | episode {n}/{episodes}", success, font))
+                    writer.append_data(_annotate(f, f"env {i} | episode {n}/{episodes}", status, font))
                 if pbar is not None:
                     pbar.update(1)
             done_count[i] += 1

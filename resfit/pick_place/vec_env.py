@@ -56,8 +56,13 @@ class PickPlaceGymEnv(gym.Env):
 
     metadata = {"render_modes": ["rgb_array"]}
 
-    def __init__(self, source_path, action_mode, horizon=None):
-        self.env = PickPlaceBottleEnv(source_path, horizon=horizon, camera_names=list(CAMERA_KEYS))
+    def __init__(self, source_path, action_mode, horizon=None, env_options=None):
+        # env_options: PickPlaceBottleEnv's task options (terminate_on_fall, robot_start,
+        # robot_start_noise_deg, box_position); None: its defaults (the original task)
+        self.env = PickPlaceBottleEnv(source_path, horizon=horizon, camera_names=list(CAMERA_KEYS),
+                                      **(env_options or {}))
+        self.task_options = {k: getattr(self.env, k) for k in
+                             ("terminate_on_fall", "robot_start", "box_position")}  # as applied (vec_env.get_attr)
         self.action_mode = action_mode
         self.render_mode = "rgb_array"
         # horizon: the episode length limit, read by the residual RL (train_residual_td3.py)
@@ -187,11 +192,13 @@ def create_vectorized_env(
     debug: bool = False,
     horizon: int | None = None,
     video_key: str = "observation.images.agentview",
+    env_options: dict | None = None,
 ) -> VectorizedEnvWrapper:
     """num_envs simulators matching the LeRobot dataset in dataset_dir (see the module
     docstring); debug runs them in this process, one after the other."""
     action_mode, source_path = dataset_env_config(dataset_dir)
-    env_fns = [lambda: PickPlaceGymEnv(source_path, action_mode, horizon) for _ in range(num_envs)]
+    env_options = dict(env_options or {})
+    env_fns = [lambda: PickPlaceGymEnv(source_path, action_mode, horizon, env_options) for _ in range(num_envs)]
     if debug:
         vec_env = gym.vector.SyncVectorEnv(env_fns, autoreset_mode=gym.vector.AutoresetMode.SAME_STEP)
     else:

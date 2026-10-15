@@ -1,1 +1,0 @@
-{"eval/mean_successful_episode_length":113.18181818181819,"_timestamp":1.7919408230093393e+09,"_step":0,"environment/horizon":236,"_wandb":{"runtime":603},"_runtime":603.346447276,"eval/success_rate":0.44,"eval/mean_return":0.44}

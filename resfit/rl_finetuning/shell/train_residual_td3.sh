@@ -29,6 +29,11 @@ ACTION_SCALE="${ACTION_SCALE:-0.1}"               # largest residual, as a fract
 SEED="${SEED:-0}"
 WANDB_PROJECT="${WANDB_PROJECT:-pick-place-residual-td3}"
 WANDB_MODE="${WANDB_MODE:-online}"                # online | offline | disabled
+# Task options (resfit/pick_place/env.py), for the training and evaluation envs; defaults: the original task
+TERMINATE_ON_FALL="${TERMINATE_ON_FALL:-0}"       # 1: end an episode (reward 0) when the bottle falls outside the container
+ROBOT_START="${ROBOT_START:-demo}"                # demo (a random demo's start) | near_home (home pose +- ROBOT_START_NOISE_DEG)
+ROBOT_START_NOISE_DEG="${ROBOT_START_NOISE_DEG:-5}"
+BOX_POSITION="${BOX_POSITION:-random}"            # random | fixed (one container position for every episode)
 INFERENCE_ONLY="${INFERENCE_ONLY:-0}"             # 1: debug mode, base policy only (see above)
 INFERENCE_EPISODES="${INFERENCE_EPISODES:-200}"   # episodes in debug mode
 EXTRA_ARGS="${EXTRA_ARGS:-}"                      # other Hydra overrides, e.g. "algo.n_step=5 agent.actor_lr=1e-5"
@@ -60,6 +65,10 @@ uv run resfit/rl_finetuning/scripts/train_residual_td3.py \
     wandb.project="$WANDB_PROJECT" \
     wandb.mode="$WANDB_MODE" \
     inference_only="$([[ "$INFERENCE_ONLY" == 1 ]] && echo true || echo false)" \
+    pick_place.terminate_on_fall="$([[ "$TERMINATE_ON_FALL" == 1 ]] && echo true || echo false)" \
+    pick_place.robot_start="$ROBOT_START" \
+    pick_place.robot_start_noise_deg="$ROBOT_START_NOISE_DEG" \
+    pick_place.box_position="$BOX_POSITION" \
     inference_only_episodes="$INFERENCE_EPISODES" \
     hydra.run.dir=. hydra.output_subdir=null \
     $EXTRA_ARGS

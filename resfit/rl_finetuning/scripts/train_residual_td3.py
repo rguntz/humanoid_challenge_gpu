@@ -375,6 +375,8 @@ def main(cfg: ResidualTD3DexmgConfig):
             device=device,
             video_key=video_key,
             debug=debug,
+            # The task options (pick_place.*), the same for the training and the evaluation envs
+            env_options=OmegaConf.to_container(cfg.pick_place) if "pick_place" in cfg else None,
         )
 
         # Wrap it with the base policy wrapper
@@ -918,6 +920,15 @@ def main(cfg: ResidualTD3DexmgConfig):
 
     # Learning-rate, expressed in scientific notation for brevity (e.g. 1e-4 → 1e-04)
     _hp_parts.append(f"lr{cfg.agent.actor_lr:.0e}")
+
+    # Pick-and-place task options that differ from the original task
+    if "pick_place" in cfg:
+        if cfg.pick_place.terminate_on_fall:
+            _hp_parts.append("fallend")
+        if cfg.pick_place.robot_start != "demo":
+            _hp_parts.append(f"{cfg.pick_place.robot_start}{cfg.pick_place.robot_start_noise_deg:g}deg")
+        if cfg.pick_place.box_position != "random":
+            _hp_parts.append(f"box{cfg.pick_place.box_position}")
 
     # Additional flags ---------------------------------------------------------
     if cfg.agent.clip_q_target_to_reward_range:

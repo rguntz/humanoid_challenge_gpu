@@ -19,6 +19,11 @@ EPISODES="${EPISODES:-50}"                       # per horizon (multiple of NUM_
 NUM_ENVS="${NUM_ENVS:-25}"                       # simulators in parallel: 2 episodes each
 SEED="${SEED:-1000}"                             # 1000: the start states of train_bc's evaluations
 LAYOUTS="${LAYOUTS:-demo}"                       # random | demo (the recorded demos' layouts, at most 59 episodes)
+# Task options (resfit/pick_place/env.py), defaults: the original task
+TERMINATE_ON_FALL="${TERMINATE_ON_FALL:-0}"      # 1: end an episode when the bottle falls (FELL in the video)
+ROBOT_START="${ROBOT_START:-demo}"               # demo (a random demo's start) | near_home (home pose +- ROBOT_START_NOISE_DEG)
+ROBOT_START_NOISE_DEG="${ROBOT_START_NOISE_DEG:-5}"
+BOX_POSITION="${BOX_POSITION:-random}"           # random | fixed (one container position for every episode)
 # ---------------------------------------------------------------------------------
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
@@ -33,4 +38,6 @@ export MUJOCO_EGL_DEVICE_ID
 
 # shellcheck disable=SC2086  # one argument per horizon
 uv run resfit/lerobot/scripts/eval_bc.py --run "$RUN" --checkpoint "$CHECKPOINT" \
-    --n_action_steps $N_ACTION_STEPS --episodes "$EPISODES" --num_envs "$NUM_ENVS" --seed "$SEED" --layouts "$LAYOUTS"
+    --n_action_steps $N_ACTION_STEPS --episodes "$EPISODES" --num_envs "$NUM_ENVS" --seed "$SEED" --layouts "$LAYOUTS" \
+    --terminate_on_fall "$TERMINATE_ON_FALL" --robot_start "$ROBOT_START" \
+    --robot_start_noise_deg "$ROBOT_START_NOISE_DEG" --box_position "$BOX_POSITION"

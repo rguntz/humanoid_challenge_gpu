@@ -49,7 +49,32 @@ CAMERA_KEYS = tuple(task.CAMERAS)
 
 class PickPlaceBottleEnv(gym.Env):
     def __init__(self, dataset_path, horizon=None, render=False, camera_names=None, min_distance=None,
-                 max_tries=1000):
+                 max_tries=1000, terminate_on_fall=False, robot_start="demo", robot_start_noise_deg=5.0,
+                 box_position="random"):
+        """Options (defaults: the original behaviour):
+          terminate_on_fall      end the episode (terminated, reward 0, info["fell"]) when the bottle
+                                 has fallen: its cap touches the table while the robot does not touch
+                                 the bottle (upright, the cap is ~7 cm above the table; a bottle
+                                 falling into the container touches the container's floor, not the
+                                 table), or it dropped below the table top (knocked off the table)
+          robot_start            "demo": the start joint positions of a random demo; "near_home": the
+                                 home pose (the medoid of the demos' starts, as regenerate_dataset.py
+                                 --home) plus a uniform offset of up to robot_start_noise_deg per arm
+                                 joint, clipped to the joint ranges
+          box_position           "random": a random point in the demos' container region; "fixed":
+                                 always the same one, the demos' container position that leaves the
+                                 largest share of the bottle region at least min_distance away (the
+                                 two regions overlap: at their centroid, almost no bottle position
+                                 fits); the bottle is still random
+        """
+        if robot_start not in ("demo", "near_home"):
+            raise ValueError(f"robot_start must be 'demo' or 'near_home', got {robot_start!r}")
+        if box_position not in ("random", "fixed"):
+            raise ValueError(f"box_position must be 'random' or 'fixed', got {box_position!r}")
+        self.terminate_on_fall = terminate_on_fall
+        self.robot_start = robot_start
+        self.robot_start_noise = np.radians(robot_start_noise_deg)
+        self.box_position = box_position
         dataset_path = Path(dataset_path)
         with h5py.File(dataset_path, "r") as f:
             self.layouts = {k: f["layout"][k][:] for k in f["layout"]}
@@ -83,6 +108,12 @@ class PickPlaceBottleEnv(gym.Env):
         dist = np.linalg.norm(self.layouts["box_xy"] - self.layouts["bottle_xy"], axis=1)
         self.min_distance = dist.min() if min_distance is None else min_distance
         self.max_tries = max_tries
+        q_starts = self.layouts["robot_qpos"][:, :task.ARM]
+        d_starts = np.linalg.norm(q_starts[:, None] - q_starts[None], axis=-1)
+        self.home_row = int(np.argmin(d_starts.sum(1)))  # medoid of the demos' start poses
+        self.box_fixed = self._roomiest_box()
+        self.cap_geom = geom("bottle_cap")
+        self.table_top_z = self.bottle_z - 0.05  # well below a standing bottle's centre: off the table
 
         # Vision policies never get the ground-truth object poses (same rule as xqc's
         # robomimic env and dataset loader).
@@ -110,17 +141,34 @@ class PickPlaceBottleEnv(gym.Env):
                 return p
         raise RuntimeError("could not sample a point in the demos' region")
 
+    def _roomiest_box(self):
+        """Among the demos' container positions, the one that leaves the largest share of the bottle
+        region at least min_distance away (estimated on a fixed grid of samples: deterministic)."""
+        L = self.layouts
+        lo, hi = L["bottle_xy"].min(0), L["bottle_xy"].max(0)
+        pts = np.random.default_rng(0).uniform(lo, hi, (20000, 2))
+        pts = pts[self.bottle_hull.find_simplex(pts) >= 0]
+        room = [(np.linalg.norm(pts - box, axis=1) >= self.min_distance).mean() for box in L["box_xy"]]
+        return L["box_xy"][int(np.argmax(room))].copy()
+
     def _to_world(self, p_base):
         return self.pb + self.Rb @ np.asarray(p_base, float)
 
     def _sample_layout(self):
         L, n = self.layouts, len(self.layouts["bottle_xy"])
         robot, backdrop = self.rng.integers(n, size=2)
+        if self.robot_start == "near_home":
+            q_robot = L["robot_qpos"][self.home_row].copy()
+            lo, hi = self.model.jnt_range[:task.ARM].T
+            q_robot[:task.ARM] = np.clip(
+                q_robot[:task.ARM] + self.rng.uniform(-self.robot_start_noise, self.robot_start_noise, task.ARM), lo, hi)
+        else:
+            q_robot = L["robot_qpos"][robot]
         for _ in range(self.max_tries):
             bottle = self._sample_in(self.bottle_hull, L["bottle_xy"])
-            box = self._sample_in(self.box_hull, L["box_xy"])
+            box = self.box_fixed if self.box_position == "fixed" else self._sample_in(self.box_hull, L["box_xy"])
             if np.linalg.norm(box - bottle) >= self.min_distance:
-                return L["robot_qpos"][robot], bottle, box, backdrop
+                return q_robot, bottle, box, backdrop
         raise RuntimeError(f"no bottle / container placement {self.min_distance:.3f} m apart")
 
     def reset(self, seed=None, options=None):
@@ -184,9 +232,24 @@ class PickPlaceBottleEnv(gym.Env):
         self.q_target = q_next
         self.time_step += 1
 
-        success = bool(self.scene.in_box(d)[0])
+        success, _, _, touch_robot = self.scene.in_box(d)
+        success = bool(success)
+        fell = False
+        if self.terminate_on_fall and not success and not touch_robot:
+            fell = self._bottle_fell()
         truncated = self.time_step >= self.horizon
-        return self._obs(), float(success), success, truncated, {"success": success}
+        return self._obs(), float(success), success or fell, truncated, {"success": success, "fell": fell}
+
+    def _bottle_fell(self):
+        """The bottle's cap touches the table, or the bottle dropped below the table top."""
+        d = self.data
+        if d.xpos[self.scene.bottle][2] < self.table_top_z:
+            return True
+        for i in range(d.ncon):
+            g1, g2 = d.contact[i].geom1, d.contact[i].geom2
+            if {g1, g2} == {self.cap_geom, self.table}:
+                return True
+        return False
 
     # ---------------------------------------------------------- observation
     def _obs(self):

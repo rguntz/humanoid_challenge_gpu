@@ -466,6 +466,7 @@ simulator.
 | `NUM_ENVS` | 25 | simulators run in parallel (2 episodes each) |
 | `SEED` | 1000 | start states; 1000 is the training evaluations' (`--eval_seed`) |
 | `LAYOUTS` | `demo` | `random` or `demo` (the recorded demos' layouts, at most 59 episodes) |
+| `TERMINATE_ON_FALL`, `ROBOT_START`, `ROBOT_START_NOISE_DEG`, `BOX_POSITION` | 0, `demo`, 5, `random` | task options (`resfit/pick_place/env.py`): 1 ends an episode when the bottle falls (its cap touches the table while the robot does not hold it; FELL in the video); `near_home` starts from the medoid of the demos' start poses with up to ±`ROBOT_START_NOISE_DEG` per joint; `fixed` puts the container at the demos' position that leaves the most room for the bottle |
 
 ### Residual RL
 
@@ -492,5 +493,6 @@ it), `outputs/` (an evaluation video of every episode and Q-value plots at each 
 | `EVAL_EVERY`, `EVAL_EPISODES`, `EVAL_NUM_ENVS` | 10000, 50, 25 | evaluation cadence and size |
 | `ACTION_SCALE` | 0.1 | largest residual per normalized action dimension |
 | `SEED`, `WANDB_PROJECT`, `WANDB_MODE` | 0, `pick-place-residual-td3`, `online` | |
+| `TERMINATE_ON_FALL`, `ROBOT_START`, `ROBOT_START_NOISE_DEG`, `BOX_POSITION` | 0, `demo`, 5, `random` | task options (`resfit/pick_place/env.py`): 1 ends an episode when the bottle falls (its cap touches the table while the robot does not hold it; FELL in the video); `near_home` starts from the medoid of the demos' start poses with up to ±`ROBOT_START_NOISE_DEG` per joint; `fixed` puts the container at the demos' position that leaves the most room for the bottle |
 | `INFERENCE_ONLY`, `INFERENCE_EPISODES` | 0, 200 | 1: debug mode, only the base policy in the training rollout loop (zero residual, no noise, nothing trained or saved); `training/success_rate_last50` should converge to the base checkpoint's `eval_bc.sh` score |
 | `EXTRA_ARGS` | | other Hydra overrides of `ResidualTD3PickPlaceConfig` (`resfit/rl_finetuning/config/residual_td3.py`) |

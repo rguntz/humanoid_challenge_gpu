@@ -290,6 +290,17 @@ class ResidualTD3TwoArmCanSortConfig(ResidualTD3BoxCleanConfig):
 # Register with Hydra
 # -----------------------------------------------------------------------------
 @dataclass
+class PickPlaceTaskConfig:
+    """Task options of the pick-and-place env (resfit/pick_place/env.py), for the training and the
+    evaluation envs alike. Defaults: the original task."""
+
+    terminate_on_fall: bool = False  # end an episode (reward 0) when the bottle falls outside the container
+    robot_start: str = "demo"  # demo (a random demo's start pose) | near_home (home pose + offsets)
+    robot_start_noise_deg: float = 5.0  # near_home: largest offset per arm joint
+    box_position: str = "random"  # random (the demos' container region) | fixed (one position)
+
+
+@dataclass
 class ResidualTD3PickPlaceConfig(ResidualTD3DexmgConfig):
     """The bottle pick-and-place task (resfit/pick_place/): the env, the offline transitions and the
     action/state normalization all come from the local LeRobot dataset offline_data.root; the base
@@ -314,6 +325,8 @@ class ResidualTD3PickPlaceConfig(ResidualTD3DexmgConfig):
     )
 
     base_policy: BasePolicyConfig = field(default_factory=BasePolicyConfig)
+
+    pick_place: PickPlaceTaskConfig = field(default_factory=PickPlaceTaskConfig)
 
     wandb: WandBConfig = field(default_factory=lambda: WandBConfig(project="pick-place-residual-td3"))
 

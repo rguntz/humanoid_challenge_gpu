@@ -57,6 +57,12 @@ def parse_args():
     p.add_argument("--seed", type=int, default=1000, help="seed of the start states (train_bc's --eval_seed)")
     p.add_argument("--layouts", default="random", choices=["random", "demo"],
                    help="start layouts: random (as in training's evaluations) or the recorded demos'")
+    # Task options of the env (resfit/pick_place/env.py), defaults: the original task
+    p.add_argument("--terminate_on_fall", type=int, default=0, choices=[0, 1],
+                   help="1: end an episode when the bottle falls (FELL in the video)")
+    p.add_argument("--robot_start", default="demo", choices=["demo", "near_home"])
+    p.add_argument("--robot_start_noise_deg", type=float, default=5.0)
+    p.add_argument("--box_position", default="random", choices=["random", "fixed"])
     p.add_argument("--device", default="cuda")
     args = p.parse_args()
     if args.episodes % args.num_envs:
@@ -85,7 +91,11 @@ def main():
 
     out_dir = run_dir / "evals_offline"
     out_dir.mkdir(exist_ok=True)
-    env = create_vectorized_env(run_cfg["dataset"], num_envs=args.num_envs, device=args.device)
+    env_options = {"terminate_on_fall": bool(args.terminate_on_fall), "robot_start": args.robot_start,
+                   "robot_start_noise_deg": args.robot_start_noise_deg, "box_position": args.box_position}
+    logger.info(f"env options: {env_options}")
+    env = create_vectorized_env(run_cfg["dataset"], num_envs=args.num_envs, device=args.device,
+                                env_options=env_options)
     per_env = args.episodes // args.num_envs
     demo_queues = None
     if args.layouts == "demo":
@@ -112,15 +122,18 @@ def main():
                 se = (success_rate * (1 - success_rate) / args.episodes) ** 0.5
                 per_round = [sum(e["success"] for e in episode_log if e["round"] == r) / args.num_envs
                              for r in range(per_env)]
+                fell_rate = sum(e["fell"] for e in episode_log) / args.episodes
                 logger.info(f"n_action_steps {n:>3d}: success rate {100 * success_rate:.1f} % "
-                            f"(± {100 * se:.1f}), per round {[f'{100 * x:.0f} %' for x in per_round]}, "
+                            f"(± {100 * se:.1f}), fell {100 * fell_rate:.1f} %, "
+                            f"per round {[f'{100 * x:.0f} %' for x in per_round]}, "
                             f"mean length {mean_length:.0f}, {elapsed:.0f} s -> {video.name}")
                 time = f"{datetime.now():%Y-%m-%d %H:%M:%S}"
                 common = {"time": time, "checkpoint": args.checkpoint, "step": step, "n_action_steps": n,
-                          "layouts": args.layouts, "seed": args.seed}
+                          "layouts": args.layouts, "seed": args.seed, "env_options": env_options}
                 with open(out_dir / "results.jsonl", "a") as f:
                     f.write(json.dumps({**common, "episodes": args.episodes, "success_rate": success_rate,
-                                        "success_rate_se": se, "success_rate_per_round": per_round,
+                                        "success_rate_se": se, "fell_rate": fell_rate,
+                                        "success_rate_per_round": per_round,
                                         "mean_episode_length": mean_length, "video": video.name}) + "\n")
                 with open(out_dir / "episodes.jsonl", "a") as f:
                     for e in episode_log:
