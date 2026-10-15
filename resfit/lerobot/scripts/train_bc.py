@@ -114,11 +114,13 @@ def parse_args():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--dataset", required=False, help="LeRobot dataset folder (videos/task/dataset_sim/lerobot/...)")
     p.add_argument("--policy", default="act",
-                   choices=["act", "mlp", "diffusion", "unet_bc", "flow_matching", "legacy_bc", "smolvla"],
+                   choices=["act", "mlp", "diffusion", "unet_bc", "flow_matching", "legacy_bc", "smolvla", "pi0"],
                    help="act; mlp (ACT's vision, an MLP head: policies/mlp/); diffusion (Diffusion Policy's "
                         "Unet, denoising objective); unet_bc (the same Unet trained by plain behaviour "
                         "cloning); flow_matching (the same Unet, flow matching); legacy_bc (the earlier JAX "
-                        "pipeline's plain BC): see make_bc_policy_config; smolvla (LeRobot's SmolVLA)")
+                        "pipeline's plain BC): see make_bc_policy_config; smolvla (LeRobot's SmolVLA); "
+                        "pi0 (LeRobot's PI0: PaliGemma VLM backbone + flow-matching action expert, "
+                        "policies/pi0/) - n_obs_steps is forced to 1 (PI0Config's own hard constraint)")
     p.add_argument("--chunk_size", type=int, default=16, help="Ta: actions predicted per policy call")
     p.add_argument("--n_action_steps", type=int, default=8,
                    help="execution horizon: actions of each chunk executed before the next call")
@@ -131,7 +133,8 @@ def parse_args():
     p.add_argument("--optimizer", default="adamw", choices=["adamw", "legacy", "policy"],
                    help="adamw: constant learning rate; legacy, policy: see the module docstring")
     p.add_argument("--pretrained", default=None,
-                   help="smolvla: checkpoint to initialize from (folder or Hugging Face id, e.g. lerobot/smolvla_base)")
+                   help="smolvla/pi0: checkpoint to initialize from (folder or Hugging Face id, e.g. "
+                        "lerobot/smolvla_base or lerobot/pi0)")
     p.add_argument("--policy_kwargs", default="", help="other policy config overrides, as 'key=value key=value'")
     p.add_argument("--normalizer", default="mean_std", choices=["mean_std", "per_dim_range"],
                    help="state and action normalization (see the module docstring)")
@@ -214,9 +217,9 @@ def make_bc_policy_config(args, ds_meta):
     kwargs = parse_policy_kwargs(args.policy_kwargs)
     if args.n_obs_steps is not None:
         kwargs = {"n_obs_steps": args.n_obs_steps, **kwargs}
-    if args.policy == "smolvla" and args.pretrained:
-        kwargs = {**pretrained_config(args.pretrained), **kwargs}
-    if args.policy in ("act", "mlp", "smolvla"):
+    if args.policy in ("smolvla", "pi0") and args.pretrained:
+        kwargs = {**pretrained_config(args.policy, args.pretrained), **kwargs}
+    if args.policy in ("act", "mlp", "smolvla", "pi0"):
         return make_policy_config(args.policy, chunk_size=args.chunk_size, n_action_steps=args.n_action_steps,
                                   **kwargs)
     h, w = ds_meta.features[ds_meta.camera_keys[0]]["shape"][:2]
@@ -231,12 +234,15 @@ def make_bc_policy_config(args, ds_meta):
     return make_policy_config("diffusion", **{**defaults, **kwargs})
 
 
-def pretrained_config(checkpoint):
-    """The architecture settings of a SmolVLA checkpoint's config.json (folder or Hugging Face
+def pretrained_config(policy, checkpoint):
+    """The architecture settings of a SmolVLA/PI0 checkpoint's config.json (folder or Hugging Face
     id), so the policy is built as the checkpoint was (e.g. lerobot/smolvla_base pads the task
     sentence to max_length). Left out: what this script sets (features, chunk, normalization,
     device) and load_vlm_weights (the checkpoint's weights are loaded afterwards anyway)."""
-    from lerobot.common.policies.smolvla.configuration_smolvla import SmolVLAConfig
+    if policy == "smolvla":
+        from lerobot.common.policies.smolvla.configuration_smolvla import SmolVLAConfig as ConfigClass
+    else:
+        from lerobot.common.policies.pi0.configuration_pi0 import PI0Config as ConfigClass
     path = Path(checkpoint) / "config.json"
     if not path.exists():
         from huggingface_hub import hf_hub_download
@@ -244,7 +250,7 @@ def pretrained_config(checkpoint):
     cfg = json.loads(path.read_text())
     skip = {"type", "input_features", "output_features", "normalization_mapping", "device", "use_amp",
             "chunk_size", "n_action_steps", "n_obs_steps", "load_vlm_weights"}
-    fields = set(SmolVLAConfig.__dataclass_fields__)
+    fields = set(ConfigClass.__dataclass_fields__)
     return {k: tuple(v) if isinstance(v, list) else v for k, v in cfg.items() if k in fields and k not in skip}
 
 
@@ -463,9 +469,12 @@ def main():
     autocast = (lambda: torch.autocast(device.type, dtype=torch.bfloat16)) if args.precision == "bf16" \
         else contextlib.nullcontext
     if args.pretrained:
-        if args.policy != "smolvla":
-            raise SystemExit("--pretrained is for --policy smolvla")
-        from resfit.lerobot.policies.smolvla.modeling_smolvla import load_pretrained_weights
+        if args.policy not in ("smolvla", "pi0"):
+            raise SystemExit("--pretrained is for --policy smolvla or pi0")
+        if args.policy == "smolvla":
+            from resfit.lerobot.policies.smolvla.modeling_smolvla import load_pretrained_weights
+        else:
+            from resfit.lerobot.policies.pi0.modeling_pi0 import load_pretrained_weights
         logger.info(f"Initialized from {args.pretrained}: {load_pretrained_weights(policy, args.pretrained)}")
     if args.optimizer == "policy":
         optimizer = policy_cfg.get_optimizer_preset().build(policy.get_optim_params())

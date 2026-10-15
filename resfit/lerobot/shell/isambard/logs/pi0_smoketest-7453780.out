@@ -1,0 +1,45 @@
+Uninstalled 1 package in 36ms
+Installed 1 package in 76ms
+Uninstalled 1 package in 33ms
+Installed 1 package in 67ms
+2026-10-15 19:09:46,786 | INFO | Cuda backend detected, using cuda.
+2026-10-15 19:09:46,786 | WARNING | Device 'None' is not available. Switching to 'cuda'.
+2026-10-15 19:09:46,787 | WARNING | 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torchvision/io/_video_deprecation_warning.py:9: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
+  warnings.warn(
+2026-10-15 19:11:04,643 | INFO | Initialized from lerobot/pi0: {'loaded': 777, 'unused_in_checkpoint': 0}
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
+wandb: Currently logged in as: romainguntz (romainguntz-eth-z-rich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run fvs4gk39
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_19-08-42_pi0_smoketest/wandb/run-20261015_191105-fvs4gk39
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 2026-10-15_19-08-42_pi0_smoketest
+wandb: ⭐️ View project at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest
+wandb: 🚀 View run at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/fvs4gk39
+2026-10-15 19:11:06,894 | INFO | Run folder: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_19-08-42_pi0_smoketest | W&B: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/fvs4gk39
+Traceback (most recent call last):
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/scripts/train_bc.py", line 585, in <module>
+    main()
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/scripts/train_bc.py", line 558, in main
+    success_rate, mean_length, eval_s = evaluate(eval_policy, eval_env, args.eval_episodes, eval_seed,
+                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/scripts/train_bc.py", line 353, in evaluate
+    action = policy.select_action(obs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/policies/pi0/modeling_pi0.py", line 81, in select_action
+    actions = self.model.sample_actions(images, img_masks, lang_tokens, lang_masks, state, noise=noise)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/lerobot/common/policies/pi0/modeling_pi0.py", line 666, in sample_actions
+    prefix_embs, prefix_pad_masks, prefix_att_masks = self.embed_prefix(
+                                                      ^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/lerobot/common/policies/pi0/modeling_pi0.py", line 556, in embed_prefix
+    embs = torch.cat(embs, dim=1)
+           ^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Sizes of tensors must match except in dimension 1. Expected size 5 but got size 48 for tensor number 1 in the list.
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33m2026-10-15_19-08-42_pi0_smoketest[0m at: [34mhttps://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/fvs4gk39[0m
+[1;34mwandb[0m: Find logs at: [1;35moutputs/resfit_bc/2026-10-15_19-08-42_pi0_smoketest/wandb/run-20261015_191105-fvs4gk39/logs[0m

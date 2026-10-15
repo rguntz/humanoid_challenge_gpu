@@ -1,0 +1,91 @@
+Uninstalled 1 package in 30ms
+Installed 1 package in 75ms
+Uninstalled 1 package in 25ms
+Installed 1 package in 63ms
+2026-10-15 18:46:21,531 | INFO | Cuda backend detected, using cuda.
+2026-10-15 18:46:21,531 | WARNING | Device 'None' is not available. Switching to 'cuda'.
+2026-10-15 18:46:21,531 | WARNING | 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+Downloading data:   0%|          | 0/59 [00:00<?, ?files/s]Downloading data: 100%|██████████| 59/59 [00:00<00:00, 15603.02files/s]
+Generating train split: 0 examples [00:00, ? examples/s]Generating train split: 2949 examples [00:00, 27824.21 examples/s]Generating train split: 6590 examples [00:00, 32073.53 examples/s]Generating train split: 7054 examples [00:00, 30936.73 examples/s]
+/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torchvision/io/_video_deprecation_warning.py:9: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
+  warnings.warn(
+Traceback (most recent call last):
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 403, in hf_raise_for_status
+    response.raise_for_status()
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/requests/models.py", line 1167, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 401 Client Error: Unauthorized for url: https://huggingface.co/google/paligemma-3b-pt-224/resolve/main/config.json
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 470, in cached_files
+    hf_hub_download(
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1014, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1121, in _hf_hub_download_to_cache_dir
+    _raise_on_head_call_error(head_call_error, force_download, local_files_only)
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1662, in _raise_on_head_call_error
+    raise head_call_error
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1550, in _get_metadata_or_catch_error
+    metadata = get_hf_file_metadata(
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_validators.py", line 114, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 1467, in get_hf_file_metadata
+    r = _request_wrapper(
+        ^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 283, in _request_wrapper
+    response = _request_wrapper(
+               ^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/file_download.py", line 307, in _request_wrapper
+    hf_raise_for_status(response)
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/huggingface_hub/utils/_http.py", line 420, in hf_raise_for_status
+    raise _format(GatedRepoError, message, response) from e
+huggingface_hub.errors.GatedRepoError: 401 Client Error. (Request ID: Root=1-6ad11f98-7904b8ba77ebd47117d4fa53;b977ffe1-a356-437f-bfd7-643b20ea0fff)
+
+Cannot access gated repo for url https://huggingface.co/google/paligemma-3b-pt-224/resolve/main/config.json.
+Access to model google/paligemma-3b-pt-224 is restricted. You must have access to it and be authenticated to access it. Please log in.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/scripts/train_bc.py", line 585, in <module>
+    main()
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/scripts/train_bc.py", line 465, in main
+    policy = make_policy(policy_cfg, ds_meta=ds_meta)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/policies/factory.py", line 167, in make_policy
+    policy = policy_cls(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/lerobot/common/policies/pi0/modeling_pi0.py", line 251, in __init__
+    self.language_tokenizer = AutoTokenizer.from_pretrained("google/paligemma-3b-pt-224")
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/transformers/models/auto/tokenization_auto.py", line 970, in from_pretrained
+    config = AutoConfig.from_pretrained(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/transformers/models/auto/configuration_auto.py", line 1153, in from_pretrained
+    config_dict, unused_kwargs = PretrainedConfig.get_config_dict(pretrained_model_name_or_path, **kwargs)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/transformers/configuration_utils.py", line 595, in get_config_dict
+    config_dict, kwargs = cls._get_config_dict(pretrained_model_name_or_path, **kwargs)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/transformers/configuration_utils.py", line 654, in _get_config_dict
+    resolved_config_file = cached_file(
+                           ^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 312, in cached_file
+    file = cached_files(path_or_repo_id=path_or_repo_id, filenames=[filename], **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/transformers/utils/hub.py", line 533, in cached_files
+    raise OSError(
+OSError: You are trying to access a gated repo.
+Make sure to have access to it at https://huggingface.co/google/paligemma-3b-pt-224.
+401 Client Error. (Request ID: Root=1-6ad11f98-7904b8ba77ebd47117d4fa53;b977ffe1-a356-437f-bfd7-643b20ea0fff)
+
+Cannot access gated repo for url https://huggingface.co/google/paligemma-3b-pt-224/resolve/main/config.json.
+Access to model google/paligemma-3b-pt-224 is restricted. You must have access to it and be authenticated to access it. Please log in.

@@ -1,0 +1,46 @@
+Uninstalled 1 package in 43ms
+Installed 1 package in 95ms
+Uninstalled 1 package in 31ms
+Installed 1 package in 80ms
+2026-10-15 21:06:07,182 | INFO | Cuda backend detected, using cuda.
+2026-10-15 21:06:07,182 | WARNING | Device 'None' is not available. Switching to 'cuda'.
+2026-10-15 21:06:07,183 | WARNING | 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torchvision/io/_video_deprecation_warning.py:9: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
+  warnings.warn(
+2026-10-15 21:07:40,139 | INFO | Initialized from lerobot/pi0: {'loaded': 777, 'unused_in_checkpoint': 0}
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
+wandb: Currently logged in as: romainguntz (romainguntz-eth-z-rich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run prs089so
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_21-04-58_pi0_smoketest/wandb/run-20261015_210740-prs089so
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 2026-10-15_21-04-58_pi0_smoketest
+wandb: ⭐️ View project at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest
+wandb: 🚀 View run at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/prs089so
+2026-10-15 21:07:43,274 | INFO | Run folder: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_21-04-58_pi0_smoketest | W&B: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/prs089so
+2026-10-15 21:08:45,505 | INFO | evaluation: 5 episodes in 34 s
+2026-10-15 21:08:45,507 | INFO | [step 10] success rate 0.0 % (best 0.0 % at step 10)
+2026-10-15 21:09:01,919 | INFO | New best: saved /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_21-04-58_pi0_smoketest/best
+2026-10-15 21:09:40,739 | INFO | evaluation: 5 episodes in 34 s
+2026-10-15 21:09:40,741 | INFO | [step 20] success rate 0.0 % (best 0.0 % at step 10)
+wandb: updating run metadata
+wandb: uploading output.log; uploading wandb-summary.json; uploading config.yaml
+wandb: uploading wandb-summary.json; uploading config.yaml
+wandb: 
+wandb: Run history:
+wandb:   eval/best_success_rate ▁▁
+wandb: eval/mean_episode_length ▁▁
+wandb:        eval/success_rate ▁▁
+wandb:              time/eval_s █▁
+wandb: 
+wandb: Run summary:
+wandb:   eval/best_success_rate 0
+wandb: eval/mean_episode_length 236
+wandb:        eval/success_rate 0
+wandb:              time/eval_s 34.01884
+wandb: 
+wandb: 🚀 View run 2026-10-15_21-04-58_pi0_smoketest at: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/prs089so
+wandb: ⭐️ View project at: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./outputs/resfit_bc/2026-10-15_21-04-58_pi0_smoketest/wandb/run-20261015_210740-prs089so/logs
+2026-10-15 21:10:01,461 | INFO | Training finished. Best success rate 0.0 % at step 10: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_21-04-58_pi0_smoketest/best

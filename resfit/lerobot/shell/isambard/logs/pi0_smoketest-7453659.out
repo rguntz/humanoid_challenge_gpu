@@ -1,0 +1,42 @@
+Uninstalled 1 package in 45ms
+Installed 1 package in 129ms
+Uninstalled 1 package in 45ms
+Installed 1 package in 123ms
+2026-10-15 19:00:41,783 | INFO | Cuda backend detected, using cuda.
+2026-10-15 19:00:41,783 | WARNING | Device 'None' is not available. Switching to 'cuda'.
+2026-10-15 19:00:41,784 | WARNING | 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torchvision/io/_video_deprecation_warning.py:9: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
+  warnings.warn(
+2026-10-15 19:02:06,030 | INFO | Initialized from lerobot/pi0: {'loaded': 777, 'unused_in_checkpoint': 0}
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
+wandb: Currently logged in as: romainguntz (romainguntz-eth-z-rich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run lzjn29o7
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_18-59-20_pi0_smoketest/wandb/run-20261015_190206-lzjn29o7
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 2026-10-15_18-59-20_pi0_smoketest
+wandb: ⭐️ View project at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest
+wandb: 🚀 View run at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/lzjn29o7
+2026-10-15 19:02:08,852 | INFO | Run folder: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-15_18-59-20_pi0_smoketest | W&B: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/lzjn29o7
+Traceback (most recent call last):
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/scripts/train_bc.py", line 585, in <module>
+    main()
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/scripts/train_bc.py", line 533, in main
+    loss, loss_dict = policy.forward(batch)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/resfit/lerobot/policies/pi0/modeling_pi0.py", line 98, in forward
+    return super().forward(batch, noise, time)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/lerobot/common/policies/pi0/modeling_pi0.py", line 324, in forward
+    losses = self.model.forward(images, img_masks, lang_tokens, lang_masks, state, actions, noise, time)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/lerobot/common/policies/pi0/modeling_pi0.py", line 638, in forward
+    att_2d_masks = make_att_2d_masks(pad_masks, att_masks)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/lerobot/common/policies/pi0/modeling_pi0.py", line 127, in make_att_2d_masks
+    att_2d_masks = att_2d_masks & pad_2d_masks
+                   ~~~~~~~~~~~~~^~~~~~~~~~~~~~
+RuntimeError: The size of tensor a (313) must match the size of tensor b (321) at non-singleton dimension 2
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33m2026-10-15_18-59-20_pi0_smoketest[0m at: [34mhttps://wandb.ai/romainguntz-eth-z-rich/pick-place-bc-smoketest/runs/lzjn29o7[0m
+[1;34mwandb[0m: Find logs at: [1;35moutputs/resfit_bc/2026-10-15_18-59-20_pi0_smoketest/wandb/run-20261015_190206-lzjn29o7/logs[0m

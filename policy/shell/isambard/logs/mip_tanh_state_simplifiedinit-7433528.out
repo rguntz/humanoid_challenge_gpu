@@ -3439,3 +3439,2351 @@ return 0.02
 [2026-10-15 10:48:25,516][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_150000/critic_target_obs_encoder.orbax-checkpoint-tmp-186 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_150000/critic_target_obs_encoder
 [2026-10-15 10:48:25,518][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_150000/critic_target_obs_encoder`.
 [2026-10-15 10:48:25,518][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_target_obs_encoder
+WARNING: Linesearch objective is not convex
+
+r 0.0776725560426712
+r 0.6824628114700317
+r 0.06733456999063492
+r 0.6824628114700317
+r 0.06187371164560318
+r 0.6824628114700317
+r 0.06725966930389404
+r 0.6824628114700317
+r 0.08471418172121048
+r 0.6824628114700317
+r 0.04456406459212303
+r 0.6824628114700317
+r 0.11582682281732559
+r 0.6824628114700317
+r 0.07722359150648117
+r 0.6824628114700317
+r 0.05490070953965187
+r 0.6824628114700317
+r 0.07787013053894043
+r 0.6824628114700317
+r 0.06019946187734604
+r 0.6824628114700317
+r 0.04588678479194641
+r 0.6824628114700317
+r 0.050084568560123444
+r 0.6824628114700317
+r 0.05747924745082855
+r 0.6824628114700317
+r 0.07076013088226318
+r 0.6824628114700317
+r 0.06025068461894989
+r 0.6824628114700317
+r 0.0626000463962555
+r 0.6824628114700317
+r 0.07267880439758301
+r 0.6824628114700317
+r 0.027316587045788765
+r 0.6824628114700317
+r 0.07783617079257965
+r 0.6824628114700317
+r 0.06348821520805359
+r 0.6824628114700317
+r 0.07056885212659836
+r 0.6824628114700317
+r 0.08241888880729675
+r 0.6824628114700317
+r 0.07629361748695374
+r 0.6824628114700317
+r 0.07014960795640945
+r 0.6824628114700317
+r 0.04779624193906784
+r 0.6824628114700317
+r 0.07878895103931427
+r 0.6824628114700317
+r 0.0584481842815876
+r 0.6824628114700317
+r 0.0557575449347496
+r 0.6824628114700317
+r 0.08171823620796204
+r 0.6824628114700317
+r 0.0671062171459198
+r 0.6824628114700317
+r 0.07802645862102509
+r 0.6824628114700317
+r 0.06883382797241211
+r 0.6824628114700317
+r 0.053743988275527954
+r 0.6824628114700317
+r 0.052632566541433334
+r 0.6824628114700317
+r 0.04357651621103287
+r 0.6824628114700317
+r 0.06987610459327698
+r 0.6824628114700317
+r 0.06120587885379791
+r 0.6824628114700317
+r 0.07108089327812195
+r 0.6824628114700317
+r 0.06481212377548218
+r 0.6824628114700317
+r 0.05817168205976486
+r 0.6824628114700317
+r 0.09566079825162888
+r 0.6824628114700317
+r 0.03888896107673645
+r 0.6824628114700317
+r 0.07357104867696762
+r 0.6824628114700317
+r 0.10106804966926575
+r 0.6824628114700317
+r 0.09663368761539459
+r 0.6824628114700317
+r 0.07900744676589966
+r 0.6824628114700317
+r 0.05026983469724655
+r 0.6824628114700317
+r 0.07596036791801453
+r 0.6824628114700317
+r 0.04156528785824776
+r 0.6824628114700317
+r 0.09729649126529694
+r 0.6824628114700317
+r 0.070818230509758
+r 0.6824628114700317
+r 0.06185291334986687
+r 0.6824628114700317
+r 0.05631541460752487
+r 0.6824628114700317
+r 0.0651320070028305
+r 0.6824628114700317
+r 0.0595383420586586
+r 0.6824628114700317
+r 0.08906049281358719
+r 0.6824628114700317
+r 0.0783771201968193
+r 0.6824628114700317
+r 0.06320594996213913
+r 0.6824628114700317
+r 0.0661098062992096
+r 0.6824628114700317
+r 0.05328283831477165
+r 0.6824628114700317
+r 0.06564344465732574
+r 0.6824628114700317
+r 0.06576959788799286
+r 0.6824628114700317
+r 0.03366474062204361
+r 0.6824628114700317
+r 0.055262528359889984
+r 0.6824628114700317
+r 0.06308171153068542
+r 0.6824628114700317
+r 0.09332643449306488
+r 0.6824628114700317
+r 0.05300868675112724
+r 0.6824628114700317
+r 0.0630272701382637
+r 0.6824628114700317
+r 0.10454564541578293
+r 0.6824628114700317
+r 0.050273045897483826
+r 0.6824628114700317
+r 0.05619872361421585
+r 0.6824628114700317
+r 0.06783290952444077
+r 0.6824628114700317
+r 0.06821886450052261
+r 0.6824628114700317
+r 0.09274530410766602
+r 0.6824628114700317
+r 0.06914199888706207
+r 0.6824628114700317
+r 0.0684305876493454
+r 0.6824628114700317
+r 0.06773195415735245
+r 0.6824628114700317
+r 0.05841710418462753
+r 0.6824628114700317
+r 0.105230912566185
+r 0.6824628114700317
+r 0.0755433440208435
+r 0.6824628114700317
+r 0.08479111641645432
+r 0.6824628114700317
+r 0.06761511415243149
+r 0.6824628114700317
+r 0.08702529221773148
+r 0.6824628114700317
+r 0.05894812196493149
+r 0.6824628114700317
+r 0.06049680709838867
+r 0.6824628114700317
+r 0.03788843750953674
+r 0.6824628114700317
+r 0.07554560899734497
+r 0.6824628114700317
+r 0.0952809602022171
+r 0.6824628114700317
+r 0.08946067839860916
+r 0.6824628114700317
+r 0.05865374952554703
+r 0.6824628114700317
+r 0.08676571398973465
+r 0.6824628114700317
+r 0.0634932667016983
+r 0.6824628114700317
+r 0.08197391778230667
+r 0.6824628114700317
+r 0.034332215785980225
+r 0.6824628114700317
+r 0.04816720634698868
+r 0.6824628114700317
+r 0.06485356390476227
+r 0.6824628114700317
+r 0.05379023402929306
+r 0.6824628114700317
+r 0.10103213787078857
+r 0.6824628114700317
+r 0.06774411350488663
+r 0.6824628114700317
+Saved eval video checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/eval_videos/step_160000/env0.mp4
+goal 0.01
+return 0.01
+goal 0.08
+return 0.08
+[2026-10-15 11:07:46,487][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/network.
+[2026-10-15 11:07:46,488][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.190
+[2026-10-15 11:07:46,489][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/network.orbax-checkpoint-tmp-189
+[2026-10-15 11:07:46,491][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.191
+[2026-10-15 11:07:46,593][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.3 GiB/s (total bytes: 755.2 MiB) (time elapsed: 101 milliseconds) (per-host)
+[2026-10-15 11:07:46,981][absl][INFO] - ChainedFuture completed 2/2 futures in 0.37 seconds.
+[2026-10-15 11:07:46,982][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.5 GiB/s (total bytes: 755.2 MiB) (time elapsed: 490 milliseconds) (per-host)
+[2026-10-15 11:07:46,982][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-15 11:07:47,001][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=920, unique=460) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/network.orbax-checkpoint-tmp-189/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '4e806c3abc89aa0e72554b387f99ad96',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,002][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/network.orbax-checkpoint-tmp-189 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/network
+[2026-10-15 11:07:47,005][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/network`.
+[2026-10-15 11:07:47,005][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-15 11:07:47,005][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/obs_encoder.
+[2026-10-15 11:07:47,006][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.193
+[2026-10-15 11:07:47,007][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/obs_encoder.orbax-checkpoint-tmp-192
+[2026-10-15 11:07:47,009][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.194
+[2026-10-15 11:07:47,011][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 14.2 KiB/s (total bytes: 16 Bytes) (time elapsed: 1 millisecond) (per-host)
+[2026-10-15 11:07:47,058][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-15 11:07:47,059][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 325 Bytes/s (total bytes: 16 Bytes) (time elapsed: 49 milliseconds) (per-host)
+[2026-10-15 11:07:47,059][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-15 11:07:47,074][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=8, unique=4) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/obs_encoder.orbax-checkpoint-tmp-192/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '02f037cdd8b04cf8b1d73c3a4b7b220a',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,074][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/obs_encoder.orbax-checkpoint-tmp-192 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/obs_encoder
+[2026-10-15 11:07:47,077][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/obs_encoder`.
+[2026-10-15 11:07:47,077][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-15 11:07:47,077][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_network.
+[2026-10-15 11:07:47,078][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.196
+[2026-10-15 11:07:47,078][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_network.orbax-checkpoint-tmp-195
+[2026-10-15 11:07:47,080][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.197
+[2026-10-15 11:07:47,087][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 41.6 GiB/s (total bytes: 251.7 MiB) (time elapsed: 5 milliseconds) (per-host)
+[2026-10-15 11:07:47,254][absl][INFO] - ChainedFuture completed 3/3 futures in 0.16 seconds.
+[2026-10-15 11:07:47,254][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.4 GiB/s (total bytes: 251.7 MiB) (time elapsed: 173 milliseconds) (per-host)
+[2026-10-15 11:07:47,254][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-15 11:07:47,268][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_network.orbax-checkpoint-tmp-195/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'e2deb5e0a08f8c491f17b4d089766a35',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,269][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_network.orbax-checkpoint-tmp-195 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_network
+[2026-10-15 11:07:47,273][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_network`.
+[2026-10-15 11:07:47,273][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-15 11:07:47,273][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_obs_encoder.
+[2026-10-15 11:07:47,274][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.199
+[2026-10-15 11:07:47,274][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_obs_encoder.orbax-checkpoint-tmp-198
+[2026-10-15 11:07:47,276][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.200
+[2026-10-15 11:07:47,277][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 63.8 KiB/s (total bytes: 28 Bytes) (time elapsed: 429 microseconds) (per-host)
+[2026-10-15 11:07:47,299][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-15 11:07:47,299][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.3 KiB/s (total bytes: 28 Bytes) (time elapsed: 21 milliseconds) (per-host)
+[2026-10-15 11:07:47,299][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-15 11:07:47,312][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_obs_encoder.orbax-checkpoint-tmp-198/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '594c5b8cbb01d367aedadbab4c0ba1bd',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,312][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_obs_encoder.orbax-checkpoint-tmp-198 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_obs_encoder
+[2026-10-15 11:07:47,315][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/prior_obs_encoder`.
+[2026-10-15 11:07:47,315][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-15 11:07:47,315][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/ema.
+[2026-10-15 11:07:47,315][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.202
+[2026-10-15 11:07:47,316][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/ema.orbax-checkpoint-tmp-201
+[2026-10-15 11:07:47,318][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.203
+[2026-10-15 11:07:47,351][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.4 GiB/s (total bytes: 251.7 MiB) (time elapsed: 33 milliseconds) (per-host)
+[2026-10-15 11:07:47,510][absl][INFO] - ChainedFuture completed 2/2 futures in 0.15 seconds.
+[2026-10-15 11:07:47,510][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.3 GiB/s (total bytes: 251.7 MiB) (time elapsed: 191 milliseconds) (per-host)
+[2026-10-15 11:07:47,511][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-15 11:07:47,526][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=304, unique=152) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/ema.orbax-checkpoint-tmp-201/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '29227f1ab813aa3f147171677662dc09',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,526][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/ema.orbax-checkpoint-tmp-201 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/ema
+[2026-10-15 11:07:47,529][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/ema`.
+[2026-10-15 11:07:47,530][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-15 11:07:47,530][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic.
+[2026-10-15 11:07:47,530][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic.205
+[2026-10-15 11:07:47,531][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic.orbax-checkpoint-tmp-204
+[2026-10-15 11:07:47,533][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic.206
+[2026-10-15 11:07:47,540][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 2.9 GiB/s (total bytes: 20.8 MiB) (time elapsed: 7 milliseconds) (per-host)
+[2026-10-15 11:07:47,614][absl][INFO] - ChainedFuture completed 2/2 futures in 0.07 seconds.
+[2026-10-15 11:07:47,614][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 256.1 MiB/s (total bytes: 20.8 MiB) (time elapsed: 81 milliseconds) (per-host)
+[2026-10-15 11:07:47,615][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic
+[2026-10-15 11:07:47,628][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=122, unique=61) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic.orbax-checkpoint-tmp-204/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '7aedcd1a7462c64f826b46377f8a9f60',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,629][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic.orbax-checkpoint-tmp-204 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic
+[2026-10-15 11:07:47,631][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic`.
+[2026-10-15 11:07:47,631][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic
+[2026-10-15 11:07:47,632][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/target_critic.
+[2026-10-15 11:07:47,632][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.target_critic.208
+[2026-10-15 11:07:47,633][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/target_critic.orbax-checkpoint-tmp-207
+[2026-10-15 11:07:47,635][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.target_critic.209
+[2026-10-15 11:07:47,639][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 2.1 GiB/s (total bytes: 6.9 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-15 11:07:47,689][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-15 11:07:47,689][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 129.6 MiB/s (total bytes: 6.9 MiB) (time elapsed: 53 milliseconds) (per-host)
+[2026-10-15 11:07:47,689][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.target_critic
+[2026-10-15 11:07:47,703][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=54, unique=27) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/target_critic.orbax-checkpoint-tmp-207/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '8dded43fc79532397220f65d5afcf4fb',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,704][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/target_critic.orbax-checkpoint-tmp-207 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/target_critic
+[2026-10-15 11:07:47,706][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/target_critic`.
+[2026-10-15 11:07:47,706][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.target_critic
+[2026-10-15 11:07:47,707][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_obs_encoder.
+[2026-10-15 11:07:47,707][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_obs_encoder.211
+[2026-10-15 11:07:47,708][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_obs_encoder.orbax-checkpoint-tmp-210
+[2026-10-15 11:07:47,710][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_obs_encoder.212
+[2026-10-15 11:07:47,711][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 14.7 KiB/s (total bytes: 12 Bytes) (time elapsed: 797 microseconds) (per-host)
+[2026-10-15 11:07:47,754][absl][INFO] - ChainedFuture completed 2/2 futures in 0.04 seconds.
+[2026-10-15 11:07:47,754][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 273 Bytes/s (total bytes: 12 Bytes) (time elapsed: 43 milliseconds) (per-host)
+[2026-10-15 11:07:47,755][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_obs_encoder
+[2026-10-15 11:07:47,767][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_obs_encoder.orbax-checkpoint-tmp-210/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'f0b369cc2db4317e1c9972d7f3ca3ab0',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,768][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_obs_encoder.orbax-checkpoint-tmp-210 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_obs_encoder
+[2026-10-15 11:07:47,770][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_obs_encoder`.
+[2026-10-15 11:07:47,770][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_obs_encoder
+[2026-10-15 11:07:47,771][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_target_obs_encoder.
+[2026-10-15 11:07:47,771][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_target_obs_encoder.214
+[2026-10-15 11:07:47,772][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_target_obs_encoder.orbax-checkpoint-tmp-213
+[2026-10-15 11:07:47,774][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_target_obs_encoder.215
+[2026-10-15 11:07:47,775][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.5 KiB/s (total bytes: 4 Bytes) (time elapsed: 524 microseconds) (per-host)
+[2026-10-15 11:07:47,799][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-15 11:07:47,799][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 159 Bytes/s (total bytes: 4 Bytes) (time elapsed: 25 milliseconds) (per-host)
+[2026-10-15 11:07:47,800][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_target_obs_encoder
+[2026-10-15 11:07:47,812][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_target_obs_encoder.orbax-checkpoint-tmp-213/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '98fbaad8c5f506f5973c2f866e9467f7',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:07:47,812][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_target_obs_encoder.orbax-checkpoint-tmp-213 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_target_obs_encoder
+[2026-10-15 11:07:47,815][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_160000/critic_target_obs_encoder`.
+[2026-10-15 11:07:47,815][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_target_obs_encoder
+r 0.0494350865483284
+r 0.6824628114700317
+r 0.0474921315908432
+r 0.6824628114700317
+r 0.05280739814043045
+r 0.6824628114700317
+r 0.05317468196153641
+r 0.6824628114700317
+r 0.08161920309066772
+r 0.6824628114700317
+r 0.07209215313196182
+r 0.6824628114700317
+r 0.06211397051811218
+r 0.6824628114700317
+r 0.07162927836179733
+r 0.6824628114700317
+r 0.07232680916786194
+r 0.6824628114700317
+r 0.06441837549209595
+r 0.6824628114700317
+r 0.057429976761341095
+r 0.6824628114700317
+r 0.05988510698080063
+r 0.6824628114700317
+r 0.05978918820619583
+r 0.6824628114700317
+r 0.05620654672384262
+r 0.6824628114700317
+r 0.07474516332149506
+r 0.6824628114700317
+r 0.04795406013727188
+r 0.6824628114700317
+r 0.05513552576303482
+r 0.6824628114700317
+r 0.052334390580654144
+r 0.6824628114700317
+r 0.06701742857694626
+r 0.6824628114700317
+r 0.05746230483055115
+r 0.6824628114700317
+r 0.07975476235151291
+r 0.6824628114700317
+r 0.08081916719675064
+r 0.6824628114700317
+r 0.08648480474948883
+r 0.6824628114700317
+r 0.07072746753692627
+r 0.6824628114700317
+r 0.068768709897995
+r 0.6824628114700317
+r 0.06839980185031891
+r 0.6824628114700317
+r 0.049380771815776825
+r 0.6824628114700317
+r 0.10304702073335648
+r 0.6824628114700317
+r 0.06564541161060333
+r 0.6824628114700317
+r 0.08754327148199081
+r 0.6824628114700317
+r 0.08021128922700882
+r 0.6824628114700317
+r 0.07176825404167175
+r 0.6824628114700317
+r 0.05592756345868111
+r 0.6824628114700317
+r 0.07648583501577377
+r 0.6824628114700317
+r 0.04799466207623482
+r 0.6824628114700317
+r 0.06472533196210861
+r 0.6824628114700317
+r 0.05219119042158127
+r 0.6824628114700317
+r 0.06100629270076752
+r 0.6824628114700317
+r 0.08685323596000671
+r 0.6824628114700317
+r 0.08120215684175491
+r 0.6824628114700317
+r 0.09507102519273758
+r 0.6824628114700317
+r 0.0501771941781044
+r 0.6824628114700317
+r 0.05580254644155502
+r 0.6824628114700317
+r 0.08954669535160065
+r 0.6824628114700317
+r 0.05967114865779877
+r 0.6824628114700317
+r 0.04091275483369827
+r 0.6824628114700317
+r 0.08742693811655045
+r 0.6824628114700317
+r 0.08991353213787079
+r 0.6824628114700317
+r 0.06399746239185333
+r 0.6824628114700317
+r 0.07927931845188141
+r 0.6824628114700317
+r 0.05864263325929642
+r 0.6824628114700317
+r 0.10804349929094315
+r 0.6824628114700317
+r 0.04969392344355583
+r 0.6824628114700317
+r 0.05736572667956352
+r 0.6824628114700317
+r 0.08541597425937653
+r 0.6824628114700317
+r 0.06125915050506592
+r 0.6824628114700317
+r 0.06260643899440765
+r 0.6824628114700317
+r 0.058636389672756195
+r 0.6824628114700317
+r 0.05248594284057617
+r 0.6824628114700317
+r 0.04864576831459999
+r 0.6824628114700317
+r 0.0700121819972992
+r 0.6824628114700317
+r 0.08156708627939224
+r 0.6824628114700317
+r 0.08403944969177246
+r 0.6824628114700317
+r 0.05255301296710968
+r 0.6824628114700317
+r 0.06261612474918365
+r 0.6824628114700317
+r 0.04328231140971184
+r 0.6824628114700317
+r 0.04496331140398979
+r 0.6824628114700317
+r 0.06878252327442169
+r 0.6824628114700317
+r 0.06630374491214752
+r 0.6824628114700317
+r 0.027777783572673798
+r 0.6824628114700317
+r 0.057147085666656494
+r 0.6824628114700317
+r 0.08738039433956146
+r 0.6824628114700317
+r 0.0424601249396801
+r 0.6824628114700317
+r 0.0695515125989914
+r 0.6824628114700317
+r 0.06906740367412567
+r 0.6824628114700317
+r 0.04867377132177353
+r 0.6824628114700317
+r 0.05294901132583618
+r 0.6824628114700317
+r 0.04786130040884018
+r 0.6824628114700317
+r 0.05686318129301071
+r 0.6824628114700317
+r 0.07217851281166077
+r 0.6824628114700317
+r 0.04432803392410278
+r 0.6824628114700317
+r 0.1015709787607193
+r 0.6824628114700317
+r 0.05876300856471062
+r 0.6824628114700317
+r 0.06086692959070206
+r 0.6824628114700317
+r 0.06761434674263
+r 0.6824628114700317
+r 0.061562903225421906
+r 0.6824628114700317
+r 0.06474468111991882
+r 0.6824628114700317
+r 0.059172097593545914
+r 0.6824628114700317
+r 0.07618398219347
+r 0.6824628114700317
+r 0.06523497402667999
+r 0.6824628114700317
+r 0.07607516646385193
+r 0.6824628114700317
+r 0.08300797641277313
+r 0.6824628114700317
+r 0.09006696194410324
+r 0.6824628114700317
+r 0.06619769334793091
+r 0.6824628114700317
+r 0.1157311424612999
+r 0.6824628114700317
+r 0.07027924060821533
+r 0.6824628114700317
+r 0.08037340641021729
+r 0.6824628114700317
+r 0.030223460868000984
+r 0.6824628114700317
+r 0.0402323342859745
+r 0.6824628114700317
+r 0.1201409250497818
+r 0.6824628114700317
+Saved eval video checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/eval_videos/step_170000/env0.mp4
+goal 0.06999999999999999
+return 0.06999999999999999
+goal 0.08
+return 0.08
+[2026-10-15 11:27:27,515][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/network.
+[2026-10-15 11:27:27,517][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.217
+[2026-10-15 11:27:27,518][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/network.orbax-checkpoint-tmp-216
+[2026-10-15 11:27:27,520][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.218
+[2026-10-15 11:27:27,623][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.2 GiB/s (total bytes: 755.2 MiB) (time elapsed: 102 milliseconds) (per-host)
+[2026-10-15 11:27:28,018][absl][INFO] - ChainedFuture completed 2/2 futures in 0.38 seconds.
+[2026-10-15 11:27:28,018][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.5 GiB/s (total bytes: 755.2 MiB) (time elapsed: 497 milliseconds) (per-host)
+[2026-10-15 11:27:28,019][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-15 11:27:28,036][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=920, unique=460) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/network.orbax-checkpoint-tmp-216/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '32e8d8a85630c497f9222d69efbcfcac',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,037][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/network.orbax-checkpoint-tmp-216 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/network
+[2026-10-15 11:27:28,040][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/network`.
+[2026-10-15 11:27:28,040][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-15 11:27:28,040][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/obs_encoder.
+[2026-10-15 11:27:28,041][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.220
+[2026-10-15 11:27:28,042][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/obs_encoder.orbax-checkpoint-tmp-219
+[2026-10-15 11:27:28,043][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.221
+[2026-10-15 11:27:28,045][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 15.0 KiB/s (total bytes: 16 Bytes) (time elapsed: 1 millisecond) (per-host)
+[2026-10-15 11:27:28,088][absl][INFO] - ChainedFuture completed 2/2 futures in 0.04 seconds.
+[2026-10-15 11:27:28,089][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 358 Bytes/s (total bytes: 16 Bytes) (time elapsed: 44 milliseconds) (per-host)
+[2026-10-15 11:27:28,089][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-15 11:27:28,104][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=8, unique=4) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/obs_encoder.orbax-checkpoint-tmp-219/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '828ffa9299142b6aaecbe2efd6a6f1b0',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,104][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/obs_encoder.orbax-checkpoint-tmp-219 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/obs_encoder
+[2026-10-15 11:27:28,107][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/obs_encoder`.
+[2026-10-15 11:27:28,107][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-15 11:27:28,107][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_network.
+[2026-10-15 11:27:28,108][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.223
+[2026-10-15 11:27:28,109][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_network.orbax-checkpoint-tmp-222
+[2026-10-15 11:27:28,111][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.224
+[2026-10-15 11:27:28,117][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 41.2 GiB/s (total bytes: 251.7 MiB) (time elapsed: 5 milliseconds) (per-host)
+[2026-10-15 11:27:28,278][absl][INFO] - ChainedFuture completed 3/3 futures in 0.15 seconds.
+[2026-10-15 11:27:28,279][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.5 GiB/s (total bytes: 251.7 MiB) (time elapsed: 167 milliseconds) (per-host)
+[2026-10-15 11:27:28,279][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-15 11:27:28,294][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_network.orbax-checkpoint-tmp-222/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'c0ca3312eb95d0af782b2241647697b2',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,294][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_network.orbax-checkpoint-tmp-222 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_network
+[2026-10-15 11:27:28,297][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_network`.
+[2026-10-15 11:27:28,297][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-15 11:27:28,298][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_obs_encoder.
+[2026-10-15 11:27:28,298][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.226
+[2026-10-15 11:27:28,299][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_obs_encoder.orbax-checkpoint-tmp-225
+[2026-10-15 11:27:28,301][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.227
+[2026-10-15 11:27:28,302][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 57.4 KiB/s (total bytes: 28 Bytes) (time elapsed: 476 microseconds) (per-host)
+[2026-10-15 11:27:28,322][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-15 11:27:28,322][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.3 KiB/s (total bytes: 28 Bytes) (time elapsed: 20 milliseconds) (per-host)
+[2026-10-15 11:27:28,322][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-15 11:27:28,336][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_obs_encoder.orbax-checkpoint-tmp-225/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '25407659bd28bf91361706497b5426c3',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,336][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_obs_encoder.orbax-checkpoint-tmp-225 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_obs_encoder
+[2026-10-15 11:27:28,339][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/prior_obs_encoder`.
+[2026-10-15 11:27:28,339][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-15 11:27:28,339][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/ema.
+[2026-10-15 11:27:28,340][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.229
+[2026-10-15 11:27:28,340][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/ema.orbax-checkpoint-tmp-228
+[2026-10-15 11:27:28,342][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.230
+[2026-10-15 11:27:28,375][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.7 GiB/s (total bytes: 251.7 MiB) (time elapsed: 31 milliseconds) (per-host)
+[2026-10-15 11:27:28,541][absl][INFO] - ChainedFuture completed 2/2 futures in 0.16 seconds.
+[2026-10-15 11:27:28,541][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.2 GiB/s (total bytes: 251.7 MiB) (time elapsed: 198 milliseconds) (per-host)
+[2026-10-15 11:27:28,542][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-15 11:27:28,556][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=304, unique=152) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/ema.orbax-checkpoint-tmp-228/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '082ce6dc2443908873d11578a64c0e4c',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,556][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/ema.orbax-checkpoint-tmp-228 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/ema
+[2026-10-15 11:27:28,559][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/ema`.
+[2026-10-15 11:27:28,559][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-15 11:27:28,560][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic.
+[2026-10-15 11:27:28,560][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic.232
+[2026-10-15 11:27:28,561][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic.orbax-checkpoint-tmp-231
+[2026-10-15 11:27:28,563][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic.233
+[2026-10-15 11:27:28,570][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 3.0 GiB/s (total bytes: 20.8 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-15 11:27:28,640][absl][INFO] - ChainedFuture completed 2/2 futures in 0.07 seconds.
+[2026-10-15 11:27:28,641][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 269.7 MiB/s (total bytes: 20.8 MiB) (time elapsed: 77 milliseconds) (per-host)
+[2026-10-15 11:27:28,641][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic
+[2026-10-15 11:27:28,656][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=122, unique=61) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic.orbax-checkpoint-tmp-231/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '004fb2d9065d8bcf7ac689d465d293fc',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,657][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic.orbax-checkpoint-tmp-231 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic
+[2026-10-15 11:27:28,659][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic`.
+[2026-10-15 11:27:28,659][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic
+[2026-10-15 11:27:28,660][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/target_critic.
+[2026-10-15 11:27:28,660][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.target_critic.235
+[2026-10-15 11:27:28,661][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/target_critic.orbax-checkpoint-tmp-234
+[2026-10-15 11:27:28,663][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.target_critic.236
+[2026-10-15 11:27:28,667][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 2.1 GiB/s (total bytes: 6.9 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-15 11:27:28,716][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-15 11:27:28,716][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 131.2 MiB/s (total bytes: 6.9 MiB) (time elapsed: 52 milliseconds) (per-host)
+[2026-10-15 11:27:28,717][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.target_critic
+[2026-10-15 11:27:28,730][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=54, unique=27) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/target_critic.orbax-checkpoint-tmp-234/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '2c0bdc6168789d4a883a99a2ac34f396',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,730][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/target_critic.orbax-checkpoint-tmp-234 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/target_critic
+[2026-10-15 11:27:28,733][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/target_critic`.
+[2026-10-15 11:27:28,733][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.target_critic
+[2026-10-15 11:27:28,733][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_obs_encoder.
+[2026-10-15 11:27:28,734][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_obs_encoder.238
+[2026-10-15 11:27:28,735][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_obs_encoder.orbax-checkpoint-tmp-237
+[2026-10-15 11:27:28,736][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_obs_encoder.239
+[2026-10-15 11:27:28,738][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 14.5 KiB/s (total bytes: 12 Bytes) (time elapsed: 810 microseconds) (per-host)
+[2026-10-15 11:27:28,778][absl][INFO] - ChainedFuture completed 2/2 futures in 0.04 seconds.
+[2026-10-15 11:27:28,778][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 293 Bytes/s (total bytes: 12 Bytes) (time elapsed: 40 milliseconds) (per-host)
+[2026-10-15 11:27:28,778][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_obs_encoder
+[2026-10-15 11:27:28,790][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_obs_encoder.orbax-checkpoint-tmp-237/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '81e5412667c45fa3339a8003c81bffb9',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,791][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_obs_encoder.orbax-checkpoint-tmp-237 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_obs_encoder
+[2026-10-15 11:27:28,793][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_obs_encoder`.
+[2026-10-15 11:27:28,794][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_obs_encoder
+[2026-10-15 11:27:28,794][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_target_obs_encoder.
+[2026-10-15 11:27:28,794][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_target_obs_encoder.241
+[2026-10-15 11:27:28,795][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_target_obs_encoder.orbax-checkpoint-tmp-240
+[2026-10-15 11:27:28,797][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_target_obs_encoder.242
+[2026-10-15 11:27:28,798][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.4 KiB/s (total bytes: 4 Bytes) (time elapsed: 531 microseconds) (per-host)
+[2026-10-15 11:27:28,824][absl][INFO] - ChainedFuture completed 2/2 futures in 0.03 seconds.
+[2026-10-15 11:27:28,824][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 148 Bytes/s (total bytes: 4 Bytes) (time elapsed: 26 milliseconds) (per-host)
+[2026-10-15 11:27:28,825][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_target_obs_encoder
+[2026-10-15 11:27:28,837][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_target_obs_encoder.orbax-checkpoint-tmp-240/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '0714f5bf793b156b14643fdd076a0a46',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:28,837][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_target_obs_encoder.orbax-checkpoint-tmp-240 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_target_obs_encoder
+[2026-10-15 11:27:28,840][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_170000/critic_target_obs_encoder`.
+[2026-10-15 11:27:28,840][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_target_obs_encoder
+[2026-10-15 11:27:28,842][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.
+[2026-10-15 11:27:28,842][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:28,854][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.244
+[2026-10-15 11:27:28,854][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.orbax-checkpoint-tmp-243
+[2026-10-15 11:27:28,856][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.245
+[2026-10-15 11:27:28,885][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 25.9 GiB/s (total bytes: 755.2 MiB) (time elapsed: 28 milliseconds) (per-host)
+[2026-10-15 11:27:29,248][absl][INFO] - ChainedFuture completed 2/2 futures in 0.35 seconds.
+[2026-10-15 11:27:29,249][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.9 GiB/s (total bytes: 755.2 MiB) (time elapsed: 392 milliseconds) (per-host)
+[2026-10-15 11:27:29,249][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-15 11:27:29,264][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=920, unique=460) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.orbax-checkpoint-tmp-243/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'a9a8d4bbd5478e5f4a1844ca44b28c69',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:29,265][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.orbax-checkpoint-tmp-243 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network
+[2026-10-15 11:27:29,268][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network`.
+[2026-10-15 11:27:29,269][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-15 11:27:29,269][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.
+[2026-10-15 11:27:29,269][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:29,277][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.247
+[2026-10-15 11:27:29,278][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-246
+[2026-10-15 11:27:29,280][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.248
+[2026-10-15 11:27:29,281][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 20.6 KiB/s (total bytes: 16 Bytes) (time elapsed: 758 microseconds) (per-host)
+[2026-10-15 11:27:29,325][absl][INFO] - ChainedFuture completed 2/2 futures in 0.04 seconds.
+[2026-10-15 11:27:29,325][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 360 Bytes/s (total bytes: 16 Bytes) (time elapsed: 44 milliseconds) (per-host)
+[2026-10-15 11:27:29,325][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-15 11:27:29,338][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=8, unique=4) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-246/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '5bbcef9309b07fbfcfce0aac86ca0d64',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:29,339][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-246 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder
+[2026-10-15 11:27:29,341][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder`.
+[2026-10-15 11:27:29,341][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-15 11:27:29,342][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.
+[2026-10-15 11:27:29,342][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:29,350][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.250
+[2026-10-15 11:27:29,351][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.orbax-checkpoint-tmp-249
+[2026-10-15 11:27:29,353][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.251
+[2026-10-15 11:27:29,359][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 39.8 GiB/s (total bytes: 251.7 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-15 11:27:29,519][absl][INFO] - ChainedFuture completed 3/3 futures in 0.16 seconds.
+[2026-10-15 11:27:29,519][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.5 GiB/s (total bytes: 251.7 MiB) (time elapsed: 165 milliseconds) (per-host)
+[2026-10-15 11:27:29,519][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-15 11:27:29,534][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.orbax-checkpoint-tmp-249/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '254ab01f6b85fc37e5b7b2692737f88c',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:29,534][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.orbax-checkpoint-tmp-249 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network
+[2026-10-15 11:27:29,537][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network`.
+[2026-10-15 11:27:29,538][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-15 11:27:29,538][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.
+[2026-10-15 11:27:29,538][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:29,545][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.253
+[2026-10-15 11:27:29,546][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-252
+[2026-10-15 11:27:29,548][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.254
+[2026-10-15 11:27:29,549][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 58.8 KiB/s (total bytes: 28 Bytes) (time elapsed: 465 microseconds) (per-host)
+[2026-10-15 11:27:29,569][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-15 11:27:29,569][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.3 KiB/s (total bytes: 28 Bytes) (time elapsed: 20 milliseconds) (per-host)
+[2026-10-15 11:27:29,569][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-15 11:27:29,583][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-252/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '0528cf33ff6af98e3b964da0876d4ae6',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:29,583][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-252 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder
+[2026-10-15 11:27:29,586][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder`.
+[2026-10-15 11:27:29,586][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-15 11:27:29,586][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.
+[2026-10-15 11:27:29,587][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:29,595][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.256
+[2026-10-15 11:27:29,595][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.orbax-checkpoint-tmp-255
+[2026-10-15 11:27:29,597][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.257
+[2026-10-15 11:27:29,604][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 42.2 GiB/s (total bytes: 251.7 MiB) (time elapsed: 5 milliseconds) (per-host)
+[2026-10-15 11:27:30,040][absl][INFO] - ChainedFuture completed 2/2 futures in 0.43 seconds.
+[2026-10-15 11:27:30,040][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 569.6 MiB/s (total bytes: 251.7 MiB) (time elapsed: 441 milliseconds) (per-host)
+[2026-10-15 11:27:30,040][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-15 11:27:30,056][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=304, unique=152) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.orbax-checkpoint-tmp-255/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '83ba302e53726d8765fd93fdc0343ea4',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:30,056][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.orbax-checkpoint-tmp-255 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema
+[2026-10-15 11:27:30,059][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema`.
+[2026-10-15 11:27:30,060][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-15 11:27:30,060][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.
+[2026-10-15 11:27:30,060][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:30,069][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic.259
+[2026-10-15 11:27:30,070][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.orbax-checkpoint-tmp-258
+[2026-10-15 11:27:30,072][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic.260
+[2026-10-15 11:27:30,076][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 6.5 GiB/s (total bytes: 20.8 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-15 11:27:30,154][absl][INFO] - ChainedFuture completed 2/2 futures in 0.07 seconds.
+[2026-10-15 11:27:30,155][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 253.1 MiB/s (total bytes: 20.8 MiB) (time elapsed: 82 milliseconds) (per-host)
+[2026-10-15 11:27:30,155][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic
+[2026-10-15 11:27:30,169][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=122, unique=61) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.orbax-checkpoint-tmp-258/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '3b91c16bf3d0761a4c4701356a08454a',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:30,170][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.orbax-checkpoint-tmp-258 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic
+[2026-10-15 11:27:30,172][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic`.
+[2026-10-15 11:27:30,172][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic
+[2026-10-15 11:27:30,173][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.
+[2026-10-15 11:27:30,173][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:30,181][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.target_critic.262
+[2026-10-15 11:27:30,182][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.orbax-checkpoint-tmp-261
+[2026-10-15 11:27:30,183][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.target_critic.263
+[2026-10-15 11:27:30,185][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 4.5 GiB/s (total bytes: 6.9 MiB) (time elapsed: 1 millisecond) (per-host)
+[2026-10-15 11:27:30,242][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-15 11:27:30,242][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 118.7 MiB/s (total bytes: 6.9 MiB) (time elapsed: 58 milliseconds) (per-host)
+[2026-10-15 11:27:30,243][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.target_critic
+[2026-10-15 11:27:30,257][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=54, unique=27) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.orbax-checkpoint-tmp-261/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '1fe693a2a588b830cac5c9d8a13d589b',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:30,258][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.orbax-checkpoint-tmp-261 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic
+[2026-10-15 11:27:30,260][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic`.
+[2026-10-15 11:27:30,261][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.target_critic
+[2026-10-15 11:27:30,261][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.
+[2026-10-15 11:27:30,261][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:30,269][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_obs_encoder.265
+[2026-10-15 11:27:30,270][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.orbax-checkpoint-tmp-264
+[2026-10-15 11:27:30,271][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_obs_encoder.266
+[2026-10-15 11:27:30,273][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 20.3 KiB/s (total bytes: 12 Bytes) (time elapsed: 576 microseconds) (per-host)
+[2026-10-15 11:27:30,322][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-15 11:27:30,322][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 239 Bytes/s (total bytes: 12 Bytes) (time elapsed: 50 milliseconds) (per-host)
+[2026-10-15 11:27:30,323][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_obs_encoder
+[2026-10-15 11:27:30,338][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.orbax-checkpoint-tmp-264/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '7254ec8d625629e8a3f3e7cadf9c99e2',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:30,339][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.orbax-checkpoint-tmp-264 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder
+[2026-10-15 11:27:30,342][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder`.
+[2026-10-15 11:27:30,342][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_obs_encoder
+[2026-10-15 11:27:30,342][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.
+[2026-10-15 11:27:30,342][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:27:30,350][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_target_obs_encoder.268
+[2026-10-15 11:27:30,351][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.orbax-checkpoint-tmp-267
+[2026-10-15 11:27:30,352][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_target_obs_encoder.269
+[2026-10-15 11:27:30,354][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 9.1 KiB/s (total bytes: 4 Bytes) (time elapsed: 432 microseconds) (per-host)
+[2026-10-15 11:27:30,380][absl][INFO] - ChainedFuture completed 2/2 futures in 0.03 seconds.
+[2026-10-15 11:27:30,380][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 146 Bytes/s (total bytes: 4 Bytes) (time elapsed: 27 milliseconds) (per-host)
+[2026-10-15 11:27:30,381][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_target_obs_encoder
+[2026-10-15 11:27:30,396][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.orbax-checkpoint-tmp-267/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'ee9c569f344284028028522424092493',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:27:30,397][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.orbax-checkpoint-tmp-267 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder
+[2026-10-15 11:27:30,399][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder`.
+[2026-10-15 11:27:30,399][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_target_obs_encoder
+r 0.05855352059006691
+r 0.6824628114700317
+r 0.06506436318159103
+r 0.6824628114700317
+r 0.08045592904090881
+r 0.6824628114700317
+r 0.06388066709041595
+r 0.6824628114700317
+r 0.07340618968009949
+r 0.6824628114700317
+r 0.06016041338443756
+r 0.6824628114700317
+r 0.06060779094696045
+r 0.6824628114700317
+r 0.07477015256881714
+r 0.6824628114700317
+r 0.06175860017538071
+r 0.6824628114700317
+r 0.06287693977355957
+r 0.6824628114700317
+r 0.07075904309749603
+r 0.6824628114700317
+r 0.06627187132835388
+r 0.6824628114700317
+r 0.05741968750953674
+r 0.6824628114700317
+r 0.038109395653009415
+r 0.6824628114700317
+r 0.04434706270694733
+r 0.6824628114700317
+r 0.09680011868476868
+r 0.6824628114700317
+r 0.06751732528209686
+r 0.6824628114700317
+r 0.07611708343029022
+r 0.6824628114700317
+r 0.05003282427787781
+r 0.6824628114700317
+r 0.03953320533037186
+r 0.6824628114700317
+r 0.07522182166576385
+r 0.6824628114700317
+r 0.10742288827896118
+r 0.6824628114700317
+r 0.09893836826086044
+r 0.6824628114700317
+r 0.06945018470287323
+r 0.6824628114700317
+r 0.09931518137454987
+r 0.6824628114700317
+r 0.06533920764923096
+r 0.6824628114700317
+r 0.050299495458602905
+r 0.6824628114700317
+r 0.04317222535610199
+r 0.6824628114700317
+r 0.0946744978427887
+r 0.6824628114700317
+r 0.055077821016311646
+r 0.6824628114700317
+r 0.09102804958820343
+r 0.6824628114700317
+r 0.08898210525512695
+r 0.6824628114700317
+r 0.03994114696979523
+r 0.6824628114700317
+r 0.06338393688201904
+r 0.6824628114700317
+r 0.09162496775388718
+r 0.6824628114700317
+r 0.09613613784313202
+r 0.6824628114700317
+r 0.08234558999538422
+r 0.6824628114700317
+r 0.0735711008310318
+r 0.6824628114700317
+r 0.05792706459760666
+r 0.6824628114700317
+r 0.07787606120109558
+r 0.6824628114700317
+r 0.06763911992311478
+r 0.6824628114700317
+r 0.0871594026684761
+r 0.6824628114700317
+r 0.052559781819581985
+r 0.6824628114700317
+r 0.03151198476552963
+r 0.6824628114700317
+r 0.08642600476741791
+r 0.6824628114700317
+r 0.06962394714355469
+r 0.6824628114700317
+r 0.038906339555978775
+r 0.6824628114700317
+r 0.04037664085626602
+r 0.6824628114700317
+r 0.06538017094135284
+r 0.6824628114700317
+r 0.05649101361632347
+r 0.6824628114700317
+r 0.05361947417259216
+r 0.6824628114700317
+r 0.05280233919620514
+r 0.6824628114700317
+r 0.051519013941287994
+r 0.6824628114700317
+r 0.056767530739307404
+r 0.6824628114700317
+r 0.07160051167011261
+r 0.6824628114700317
+r 0.06232114136219025
+r 0.6824628114700317
+r 0.07024148106575012
+r 0.6824628114700317
+r 0.042226918041706085
+r 0.6824628114700317
+r 0.094459168612957
+r 0.6824628114700317
+r 0.05110432952642441
+r 0.6824628114700317
+r 0.04072340577840805
+r 0.6824628114700317
+r 0.054598208516836166
+r 0.6824628114700317
+r 0.08486287295818329
+r 0.6824628114700317
+r 0.06127135083079338
+r 0.6824628114700317
+r 0.08859473466873169
+r 0.6824628114700317
+r 0.07100251317024231
+r 0.6824628114700317
+r 0.06304465979337692
+r 0.6824628114700317
+r 0.10599277168512344
+r 0.6824628114700317
+r 0.09390648454427719
+r 0.6824628114700317
+r 0.06970290839672089
+r 0.6824628114700317
+r 0.04989033564925194
+r 0.6824628114700317
+r 0.08201334625482559
+r 0.6824628114700317
+r 0.06108076497912407
+r 0.6824628114700317
+r 0.09362073987722397
+r 0.6824628114700317
+r 0.040921103209257126
+r 0.6824628114700317
+r 0.07469147443771362
+r 0.6824628114700317
+r 0.09088172018527985
+r 0.6824628114700317
+r 0.050248630344867706
+r 0.6824628114700317
+r 0.08616919815540314
+r 0.6824628114700317
+r 0.0687115341424942
+r 0.6824628114700317
+r 0.06899553537368774
+r 0.6824628114700317
+r 0.046986740082502365
+r 0.6824628114700317
+r 0.07177958637475967
+r 0.6824628114700317
+r 0.06867559999227524
+r 0.6824628114700317
+r 0.06873118877410889
+r 0.6824628114700317
+r 0.08903484046459198
+r 0.6824628114700317
+r 0.049571555107831955
+r 0.6824628114700317
+r 0.09029144793748856
+r 0.6824628114700317
+r 0.08365722745656967
+r 0.6824628114700317
+r 0.06178385764360428
+r 0.6824628114700317
+r 0.07224239408969879
+r 0.6824628114700317
+r 0.06916876137256622
+r 0.6824628114700317
+r 0.04914005473256111
+r 0.6824628114700317
+r 0.05077333748340607
+r 0.6824628114700317
+r 0.059621863067150116
+r 0.6824628114700317
+r 0.05639708787202835
+r 0.6824628114700317
+r 0.049801990389823914
+r 0.6824628114700317
+r 0.056863486766815186
+r 0.6824628114700317
+r 0.07227713614702225
+r 0.6824628114700317
+r 0.0980062186717987
+r 0.6824628114700317
+Saved eval video checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/eval_videos/step_180000/env0.mp4
+goal 0.11000000000000001
+return 0.11000000000000001
+goal 0.030000000000000006
+return 0.030000000000000006
+[2026-10-15 11:47:06,367][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/network.
+[2026-10-15 11:47:06,368][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.271
+[2026-10-15 11:47:06,369][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/network.orbax-checkpoint-tmp-270
+[2026-10-15 11:47:06,371][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.272
+[2026-10-15 11:47:06,473][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.3 GiB/s (total bytes: 755.2 MiB) (time elapsed: 100 milliseconds) (per-host)
+[2026-10-15 11:47:07,150][absl][INFO] - ChainedFuture completed 2/2 futures in 0.66 seconds.
+[2026-10-15 11:47:07,151][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 970.0 MiB/s (total bytes: 755.2 MiB) (time elapsed: 778 milliseconds) (per-host)
+[2026-10-15 11:47:07,151][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-15 11:47:07,169][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=920, unique=460) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/network.orbax-checkpoint-tmp-270/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '9af86fcb0176addfecbe87a33ad83188',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,169][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/network.orbax-checkpoint-tmp-270 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/network
+[2026-10-15 11:47:07,173][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/network`.
+[2026-10-15 11:47:07,173][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-15 11:47:07,173][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/obs_encoder.
+[2026-10-15 11:47:07,174][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.274
+[2026-10-15 11:47:07,175][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/obs_encoder.orbax-checkpoint-tmp-273
+[2026-10-15 11:47:07,177][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.275
+[2026-10-15 11:47:07,178][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 14.5 KiB/s (total bytes: 16 Bytes) (time elapsed: 1 millisecond) (per-host)
+[2026-10-15 11:47:07,222][absl][INFO] - ChainedFuture completed 2/2 futures in 0.04 seconds.
+[2026-10-15 11:47:07,223][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 352 Bytes/s (total bytes: 16 Bytes) (time elapsed: 45 milliseconds) (per-host)
+[2026-10-15 11:47:07,223][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-15 11:47:07,237][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=8, unique=4) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/obs_encoder.orbax-checkpoint-tmp-273/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '04c25f51e1a6638ec0fc389094b3f34c',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,238][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/obs_encoder.orbax-checkpoint-tmp-273 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/obs_encoder
+[2026-10-15 11:47:07,240][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/obs_encoder`.
+[2026-10-15 11:47:07,241][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-15 11:47:07,241][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_network.
+[2026-10-15 11:47:07,241][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.277
+[2026-10-15 11:47:07,242][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_network.orbax-checkpoint-tmp-276
+[2026-10-15 11:47:07,244][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.278
+[2026-10-15 11:47:07,250][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 41.5 GiB/s (total bytes: 251.7 MiB) (time elapsed: 5 milliseconds) (per-host)
+[2026-10-15 11:47:07,411][absl][INFO] - ChainedFuture completed 3/3 futures in 0.16 seconds.
+[2026-10-15 11:47:07,412][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.5 GiB/s (total bytes: 251.7 MiB) (time elapsed: 167 milliseconds) (per-host)
+[2026-10-15 11:47:07,412][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-15 11:47:07,429][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_network.orbax-checkpoint-tmp-276/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '7eb9122b8215ba840fa48dd1c4530c5a',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,429][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_network.orbax-checkpoint-tmp-276 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_network
+[2026-10-15 11:47:07,434][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_network`.
+[2026-10-15 11:47:07,435][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-15 11:47:07,435][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_obs_encoder.
+[2026-10-15 11:47:07,435][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.280
+[2026-10-15 11:47:07,436][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_obs_encoder.orbax-checkpoint-tmp-279
+[2026-10-15 11:47:07,438][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.281
+[2026-10-15 11:47:07,439][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 56.4 KiB/s (total bytes: 28 Bytes) (time elapsed: 485 microseconds) (per-host)
+[2026-10-15 11:47:07,463][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-15 11:47:07,463][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.1 KiB/s (total bytes: 28 Bytes) (time elapsed: 24 milliseconds) (per-host)
+[2026-10-15 11:47:07,463][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-15 11:47:07,477][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_obs_encoder.orbax-checkpoint-tmp-279/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'cda484e91cbc6c8a4fb00e1381f8b5ed',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,477][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_obs_encoder.orbax-checkpoint-tmp-279 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_obs_encoder
+[2026-10-15 11:47:07,480][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/prior_obs_encoder`.
+[2026-10-15 11:47:07,480][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-15 11:47:07,480][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/ema.
+[2026-10-15 11:47:07,481][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.283
+[2026-10-15 11:47:07,481][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/ema.orbax-checkpoint-tmp-282
+[2026-10-15 11:47:07,483][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.284
+[2026-10-15 11:47:07,517][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.5 GiB/s (total bytes: 251.7 MiB) (time elapsed: 32 milliseconds) (per-host)
+[2026-10-15 11:47:07,679][absl][INFO] - ChainedFuture completed 2/2 futures in 0.16 seconds.
+[2026-10-15 11:47:07,680][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.3 GiB/s (total bytes: 251.7 MiB) (time elapsed: 195 milliseconds) (per-host)
+[2026-10-15 11:47:07,680][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-15 11:47:07,695][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=304, unique=152) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/ema.orbax-checkpoint-tmp-282/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '3ee5cda4bc1a24e6f9ff52614218d28f',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,696][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/ema.orbax-checkpoint-tmp-282 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/ema
+[2026-10-15 11:47:07,699][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/ema`.
+[2026-10-15 11:47:07,699][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-15 11:47:07,699][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic.
+[2026-10-15 11:47:07,700][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic.286
+[2026-10-15 11:47:07,701][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic.orbax-checkpoint-tmp-285
+[2026-10-15 11:47:07,702][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic.287
+[2026-10-15 11:47:07,710][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 3.1 GiB/s (total bytes: 20.8 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-15 11:47:07,796][absl][INFO] - ChainedFuture completed 2/2 futures in 0.08 seconds.
+[2026-10-15 11:47:07,796][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 222.6 MiB/s (total bytes: 20.8 MiB) (time elapsed: 93 milliseconds) (per-host)
+[2026-10-15 11:47:07,797][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic
+[2026-10-15 11:47:07,811][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=122, unique=61) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic.orbax-checkpoint-tmp-285/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'a47da6916b61c2ca903684e9374b19ad',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,811][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic.orbax-checkpoint-tmp-285 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic
+[2026-10-15 11:47:07,815][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic`.
+[2026-10-15 11:47:07,815][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic
+[2026-10-15 11:47:07,815][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/target_critic.
+[2026-10-15 11:47:07,815][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.target_critic.289
+[2026-10-15 11:47:07,816][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/target_critic.orbax-checkpoint-tmp-288
+[2026-10-15 11:47:07,818][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.target_critic.290
+[2026-10-15 11:47:07,822][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 2.1 GiB/s (total bytes: 6.9 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-15 11:47:07,878][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-15 11:47:07,878][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 118.0 MiB/s (total bytes: 6.9 MiB) (time elapsed: 58 milliseconds) (per-host)
+[2026-10-15 11:47:07,878][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.target_critic
+[2026-10-15 11:47:07,892][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=54, unique=27) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/target_critic.orbax-checkpoint-tmp-288/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'b2752a8e06630233154e0490fa2f5cd0',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,892][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/target_critic.orbax-checkpoint-tmp-288 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/target_critic
+[2026-10-15 11:47:07,895][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/target_critic`.
+[2026-10-15 11:47:07,895][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.target_critic
+[2026-10-15 11:47:07,895][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_obs_encoder.
+[2026-10-15 11:47:07,896][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_obs_encoder.292
+[2026-10-15 11:47:07,896][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_obs_encoder.orbax-checkpoint-tmp-291
+[2026-10-15 11:47:07,898][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_obs_encoder.293
+[2026-10-15 11:47:07,900][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 15.2 KiB/s (total bytes: 12 Bytes) (time elapsed: 772 microseconds) (per-host)
+[2026-10-15 11:47:07,950][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-15 11:47:07,950][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 236 Bytes/s (total bytes: 12 Bytes) (time elapsed: 50 milliseconds) (per-host)
+[2026-10-15 11:47:07,950][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_obs_encoder
+[2026-10-15 11:47:07,964][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_obs_encoder.orbax-checkpoint-tmp-291/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '6681d175e70738a0b2b411960dbc148a',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:07,965][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_obs_encoder.orbax-checkpoint-tmp-291 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_obs_encoder
+[2026-10-15 11:47:07,968][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_obs_encoder`.
+[2026-10-15 11:47:07,968][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_obs_encoder
+[2026-10-15 11:47:07,968][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_target_obs_encoder.
+[2026-10-15 11:47:07,968][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_target_obs_encoder.295
+[2026-10-15 11:47:07,969][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_target_obs_encoder.orbax-checkpoint-tmp-294
+[2026-10-15 11:47:07,971][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_target_obs_encoder.296
+[2026-10-15 11:47:07,972][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 7.7 KiB/s (total bytes: 4 Bytes) (time elapsed: 507 microseconds) (per-host)
+[2026-10-15 11:47:08,003][absl][INFO] - ChainedFuture completed 2/2 futures in 0.03 seconds.
+[2026-10-15 11:47:08,004][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 124 Bytes/s (total bytes: 4 Bytes) (time elapsed: 32 milliseconds) (per-host)
+[2026-10-15 11:47:08,004][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_target_obs_encoder
+[2026-10-15 11:47:08,019][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_target_obs_encoder.orbax-checkpoint-tmp-294/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '3383b06a09c8ff6e6dbb16d5aa437d52',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:08,019][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_target_obs_encoder.orbax-checkpoint-tmp-294 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_target_obs_encoder
+[2026-10-15 11:47:08,022][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/step_180000/critic_target_obs_encoder`.
+[2026-10-15 11:47:08,022][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_target_obs_encoder
+[2026-10-15 11:47:08,025][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.
+[2026-10-15 11:47:08,025][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:08,039][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.298
+[2026-10-15 11:47:08,040][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.orbax-checkpoint-tmp-297
+[2026-10-15 11:47:08,042][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.299
+[2026-10-15 11:47:08,071][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 25.8 GiB/s (total bytes: 755.2 MiB) (time elapsed: 28 milliseconds) (per-host)
+[2026-10-15 11:47:08,490][absl][INFO] - ChainedFuture completed 2/2 futures in 0.40 seconds.
+[2026-10-15 11:47:08,491][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.6 GiB/s (total bytes: 755.2 MiB) (time elapsed: 448 milliseconds) (per-host)
+[2026-10-15 11:47:08,491][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-15 11:47:08,518][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=920, unique=460) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.orbax-checkpoint-tmp-297/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'b1d543ab867c091e6f0a2564ef26c6c1',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:08,518][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network.orbax-checkpoint-tmp-297 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network
+[2026-10-15 11:47:08,522][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/network`.
+[2026-10-15 11:47:08,522][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-15 11:47:08,522][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.
+[2026-10-15 11:47:08,522][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:08,531][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.301
+[2026-10-15 11:47:08,532][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-300
+[2026-10-15 11:47:08,534][absl][INFO] - Wrote CheckpointMetadata=CheckpointMetadata(init_timestamp_nsecs=1792064828533360847, commit_timestamp_nsecs=None), json={"init_timestamp_nsecs": 1792064828533360847, "commit_timestamp_nsecs": null} to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-300
+[2026-10-15 11:47:08,534][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.302
+[2026-10-15 11:47:08,536][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 21.5 KiB/s (total bytes: 16 Bytes) (time elapsed: 728 microseconds) (per-host)
+[2026-10-15 11:47:08,635][absl][INFO] - ChainedFuture completed 2/2 futures in 0.10 seconds.
+[2026-10-15 11:47:08,635][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 159 Bytes/s (total bytes: 16 Bytes) (time elapsed: 100 milliseconds) (per-host)
+[2026-10-15 11:47:08,636][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-15 11:47:08,649][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=8, unique=4) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-300/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'b126e0ad217883823e1c61d501c8eb70',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:08,650][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-300 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder
+[2026-10-15 11:47:08,652][absl][INFO] - Updated CheckpointMetadata=CheckpointMetadata(init_timestamp_nsecs=1792064828533360847, commit_timestamp_nsecs=1792064828650367724) to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder.orbax-checkpoint-tmp-300
+[2026-10-15 11:47:08,653][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/obs_encoder`.
+[2026-10-15 11:47:08,653][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-15 11:47:08,653][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.
+[2026-10-15 11:47:08,654][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:08,663][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.304
+[2026-10-15 11:47:08,663][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.orbax-checkpoint-tmp-303
+[2026-10-15 11:47:08,665][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.305
+[2026-10-15 11:47:08,672][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 39.1 GiB/s (total bytes: 251.7 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-15 11:47:08,840][absl][INFO] - ChainedFuture completed 3/3 futures in 0.16 seconds.
+[2026-10-15 11:47:08,841][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.4 GiB/s (total bytes: 251.7 MiB) (time elapsed: 174 milliseconds) (per-host)
+[2026-10-15 11:47:08,841][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-15 11:47:08,859][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.orbax-checkpoint-tmp-303/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '9fdcb0cf6655f3c7dd49bb2ce741b0dc',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:08,859][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network.orbax-checkpoint-tmp-303 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network
+[2026-10-15 11:47:08,864][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_network`.
+[2026-10-15 11:47:08,864][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-15 11:47:08,865][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.
+[2026-10-15 11:47:08,865][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:08,872][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.307
+[2026-10-15 11:47:08,873][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-306
+[2026-10-15 11:47:08,874][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.308
+[2026-10-15 11:47:08,876][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 56.5 KiB/s (total bytes: 28 Bytes) (time elapsed: 484 microseconds) (per-host)
+[2026-10-15 11:47:08,904][absl][INFO] - ChainedFuture completed 2/2 futures in 0.03 seconds.
+[2026-10-15 11:47:08,904][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 974 Bytes/s (total bytes: 28 Bytes) (time elapsed: 28 milliseconds) (per-host)
+[2026-10-15 11:47:08,904][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-15 11:47:08,919][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-306/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '5d974fc7c8af323708fd041c588a847e',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:08,920][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-306 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder
+[2026-10-15 11:47:08,926][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/prior_obs_encoder`.
+[2026-10-15 11:47:08,926][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-15 11:47:08,926][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.
+[2026-10-15 11:47:08,927][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:08,936][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.310
+[2026-10-15 11:47:08,936][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.orbax-checkpoint-tmp-309
+[2026-10-15 11:47:08,938][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.311
+[2026-10-15 11:47:08,945][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 39.6 GiB/s (total bytes: 251.7 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-15 11:47:09,141][absl][INFO] - ChainedFuture completed 2/2 futures in 0.19 seconds.
+[2026-10-15 11:47:09,141][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.2 GiB/s (total bytes: 251.7 MiB) (time elapsed: 202 milliseconds) (per-host)
+[2026-10-15 11:47:09,142][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-15 11:47:09,158][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=304, unique=152) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.orbax-checkpoint-tmp-309/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '3a952677c1d075359b078112d64a4509',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:09,159][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema.orbax-checkpoint-tmp-309 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema
+[2026-10-15 11:47:09,162][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/ema`.
+[2026-10-15 11:47:09,162][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-15 11:47:09,163][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.
+[2026-10-15 11:47:09,163][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:09,172][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic.313
+[2026-10-15 11:47:09,172][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.orbax-checkpoint-tmp-312
+[2026-10-15 11:47:09,174][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic.314
+[2026-10-15 11:47:09,178][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 6.5 GiB/s (total bytes: 20.8 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-15 11:47:09,263][absl][INFO] - ChainedFuture completed 2/2 futures in 0.08 seconds.
+[2026-10-15 11:47:09,264][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 234.3 MiB/s (total bytes: 20.8 MiB) (time elapsed: 88 milliseconds) (per-host)
+[2026-10-15 11:47:09,264][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic
+[2026-10-15 11:47:09,282][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=122, unique=61) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.orbax-checkpoint-tmp-312/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '249e2deb10e80fe1056d985b0ed0ae37',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:09,282][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic.orbax-checkpoint-tmp-312 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic
+[2026-10-15 11:47:09,285][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic`.
+[2026-10-15 11:47:09,286][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic
+[2026-10-15 11:47:09,286][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.
+[2026-10-15 11:47:09,286][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:09,295][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.target_critic.316
+[2026-10-15 11:47:09,295][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.orbax-checkpoint-tmp-315
+[2026-10-15 11:47:09,297][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.target_critic.317
+[2026-10-15 11:47:09,299][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 4.4 GiB/s (total bytes: 6.9 MiB) (time elapsed: 1 millisecond) (per-host)
+[2026-10-15 11:47:09,363][absl][INFO] - ChainedFuture completed 2/2 futures in 0.06 seconds.
+[2026-10-15 11:47:09,363][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 105.9 MiB/s (total bytes: 6.9 MiB) (time elapsed: 65 milliseconds) (per-host)
+[2026-10-15 11:47:09,364][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.target_critic
+[2026-10-15 11:47:09,379][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=54, unique=27) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.orbax-checkpoint-tmp-315/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '34b09141c6183a6ac947c81771ccc75a',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:09,380][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic.orbax-checkpoint-tmp-315 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic
+[2026-10-15 11:47:09,383][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/target_critic`.
+[2026-10-15 11:47:09,383][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.target_critic
+[2026-10-15 11:47:09,383][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.
+[2026-10-15 11:47:09,383][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:09,392][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_obs_encoder.319
+[2026-10-15 11:47:09,393][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.orbax-checkpoint-tmp-318
+[2026-10-15 11:47:09,395][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_obs_encoder.320
+[2026-10-15 11:47:09,396][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 20.3 KiB/s (total bytes: 12 Bytes) (time elapsed: 577 microseconds) (per-host)
+[2026-10-15 11:47:09,453][absl][INFO] - ChainedFuture completed 2/2 futures in 0.06 seconds.
+[2026-10-15 11:47:09,454][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 205 Bytes/s (total bytes: 12 Bytes) (time elapsed: 58 milliseconds) (per-host)
+[2026-10-15 11:47:09,454][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_obs_encoder
+[2026-10-15 11:47:09,468][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.orbax-checkpoint-tmp-318/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'b5ba554103d66c22395cdcc86928960d',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:09,469][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder.orbax-checkpoint-tmp-318 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder
+[2026-10-15 11:47:09,472][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_obs_encoder`.
+[2026-10-15 11:47:09,472][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_obs_encoder
+[2026-10-15 11:47:09,472][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.
+[2026-10-15 11:47:09,473][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-15 11:47:09,480][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.critic_target_obs_encoder.322
+[2026-10-15 11:47:09,480][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.orbax-checkpoint-tmp-321
+[2026-10-15 11:47:09,482][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.critic_target_obs_encoder.323
+[2026-10-15 11:47:09,483][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 8.5 KiB/s (total bytes: 4 Bytes) (time elapsed: 459 microseconds) (per-host)
+[2026-10-15 11:47:09,516][absl][INFO] - ChainedFuture completed 2/2 futures in 0.03 seconds.
+[2026-10-15 11:47:09,516][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 120 Bytes/s (total bytes: 4 Bytes) (time elapsed: 33 milliseconds) (per-host)
+[2026-10-15 11:47:09,516][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.critic_target_obs_encoder
+[2026-10-15 11:47:09,532][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.orbax-checkpoint-tmp-321/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'c8a51ef32def70923e1e2ca96c300740',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-15 11:47:09,532][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder.orbax-checkpoint-tmp-321 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder
+[2026-10-15 11:47:09,535][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/MIP/2026-10-15_09-26-37_mip_state_squash_std_simplifiedinit_critic100_000_online200_000_xqc_style_prior_mse3.0_delay3_seed0/best/critic_target_obs_encoder`.
+[2026-10-15 11:47:09,535][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.critic_target_obs_encoder
+[2026-10-15T11:57:54.997] error: *** JOB 7433528 ON nid010035 CANCELLED AT 2026-10-15T11:57:54 DUE to SIGNAL Terminated ***

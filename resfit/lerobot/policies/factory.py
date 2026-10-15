@@ -67,8 +67,7 @@ def get_policy_class(name: str) -> PreTrainedPolicy:
 
         return VQBeTPolicy
     if name == "pi0":
-        raise NotImplementedError("PI0 is not implemented in this repository.")
-        from lerobot.common.policies.pi0.modeling_pi0 import PI0Policy
+        from resfit.lerobot.policies.pi0.modeling_pi0 import PI0Policy
 
         return PI0Policy
     if name == "pi0fast":
