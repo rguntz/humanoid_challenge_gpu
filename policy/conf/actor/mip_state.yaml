@@ -1,0 +1,16 @@
+defaults:
+  - mip
+  - override obs@_here_: state # choices: state, vision (conf/agent/obs/) - STATE, unlike mip_vision.yaml's vision default
+  - override training@_here_: state # choices: state, vision (conf/agent/training/) - STATE, smaller/faster lowdim-task hyperparameters (conf/actor/training/state.yaml)
+  - _self_
+
+# State-observation variant of mip.yaml (no cameras): camera_keys=[]
+# (conf/actor/obs/state.yaml) makes xqc/envs/pick_place.py's
+# PickPlaceBottleEnv construct with camera_names=None, which flips on
+# use_object_obs - the policy then gets robot0_eef_pos/quat/gripper_qpos
+# PLUS "object" (bottle + container positions, see task.py's
+# world_lowdim_obs/flat_obs) as plain low-dim state, no images, no camera
+# rendering/ResNet encoder. Meant for fast pipeline iteration/debugging
+# (no image loading/rendering overhead) before committing to a long vision
+# run - see conf/agent/mip_vision_abs.yaml for the vision counterpart.
+name: MIP

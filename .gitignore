@@ -26,3 +26,4 @@ MUJOCO_LOG.TXT
 
 outputs/
 checkpoints/
+wandb/

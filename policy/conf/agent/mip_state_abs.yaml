@@ -1,0 +1,22 @@
+defaults:
+  - base_agent
+  - /actor@_here_: mip_state_abs # MIP, state (no vision) + absolute actions (conf/actor/mip_state_abs.yaml)
+  - /critic@critic_kwargs: xqc_style # critic, nested under agent.critic_kwargs (conf/critic/xqc_style.yaml) - state-only counterpart of xqc_style_vision
+  - _self_
+
+# State-only variant of mip_vision_abs.yaml - see its own header comment for
+# the full offline/online MIP recipe (unchanged here). No camera_keys/
+# crop_shape here: mip_state_abs.yaml's camera_keys=[] already makes the env
+# skip vision entirely and expose robot + both object (bottle/container)
+# positions as plain state instead (see its own comment). Meant for fast
+# pipeline iteration before committing to a long vision run.
+critic_name: xqc_style
+# Actor optimizer step every policy_delay updates (1 = every update); the
+# launch script (policy/shell/train_mip_state.sh) sets it.
+policy_delay: 1
+
+# Robot-base-frame dataset written by policy/make_dataset.py (its layout/ group and
+# env_scene.xml also define the evaluation env, see xqc/envs/pick_place.py).
+offline_data_path: ${repo_root:}/videos/task/dataset_sim/policy/pick_place_bottle_base.hdf5
+# null = every demo in the dataset (train_parallel_chunking.py counts them).
+n_demos: null

@@ -41,7 +41,13 @@ from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
 from omegaconf import OmegaConf
 from tensordict import TensorDict
 from torch.utils.data import DataLoader
-from torchrl.data import LazyTensorStorage, ReplayBuffer, TensorDictPrioritizedReplayBuffer
+from torchrl.data import (
+    LazyTensorStorage,
+    RandomSampler,
+    ReplayBuffer,
+    TensorDictPrioritizedReplayBuffer,
+    TensorDictReplayBuffer,
+)
 from tqdm import tqdm
 
 import wandb
@@ -61,6 +67,44 @@ from resfit.rl_finetuning.utils.hugging_face import (
 from resfit.rl_finetuning.utils.normalization import ActionScaler, StateStandardizer
 from resfit.rl_finetuning.utils.rb_transforms import MultiStepTransform
 from resfit.rl_finetuning.wrappers.residual_env_wrapper import BasePolicyVecEnvWrapper
+
+
+# -----------------------------------------------------------------------------
+# Replay buffer factory --------------------------------------------------------
+# -----------------------------------------------------------------------------
+def _make_replay_buffer(
+    sampling_strategy: str,
+    storage: LazyTensorStorage,
+    alpha: float,
+    beta: float,
+    transform: MultiStepTransform,
+    batch_size: int,
+    prefetch: int,
+) -> ReplayBuffer:
+    """TensorDictPrioritizedReplayBuffer when actually prioritizing, else a plain
+    TensorDictReplayBuffer with RandomSampler. Both are sampled/added to identically
+    (.add/.extend/.sample/.sampler._empty()); only the prioritized one supports
+    .update_tensordict_priority(), which callers already gate on sampling_strategy.
+    Some torchrl aarch64 wheels' compiled PrioritizedSampler fails to import against
+    newer torch releases (ABI mismatch) - avoiding it when priorities are unused
+    (alpha=beta=0 here) sidesteps that without changing behaviour.
+    """
+    common = dict(
+        storage=storage,
+        transform=transform,
+        pin_memory=True,
+        prefetch=prefetch,
+        batch_size=batch_size,
+    )
+    if sampling_strategy == "prioritized_replay":
+        return TensorDictPrioritizedReplayBuffer(
+            alpha=alpha,
+            beta=beta,
+            eps=1e-6,  # Small epsilon added to priorities to prevent zero values
+            priority_key="_priority",
+            **common,
+        )
+    return TensorDictReplayBuffer(sampler=RandomSampler(), **common)
 
 
 # -----------------------------------------------------------------------------
@@ -454,17 +498,15 @@ def main(cfg: ResidualTD3DexmgConfig):
     if cfg.algo.offline_fraction == 0.0:
         print("Online-only training mode: offline_fraction=0.0")
 
-    # Use TensorDictPrioritizedReplayBuffer with optimized prefetching
-    online_rb = TensorDictPrioritizedReplayBuffer(
+    # Use TensorDictPrioritizedReplayBuffer with optimized prefetching (see _make_replay_buffer)
+    online_rb = _make_replay_buffer(
+        sampling_strategy=cfg.algo.sampling_strategy,
         storage=LazyTensorStorage(max_size=cfg.algo.buffer_size, device="cpu"),
         alpha=alpha,
         beta=beta,
-        eps=1e-6,  # Small epsilon added to priorities to prevent zero values
-        priority_key="_priority",
         transform=MultiStepTransform(n_steps=cfg.algo.n_step, gamma=cfg.algo.gamma),
-        pin_memory=True,
-        prefetch=cfg.algo.prefetch_batches,  # Add prefetching
         batch_size=online_batch_size,
+        prefetch=cfg.algo.prefetch_batches,
     )
 
     # ------------------------------------------------------------------
@@ -551,16 +593,14 @@ def main(cfg: ResidualTD3DexmgConfig):
     else:
         print("Online-only mode: creating minimal offline buffer (unused)")
 
-    offline_rb = TensorDictPrioritizedReplayBuffer(
+    offline_rb = _make_replay_buffer(
+        sampling_strategy=cfg.algo.sampling_strategy,
         storage=LazyTensorStorage(max_size=max_offline_transitions, device="cpu"),
         alpha=alpha,
         beta=beta,
-        eps=1e-6,  # Small epsilon added to priorities to prevent zero values
-        priority_key="_priority",
         transform=MultiStepTransform(n_steps=cfg.algo.n_step, gamma=cfg.algo.gamma),
-        pin_memory=True,
-        prefetch=cfg.algo.prefetch_batches,  # Add prefetching
         batch_size=max(offline_batch_size, 1),  # Ensure batch_size is at least 1
+        prefetch=cfg.algo.prefetch_batches,
     )
 
     # Normalization functions already defined above - use them

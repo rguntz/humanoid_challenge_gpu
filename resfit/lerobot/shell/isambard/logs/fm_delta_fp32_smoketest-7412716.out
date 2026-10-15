@@ -1,0 +1,29 @@
+Uninstalled 1 package in 34ms
+Installed 1 package in 69ms
+Uninstalled 1 package in 24ms
+Installed 1 package in 65ms
+2026-10-14 19:22:05,091 | INFO | Cuda backend detected, using cuda.
+2026-10-14 19:22:05,092 | WARNING | Device 'None' is not available. Switching to 'cuda'.
+2026-10-14 19:22:05,092 | WARNING | 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torchvision/io/_video_deprecation_warning.py:9: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
+  warnings.warn(
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
+wandb: Currently logged in as: romainguntz (romainguntz-eth-z-rich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run x48lfie5
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-14_19-21-35_flow_matching_delta_agentview_To2_Ta16_h8_ema_legacyopt_jaxmatch_fullep_cropps_nojitter_fp32/wandb/run-20261014_192217-x48lfie5
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 2026-10-14_19-21-35_flow_matching_delta_agentview_To2_Ta16_h8_ema_legacyopt_jaxmatch_fullep_cropps_nojitter_fp32
+wandb: ⭐️ View project at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc
+wandb: 🚀 View run at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc/runs/x48lfie5
+2026-10-14 19:22:20,086 | INFO | Run folder: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-14_19-21-35_flow_matching_delta_agentview_To2_Ta16_h8_ema_legacyopt_jaxmatch_fullep_cropps_nojitter_fp32 | W&B: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc/runs/x48lfie5
+2026-10-14 19:23:31,049 | INFO | [step     100/600] loss 0.7455 | data 0 ms | iter 40 ms
+2026-10-14 19:23:35,498 | INFO | [step     200/600] loss 0.3111 | data 0 ms | iter 43 ms
+2026-10-14 19:23:40,026 | INFO | [step     300/600] loss 0.2441 | data 0 ms | iter 43 ms
+2026-10-14 19:23:44,490 | INFO | [step     400/600] loss 0.2393 | data 0 ms | iter 43 ms
+2026-10-14 19:23:48,892 | INFO | [step     500/600] loss 0.1789 | data 0 ms | iter 43 ms
+2026-10-14 19:33:12,489 | INFO | evaluation: 100 episodes in 563 s
+2026-10-14 19:33:12,491 | INFO | [step 500] success rate 2.0 % (best 2.0 % at step 500)
+2026-10-14 19:33:16,415 | INFO | New best: saved /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-14_19-21-35_flow_matching_delta_agentview_To2_Ta16_h8_ema_legacyopt_jaxmatch_fullep_cropps_nojitter_fp32/best
+2026-10-14 19:33:21,296 | INFO | [step     600/600] loss 0.1732 | data 0 ms | iter 44 ms
+[2026-10-14T19:37:25.242] error: *** JOB 7412716 ON nid010689 CANCELLED AT 2026-10-14T19:37:25 DUE to SIGNAL Terminated ***

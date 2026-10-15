@@ -41,10 +41,17 @@ from rollout_physics import GRIPPER_CLOSED, GRIPPER_OPEN
 PICK_PLACE_ALL = ["PickPlaceBottle"]
 CAMERA_KEYS = ("agentview_image",)
 
+# simplified_init's robot-pose neighborhood: +-this many radians (ARM joints
+# only, not the gripper fingers) around the mean of the demos' start poses -
+# a small spread around one canonical pose instead of the full per-demo
+# range _sample_layout() otherwise draws from.
+SIMPLIFIED_ROBOT_JITTER = 0.02
+
+
 
 class PickPlaceBottleEnv(gym.Env):
     def __init__(self, dataset_path, horizon=None, render=False, camera_names=None, min_distance=None,
-                 max_tries=1000):
+                 max_tries=1000, simplified_init=False, terminate_on_drop=False):
         dataset_path = Path(dataset_path)
         with h5py.File(dataset_path, "r") as f:
             self.layouts = {k: f["layout"][k][:] for k in f["layout"]}
@@ -69,6 +76,7 @@ class PickPlaceBottleEnv(gym.Env):
 
         geom = lambda n: mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_GEOM, n)
         self.table, self.tag = geom("table"), geom("tag")
+        self.bottle_cap = geom("bottle_cap")
         bottle_jnt = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_JOINT, "bottle")
         self.bottle_adr = self.model.jnt_qposadr[bottle_jnt]
         self.bottle_z = self.model.qpos0[self.bottle_adr + 2]  # standing on the table
@@ -77,6 +85,26 @@ class PickPlaceBottleEnv(gym.Env):
         dist = np.linalg.norm(self.layouts["box_xy"] - self.layouts["bottle_xy"], axis=1)
         self.min_distance = dist.min() if min_distance is None else min_distance
         self.max_tries = max_tries
+
+        # simplified_init (default false = today's behavior, every part of
+        # the start state drawn independently from the demos' full spread):
+        # true restricts the robot start pose to a small neighborhood around
+        # one canonical pose (the demos' mean, +-SIMPLIFIED_ROBOT_JITTER) and
+        # fixes the container at one canonical position - only the bottle
+        # keeps moving across its full range. Meant to isolate whether the
+        # combinatorial spread of start states (not the task itself) is why
+        # a vision policy isn't improving.
+        self.simplified_init = simplified_init
+        self.terminate_on_drop = terminate_on_drop
+        self._mean_robot_qpos = self.layouts["robot_qpos"].mean(axis=0)
+        # The fixed container position is the (max_x, max_y) corner of the
+        # demos' own box_xy range, not its mean: the mean sits close enough
+        # to a large fraction of the bottle_xy region that min_distance
+        # rejects ~95% of bottle draws there (checked empirically), making
+        # the bottle barely move at all in practice. This corner clears
+        # min_distance against the ENTIRE bottle_xy hull (checked
+        # empirically too), so the bottle really does keep its full range.
+        self._simplified_box_xy = self.layouts["box_xy"].max(axis=0)
 
         # Vision policies never get the ground-truth object poses (same rule as xqc's
         # robomimic env and dataset loader).
@@ -109,12 +137,19 @@ class PickPlaceBottleEnv(gym.Env):
 
     def _sample_layout(self):
         L, n = self.layouts, len(self.layouts["bottle_xy"])
-        robot, backdrop = self.rng.integers(n, size=2)
+        if self.simplified_init:
+            backdrop = self.rng.integers(n)
+            robot_qpos = self._mean_robot_qpos.copy()
+            robot_qpos[:task.ARM] += self.rng.uniform(
+                -SIMPLIFIED_ROBOT_JITTER, SIMPLIFIED_ROBOT_JITTER, task.ARM)
+        else:
+            robot, backdrop = self.rng.integers(n, size=2)
+            robot_qpos = L["robot_qpos"][robot]
         for _ in range(self.max_tries):
             bottle = self._sample_in(self.bottle_hull, L["bottle_xy"])
-            box = self._sample_in(self.box_hull, L["box_xy"])
+            box = self._simplified_box_xy if self.simplified_init else self._sample_in(self.box_hull, L["box_xy"])
             if np.linalg.norm(box - bottle) >= self.min_distance:
-                return L["robot_qpos"][robot], bottle, box, backdrop
+                return robot_qpos, bottle, box, backdrop
         raise RuntimeError(f"no bottle / container placement {self.min_distance:.3f} m apart")
 
     def reset(self, seed=None, options=None):
@@ -152,6 +187,19 @@ class PickPlaceBottleEnv(gym.Env):
         return self._obs(), {}
 
     # ----------------------------------------------------------------- step
+    def _cap_on_table(self, data):
+        """True if the bottle's cap geom is in direct contact with the table -
+        i.e. the bottle has tipped/fallen onto its side or is lying flat on the
+        table (terminate_on_drop's "fell" condition - deliberately NOT "fell
+        off the table entirely", which the cap-vs-table contact test catches
+        much earlier: a standing bottle's cap sits well above the table, only
+        touching it once the bottle has actually gone over)."""
+        for i in range(data.ncon):
+            g1, g2 = data.contact[i].geom1, data.contact[i].geom2
+            if self.table in (g1, g2) and self.bottle_cap in (g1, g2):
+                return True
+        return False
+
     def step(self, action):
         action = np.asarray(action, np.float64).reshape(-1)
         p, R = task.from_base_pose(action[:3], action[3:6], self.pb, self.Rb)
@@ -169,8 +217,10 @@ class PickPlaceBottleEnv(gym.Env):
         self.time_step += 1
 
         success = bool(self.scene.in_box(d)[0])
+        dropped = self.terminate_on_drop and not success and self._cap_on_table(d)
+        terminated = success or dropped
         truncated = self.time_step >= self.horizon
-        return self._obs(), float(success), success, truncated, {"success": success}
+        return self._obs(), float(success), terminated, truncated, {"success": success, "dropped": dropped}
 
     # ---------------------------------------------------------- observation
     def _obs(self):
@@ -194,9 +244,11 @@ class PickPlaceBottleEnv(gym.Env):
             self.renderer.close()
 
 
-def make_pick_place_env(env_name, dataset_path, render=False, camera_names=None, horizon=None):
+def make_pick_place_env(env_name, dataset_path, render=False, camera_names=None, horizon=None,
+                         simplified_init=False, terminate_on_drop=False):
     assert env_name in PICK_PLACE_ALL, env_name
     if dataset_path is None:
         raise ValueError("PickPlaceBottle needs the dataset (agent.offline_data_path): its layout/ group "
                          "and env_scene.xml define the initial states and the scene")
-    return PickPlaceBottleEnv(dataset_path, horizon=horizon, render=render, camera_names=camera_names)
+    return PickPlaceBottleEnv(dataset_path, horizon=horizon, render=render, camera_names=camera_names,
+                              simplified_init=simplified_init, terminate_on_drop=terminate_on_drop)

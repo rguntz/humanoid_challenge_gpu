@@ -32,7 +32,7 @@ POLICY_DELAY=3  # actor step every POLICY_DELAY critic steps (online)
 # Actor-BC-only test: CRITIC_PRE_STEPS=0 (no critic update) and MAX_STEPS=0
 # (no online RL). Full run: CRITIC_PRE_STEPS=100_000, MAX_STEPS=200_000.
 CRITIC_PRE_STEPS=0
-MAX_STEPS=0
+MAX_STEPS=200000
 
 RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_mip_squash_std_critic${CRITIC_PRE_STEPS}_online${MAX_STEPS}_xqc_style_prior_mse${PRIOR_MSE}_delay${POLICY_DELAY}_seed${SEED}"
 SAVE_DIR="checkpoints/MIP/${RUN_NAME}"

@@ -1,0 +1,4 @@
+[2026-10-15 09:11:45,178][root][WARNING] - 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+[2026-10-15 09:19:55,950][root][WARNING] - 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+[2026-10-15 09:31:01,364][root][WARNING] - 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+[2026-10-15 09:58:42,174][root][WARNING] - 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder

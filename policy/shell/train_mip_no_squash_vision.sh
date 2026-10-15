@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+# MIP WITHOUT tanh squashing (deterministic 2-step flow-map policy,
+# xqc/agents/actors/mip/) on the pick-and-place task, VISION observations
+# (camera_keys=[agentview_image], trainable ResNet18 encoder - see
+# conf/agent/mip_vision_abs.yaml), comparison run against FM
+# (train_fm_vision.sh) and MIP-WITH-tanh (train_mip_tanh_vision.sh), and
+# against the state-only versions (train_mip_no_squash_state.sh and
+# friends, wandb project humanoid_challenge_state):
+#   1. offline: BC pretraining of the actor + SARSA pretraining of the
+#      xqc_style_vision critic on the demos (agent.critic_kwargs.
+#      critic_pre_training_steps=100_000, the "full run" recipe - critic
+#      gets real offline convergence before online RL starts);
+#   2. online RL (max_steps=200_000): the actor maximizes the critic's Q,
+#      regularized toward the frozen BC-pretrained MIP by
+#      PRIOR_MSE * ||a_live - a_prior||^2 (agent.wasserstein_regularization).
+#      At the transition both the live actor and the prior start from the EMA
+#      weights (reset_to_ema_at_transition=true); Adam state and the LR
+#      schedule carry on untouched.
+#
+# No squashing: no tanh (agent.squash_actions=false) and no squash-space
+# standardization (agent.squash_scale=none) - the MIP predicts the normalized
+# action directly. See train_mip_tanh_vision.sh for the WITH-tanh counterpart.
+#
+# SINGLE seed/GPU (matches the state-only scripts' current setup - a 4-GPU
+# node allocation took too long to get scheduled on workq). Run this again
+# with a different SEED if you want more than one seed.
+#
+# Reads:  videos/task/dataset_sim/policy/pick_place_bottle_base.hdf5 (+ its env_scene.xml)
+# Writes: checkpoints/MIP/<RUN_NAME>/ (step_<N>/ and best/ checkpoints,
+#         eval_videos/step_<N>/*.mp4, train.log) and a W&B run (project
+#         humanoid_challenge_vision) named <RUN_NAME>.
+#
+# Run from anywhere:
+#     bash policy/shell/train_mip_no_squash_vision.sh            # GPU 0
+#     GPU=1 bash policy/shell/train_mip_no_squash_vision.sh
+#     SEED=1 bash policy/shell/train_mip_no_squash_vision.sh
+set -euo pipefail
+cd "$(dirname "${BASH_SOURCE[0]}")/../.."
+
+GPU="${GPU:-0}"
+SEED="${SEED:-0}"
+
+PRIOR_MSE=3.0  # coefficient of the live-vs-prior MIP MSE (0 = off)
+POLICY_DELAY=3  # actor step every POLICY_DELAY critic steps (online)
+CRITIC_PRE_STEPS=100_000
+MAX_STEPS=200_000
+
+# RUN_TAG (no seed) is the wandb run name - re-running this script with a
+# different SEED at the same moment would otherwise get its own name; this
+# way separate seeds launched close together can still be grouped on wandb.
+# SAVE_DIR still gets the seed suffix so checkpoints never collide.
+RUN_TAG="$(date +%Y-%m-%d_%H-%M-%S)_mip_vision_no_squash_critic${CRITIC_PRE_STEPS}_online${MAX_STEPS}_xqc_style_prior_mse${PRIOR_MSE}_delay${POLICY_DELAY}"
+SAVE_DIR="checkpoints/MIP/${RUN_TAG}_seed${SEED}"
+mkdir -p "$SAVE_DIR"
+
+export CUDA_VISIBLE_DEVICES="$GPU" MUJOCO_GL=egl MUJOCO_EGL_DEVICE_ID="$GPU"
+
+uv run policy/train_parallel_chunking.py \
+    agent=mip_vision_abs \
+    agent.squash_actions=false \
+    agent.squash_scale=none \
+    agent.actor_pre_training_steps=100_000 \
+    agent.critic_kwargs.critic_pre_training_steps=$CRITIC_PRE_STEPS \
+    agent.pretrain_use_sarsa=true \
+    agent.offline_data_ratio=0.5 \
+    agent.policy_delay=$POLICY_DELAY \
+    agent.ema_rate_online=1.0 \
+    agent.wasserstein_regularization=$PRIOR_MSE \
+    agent.wasserstein_offline_only=false \
+    agent.bc_regularization=null \
+    agent.critic_bootstrap_use_ema=false \
+    agent.critic_bootstrap_best_of_n=1 \
+    agent.rollout_best_of_n=1 \
+    agent.fix_reward_normalization_scale_jump=true \
+    reset_to_ema_at_transition=true \
+    max_steps=$MAX_STEPS \
+    start_training_critic=0 \
+    start_training_actor=0 \
+    rollout_warmup_steps=10_000 \
+    updates_per_step=2 \
+    eval_interval=10_000 \
+    eval_at_start=true \
+    num_seeds=1 \
+    eval_num_seeds=10 \
+    eval_episodes=10 \
+    eval_video=true \
+    eval_video_local=true \
+    seed=$SEED \
+    wandb.project_name=humanoid_challenge_vision \
+    wandb.name="$RUN_TAG" \
+    save_dir="$SAVE_DIR" \
+    2>&1 | tee -a "$SAVE_DIR/train.log"

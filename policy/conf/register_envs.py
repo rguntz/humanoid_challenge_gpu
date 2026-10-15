@@ -44,5 +44,11 @@ for env_name, benchmark in ENV_BENCHMARKS.items():
             "action_repeat": 1,
             # null = 1.5 x the longest demo (xqc/envs/pick_place.py)
             "horizon": None,
+            # simplified_init/terminate_on_drop (xqc/envs/pick_place.py's
+            # own PickPlaceBottleEnv): both default false = today's exact
+            # behavior. Override via env.simplified_init=true /
+            # env.terminate_on_drop=true on the CLI.
+            "simplified_init": False,
+            "terminate_on_drop": False,
         },
     )

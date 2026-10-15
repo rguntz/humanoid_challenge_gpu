@@ -1,0 +1,1229 @@
+Uninstalled 1 package in 50ms
+Installed 1 package in 92ms
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
+wandb: Currently logged in as: romainguntz (romainguntz-eth-z-rich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run ebws3ix7
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /tmp/wandb/run-20261014_211236-ebws3ix7
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 2026-10-14_21-12-29_fm_vision_bc_only
+wandb: ⭐️ View project at https://wandb.ai/romainguntz-eth-z-rich/humanoid_challenge_vision
+wandb: 🚀 View run at https://wandb.ai/romainguntz-eth-z-rich/humanoid_challenge_vision/runs/ebws3ix7
+[2026-10-14 21:12:43,384][absl][INFO] - Created `ArrayHandler` with primary_host=0, replica_id=0
+[2026-10-14 21:12:48,139][jax._src.xla_bridge][INFO] - Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+[2026-10-14 21:12:48,180][jax._src.xla_bridge][INFO] - Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+SLURM_JOB_ID: 7415356
+
+======================================================================
+========= HYPERPARAMETERS - FM - pick_place/PickPlaceBottle ==========
+======================================================================
+seed:                                    0
+num_seeds:                               1
+reset_to_ema_at_transition:              False
+eval_num_seeds:                          10
+start_training:                          5000
+start_training_critic:                   5000
+start_training_actor:                    5000
+rollout_warmup_steps:                    0
+actor_pretrain_target_success_rate:      None
+max_steps:                               0
+replay_buffer_size:                      300000
+batch_size:                              256
+updates_per_step:                        2
+val_ratio:                               0.02
+discount:                                None
+n_steps:                                 1
+log_interval_condition_number:           None
+eval_verbose:                            False
+save_dir:                                checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0
+checkpoint_keep_last_n:                  3
+resume_from:                             None
+resume_step:                             0
+debug_skip_agent_update:                 False
+wandb:
+  project_name:                          humanoid_challenge_vision
+  entity:                                None
+  mode:                                  online
+  name:                                  2026-10-14_21-12-29_fm_vision_bc_only
+eval_interval:                           500
+eval_interval_offline:                   500
+eval_interval_online:                    500
+eval_episodes:                           10
+log_interval:                            100
+eval_at_start:                           True
+eval_video:                              True
+eval_video_local:                        True
+eval_video_wandb:                        False
+eval_video_fps:                          15
+eval_video_frameskip:                    1
+eval_video_num_envs:                     1
+eval_video_episodes:                     10
+eval_video_max_steps:                    4000
+loglik_interval:                         1000
+loglik_batch_size:                       256
+loglik_online_window:                    10000
+loglik_spread_samples:                   8
+loglik_jac_chunk:                        16
+agent:
+  critic_name:                           None
+  critic_kwargs:
+  reset_freq:                            0
+  reward_normalization:                  True
+  fix_reward_normalization_scale_jump:   False
+  offline_data_ratio:                    1.0
+  n_demos:                               None
+  pretrain_use_sarsa:                    True
+  critic_bootstrap_use_ema:              False
+  critic_bootstrap_best_of_n:            1
+  rollout_best_of_n:                     1
+  To:                                    2
+  Ta:                                    16
+  execution_horizon:                     8
+  dim_mult:                              [1, 2, 2]
+  mask_reference_region:                 True
+  camera_keys:                           ['agentview_image']
+  batch_size:                            64
+  model_dim:                             512
+  emb_dim:                               128
+  vision_encoder:                        resnet
+  vision_norm_type:                      group
+  random_crop:                           True
+  crop_shape:                            [116, 116]
+  vision_feature_dims:
+    resnet:                              64
+    vit:                                 768
+  spatial_softmax_num_kp:                32
+  spatial_softmax_feature_dim:           64
+  vit_image_size:                        224
+  range_eps:                             1e-07
+  kernel_size:                           5
+  cond_predict_scale:                    True
+  n_groups:                              8
+  use_stationary_unet:                   False
+  bottleneck_dim:                        24
+  feature_dimension:                     128
+  stationary_activation:                 sin_cos
+  w_mean_stddev:                         0.001
+  stationary_mode:                       concat
+  log_ls_init:                           -5.0
+  stationary_features_variant:           default
+  num_encoder_layers:                    2
+  eef_pos_dim:                           3
+  eef_quat_dim:                          4
+  lr:                                    0.0001
+  weight_decay:                          1e-06
+  beta1:                                 0.95
+  beta2:                                 0.999
+  grad_clip_norm:                        None
+  lr_schedule:                           cosine_warmup
+  lr_warmup_steps:                       500
+  ema_rate:                              0.995
+  ema_schedule:                          warmup
+  ema_power:                             0.75
+  ema_max_value:                         0.9999
+  ema_rate_online:                       None
+  actor_pre_training_steps:              100000
+  log_gradient_metrics:                  False
+  wasserstein_regularization:            None
+  wasserstein_offline_only:              False
+  actor_weight:                          1.0
+  bc_regularization:                     None
+  name:                                  FM
+  num_steps:                             10
+  abs_action:                            True
+  offline_data_path:                     /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/videos/task/dataset_sim/policy/pick_place_bottle_base.hdf5
+env:
+  name:                                  PickPlaceBottle
+  benchmark:                             pick_place
+  action_repeat:                         1
+  horizon:                               None
+======================================================================
+
+[2026-10-14 21:12:49,589][OpenGL.acceleratesupport][INFO] - No OpenGL_accelerate module loaded: No module named 'OpenGL_accelerate'
+Saved eval video checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/eval_videos/step_1/env0.mp4
+goal 0.0
+return 0.0
+goal 0.0
+return 0.0
+[2026-10-14 21:20:36,896][absl][INFO] - orbax-checkpoint version: 0.6.4
+[2026-10-14 21:20:36,896][absl][INFO] - [thread=MainThread] Failed to get flag value for EXPERIMENTAL_ORBAX_USE_DISTRIBUTED_PROCESS_ID.
+[2026-10-14 21:20:36,897][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network.
+[2026-10-14 21:20:36,907][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.1
+[2026-10-14 21:20:36,908][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network.orbax-checkpoint-tmp-0
+[2026-10-14 21:20:36,910][absl][INFO] - Wrote CheckpointMetadata=CheckpointMetadata(init_timestamp_nsecs=1792012836908883746, commit_timestamp_nsecs=None), json={"init_timestamp_nsecs": 1792012836908883746, "commit_timestamp_nsecs": null} to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network.orbax-checkpoint-tmp-0
+[2026-10-14 21:20:36,910][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.2
+[2026-10-14 21:20:37,255][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 8.2 GiB/s (total bytes: 2.8 GiB) (time elapsed: 343 milliseconds) (per-host)
+[2026-10-14 21:20:37,929][absl][INFO] - ChainedFuture completed 2/2 futures in 0.66 seconds.
+[2026-10-14 21:20:37,929][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 2.8 GiB/s (total bytes: 2.8 GiB) (time elapsed: a second) (per-host)
+[2026-10-14 21:20:37,930][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-14 21:20:37,947][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=918, unique=459) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network.orbax-checkpoint-tmp-0/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '6f5c012b73e705d4de68d3e4883c81f8',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:37,948][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network.orbax-checkpoint-tmp-0 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network
+[2026-10-14 21:20:37,949][absl][INFO] - Read CheckpointMetadata=CheckpointMetadata(init_timestamp_nsecs=1792012836908883746, commit_timestamp_nsecs=None) from /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network.orbax-checkpoint-tmp-0
+[2026-10-14 21:20:37,951][absl][INFO] - Updated CheckpointMetadata=CheckpointMetadata(init_timestamp_nsecs=1792012836908883746, commit_timestamp_nsecs=1792012837948528418) to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network.orbax-checkpoint-tmp-0
+[2026-10-14 21:20:37,951][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/network`.
+[2026-10-14 21:20:37,952][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-14 21:20:37,952][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/obs_encoder.
+[2026-10-14 21:20:37,952][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.4
+[2026-10-14 21:20:37,953][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/obs_encoder.orbax-checkpoint-tmp-3
+[2026-10-14 21:20:37,955][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.5
+[2026-10-14 21:20:37,956][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 11.1 KiB/s (total bytes: 12 Bytes) (time elapsed: 1 millisecond) (per-host)
+[2026-10-14 21:20:38,000][absl][INFO] - ChainedFuture completed 2/2 futures in 0.04 seconds.
+[2026-10-14 21:20:38,000][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 267 Bytes/s (total bytes: 12 Bytes) (time elapsed: 44 milliseconds) (per-host)
+[2026-10-14 21:20:38,001][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-14 21:20:38,014][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/obs_encoder.orbax-checkpoint-tmp-3/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '33a06b6bccc46ad0381ef584635d51d9',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:38,015][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/obs_encoder.orbax-checkpoint-tmp-3 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/obs_encoder
+[2026-10-14 21:20:38,017][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/obs_encoder`.
+[2026-10-14 21:20:38,018][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-14 21:20:38,018][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_network.
+[2026-10-14 21:20:38,018][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.7
+[2026-10-14 21:20:38,019][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_network.orbax-checkpoint-tmp-6
+[2026-10-14 21:20:38,021][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.8
+[2026-10-14 21:20:38,125][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 9.1 GiB/s (total bytes: 962.1 MiB) (time elapsed: 103 milliseconds) (per-host)
+[2026-10-14 21:20:38,394][absl][INFO] - ChainedFuture completed 3/3 futures in 0.26 seconds.
+[2026-10-14 21:20:38,394][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 2.5 GiB/s (total bytes: 962.1 MiB) (time elapsed: 372 milliseconds) (per-host)
+[2026-10-14 21:20:38,395][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-14 21:20:38,408][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_network.orbax-checkpoint-tmp-6/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '9ced6a8b3ef76f913a615560dd0bd3c6',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:38,409][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_network.orbax-checkpoint-tmp-6 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_network
+[2026-10-14 21:20:38,412][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_network`.
+[2026-10-14 21:20:38,412][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-14 21:20:38,412][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_obs_encoder.
+[2026-10-14 21:20:38,413][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.10
+[2026-10-14 21:20:38,413][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_obs_encoder.orbax-checkpoint-tmp-9
+[2026-10-14 21:20:38,415][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.11
+[2026-10-14 21:20:38,416][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 54.1 KiB/s (total bytes: 28 Bytes) (time elapsed: 505 microseconds) (per-host)
+[2026-10-14 21:20:38,437][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-14 21:20:38,437][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.3 KiB/s (total bytes: 28 Bytes) (time elapsed: 21 milliseconds) (per-host)
+[2026-10-14 21:20:38,437][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-14 21:20:38,450][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_obs_encoder.orbax-checkpoint-tmp-9/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '6287bcdc3ae159f96588b4015e1bf83f',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:38,451][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_obs_encoder.orbax-checkpoint-tmp-9 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_obs_encoder
+[2026-10-14 21:20:38,453][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_obs_encoder`.
+[2026-10-14 21:20:38,454][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-14 21:20:38,454][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/vision_agentview_image.
+[2026-10-14 21:20:38,454][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.vision_agentview_image.13
+[2026-10-14 21:20:38,455][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/vision_agentview_image.orbax-checkpoint-tmp-12
+[2026-10-14 21:20:38,457][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.vision_agentview_image.14
+[2026-10-14 21:20:38,486][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 4.3 GiB/s (total bytes: 128.1 MiB) (time elapsed: 29 milliseconds) (per-host)
+[2026-10-14 21:20:38,646][absl][INFO] - ChainedFuture completed 2/2 futures in 0.15 seconds.
+[2026-10-14 21:20:38,646][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 678.4 MiB/s (total bytes: 128.1 MiB) (time elapsed: 188 milliseconds) (per-host)
+[2026-10-14 21:20:38,646][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.vision_agentview_image
+[2026-10-14 21:20:38,662][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=390, unique=195) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/vision_agentview_image.orbax-checkpoint-tmp-12/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '3e3f1ef165dda8fe71e03a95ca264c2a',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:38,663][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/vision_agentview_image.orbax-checkpoint-tmp-12 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/vision_agentview_image
+[2026-10-14 21:20:38,666][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/vision_agentview_image`.
+[2026-10-14 21:20:38,666][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.vision_agentview_image
+[2026-10-14 21:20:38,666][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_vision_agentview_image.
+[2026-10-14 21:20:38,666][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_vision_agentview_image.16
+[2026-10-14 21:20:38,667][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_vision_agentview_image.orbax-checkpoint-tmp-15
+[2026-10-14 21:20:38,669][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_vision_agentview_image.17
+[2026-10-14 21:20:38,680][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 4.1 GiB/s (total bytes: 42.7 MiB) (time elapsed: 10 milliseconds) (per-host)
+[2026-10-14 21:20:38,759][absl][INFO] - ChainedFuture completed 3/3 futures in 0.07 seconds.
+[2026-10-14 21:20:38,759][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 479.1 MiB/s (total bytes: 42.7 MiB) (time elapsed: 89 milliseconds) (per-host)
+[2026-10-14 21:20:38,759][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_vision_agentview_image
+[2026-10-14 21:20:38,774][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=130, unique=65) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_vision_agentview_image.orbax-checkpoint-tmp-15/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '69bcc3c8f1f4f8d0fbe0d41b5f2a3ecd',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:38,774][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_vision_agentview_image.orbax-checkpoint-tmp-15 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_vision_agentview_image
+[2026-10-14 21:20:38,777][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/prior_vision_agentview_image`.
+[2026-10-14 21:20:38,777][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_vision_agentview_image
+[2026-10-14 21:20:38,778][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/ema.
+[2026-10-14 21:20:38,778][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.19
+[2026-10-14 21:20:38,779][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/ema.orbax-checkpoint-tmp-18
+[2026-10-14 21:20:38,781][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.20
+[2026-10-14 21:20:38,897][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 8.5 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 115 milliseconds) (per-host)
+[2026-10-14 21:20:39,187][absl][INFO] - ChainedFuture completed 2/2 futures in 0.28 seconds.
+[2026-10-14 21:20:39,188][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 2.4 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 406 milliseconds) (per-host)
+[2026-10-14 21:20:39,188][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-14 21:20:39,205][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=432, unique=216) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/ema.orbax-checkpoint-tmp-18/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '503cfa2d8b68bd2bb616557d61447612',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:39,205][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/ema.orbax-checkpoint-tmp-18 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/ema
+[2026-10-14 21:20:39,208][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_1/ema`.
+[2026-10-14 21:20:39,208][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-14 21:20:39,211][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.
+[2026-10-14 21:20:39,212][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.22
+[2026-10-14 21:20:39,212][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.orbax-checkpoint-tmp-21
+[2026-10-14 21:20:39,214][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.23
+[2026-10-14 21:20:39,242][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 102.7 GiB/s (total bytes: 2.8 GiB) (time elapsed: 27 milliseconds) (per-host)
+[2026-10-14 21:20:39,848][absl][INFO] - ChainedFuture completed 2/2 futures in 0.60 seconds.
+[2026-10-14 21:20:39,848][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 4.5 GiB/s (total bytes: 2.8 GiB) (time elapsed: 633 milliseconds) (per-host)
+[2026-10-14 21:20:39,849][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-14 21:20:39,864][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=918, unique=459) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.orbax-checkpoint-tmp-21/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '9e9a30d3f09bd51a2cb65cae7e652dd4',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:39,865][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.orbax-checkpoint-tmp-21 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network
+[2026-10-14 21:20:39,868][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network`.
+[2026-10-14 21:20:39,868][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-14 21:20:39,868][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.
+[2026-10-14 21:20:39,869][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.25
+[2026-10-14 21:20:39,869][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.orbax-checkpoint-tmp-24
+[2026-10-14 21:20:39,871][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.26
+[2026-10-14 21:20:39,873][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 15.9 KiB/s (total bytes: 12 Bytes) (time elapsed: 737 microseconds) (per-host)
+[2026-10-14 21:20:39,915][absl][INFO] - ChainedFuture completed 2/2 futures in 0.04 seconds.
+[2026-10-14 21:20:39,915][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 277 Bytes/s (total bytes: 12 Bytes) (time elapsed: 43 milliseconds) (per-host)
+[2026-10-14 21:20:39,916][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-14 21:20:39,928][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.orbax-checkpoint-tmp-24/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'bad45753056983a3b0eb902fcd76e04b',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:39,928][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.orbax-checkpoint-tmp-24 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder
+[2026-10-14 21:20:39,931][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder`.
+[2026-10-14 21:20:39,931][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-14 21:20:39,932][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.
+[2026-10-14 21:20:39,932][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.28
+[2026-10-14 21:20:39,933][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.orbax-checkpoint-tmp-27
+[2026-10-14 21:20:39,934][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.29
+[2026-10-14 21:20:39,942][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 139.5 GiB/s (total bytes: 962.1 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-14 21:20:40,216][absl][INFO] - ChainedFuture completed 3/3 futures in 0.26 seconds.
+[2026-10-14 21:20:40,216][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 3.3 GiB/s (total bytes: 962.1 MiB) (time elapsed: 281 milliseconds) (per-host)
+[2026-10-14 21:20:40,217][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-14 21:20:40,234][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.orbax-checkpoint-tmp-27/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'a2d0b4fc183ad789022b9d473455c295',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:40,234][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.orbax-checkpoint-tmp-27 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network
+[2026-10-14 21:20:40,237][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network`.
+[2026-10-14 21:20:40,238][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-14 21:20:40,238][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.
+[2026-10-14 21:20:40,238][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.31
+[2026-10-14 21:20:40,239][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-30
+[2026-10-14 21:20:40,241][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.32
+[2026-10-14 21:20:40,242][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 56.0 KiB/s (total bytes: 28 Bytes) (time elapsed: 488 microseconds) (per-host)
+[2026-10-14 21:20:40,267][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-14 21:20:40,267][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.1 KiB/s (total bytes: 28 Bytes) (time elapsed: 25 milliseconds) (per-host)
+[2026-10-14 21:20:40,267][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-14 21:20:40,282][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-30/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '10a9a2e2d78a513a14c2d88ead706632',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:40,282][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-30 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder
+[2026-10-14 21:20:40,284][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder`.
+[2026-10-14 21:20:40,285][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-14 21:20:40,285][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.
+[2026-10-14 21:20:40,285][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.vision_agentview_image.34
+[2026-10-14 21:20:40,286][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.orbax-checkpoint-tmp-33
+[2026-10-14 21:20:40,288][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.vision_agentview_image.35
+[2026-10-14 21:20:40,297][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 15.3 GiB/s (total bytes: 128.1 MiB) (time elapsed: 8 milliseconds) (per-host)
+[2026-10-14 21:20:40,463][absl][INFO] - ChainedFuture completed 2/2 futures in 0.16 seconds.
+[2026-10-14 21:20:40,463][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 733.5 MiB/s (total bytes: 128.1 MiB) (time elapsed: 174 milliseconds) (per-host)
+[2026-10-14 21:20:40,464][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.vision_agentview_image
+[2026-10-14 21:20:40,480][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=390, unique=195) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.orbax-checkpoint-tmp-33/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '5f2d51666cee3caeb094b741f64fb2ea',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:40,481][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.orbax-checkpoint-tmp-33 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image
+[2026-10-14 21:20:40,484][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image`.
+[2026-10-14 21:20:40,484][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.vision_agentview_image
+[2026-10-14 21:20:40,484][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.
+[2026-10-14 21:20:40,484][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_vision_agentview_image.37
+[2026-10-14 21:20:40,485][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.orbax-checkpoint-tmp-36
+[2026-10-14 21:20:40,487][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_vision_agentview_image.38
+[2026-10-14 21:20:40,491][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 13.6 GiB/s (total bytes: 42.7 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-14 21:20:40,588][absl][INFO] - ChainedFuture completed 3/3 futures in 0.10 seconds.
+[2026-10-14 21:20:40,588][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 424.5 MiB/s (total bytes: 42.7 MiB) (time elapsed: 100 milliseconds) (per-host)
+[2026-10-14 21:20:40,589][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_vision_agentview_image
+[2026-10-14 21:20:40,606][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=130, unique=65) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.orbax-checkpoint-tmp-36/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'd90742e774f58100f4f915729ad965c1',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:40,606][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.orbax-checkpoint-tmp-36 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image
+[2026-10-14 21:20:40,609][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image`.
+[2026-10-14 21:20:40,609][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_vision_agentview_image
+[2026-10-14 21:20:40,609][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.
+[2026-10-14 21:20:40,610][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.40
+[2026-10-14 21:20:40,610][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.orbax-checkpoint-tmp-39
+[2026-10-14 21:20:40,612][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.41
+[2026-10-14 21:20:40,622][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 115.9 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 8 milliseconds) (per-host)
+[2026-10-14 21:20:41,175][absl][INFO] - ChainedFuture completed 2/2 futures in 0.54 seconds.
+[2026-10-14 21:20:41,176][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.7 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 562 milliseconds) (per-host)
+[2026-10-14 21:20:41,176][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-14 21:20:41,190][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=432, unique=216) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.orbax-checkpoint-tmp-39/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '19e293d079536298b1935b327a3944a4',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:20:41,191][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.orbax-checkpoint-tmp-39 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema
+[2026-10-14 21:20:41,193][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema`.
+[2026-10-14 21:20:41,194][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+Saved eval video checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/eval_videos/step_500/env0.mp4
+goal 0.01
+return 0.01
+goal 0.0
+return 0.0
+[2026-10-14 21:27:57,564][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/network.
+[2026-10-14 21:27:57,565][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.43
+[2026-10-14 21:27:57,566][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/network.orbax-checkpoint-tmp-42
+[2026-10-14 21:27:57,568][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.44
+[2026-10-14 21:27:57,884][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 8.9 GiB/s (total bytes: 2.8 GiB) (time elapsed: 315 milliseconds) (per-host)
+[2026-10-14 21:27:58,614][absl][INFO] - ChainedFuture completed 2/2 futures in 0.71 seconds.
+[2026-10-14 21:27:58,615][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 2.7 GiB/s (total bytes: 2.8 GiB) (time elapsed: a second) (per-host)
+[2026-10-14 21:27:58,615][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-14 21:27:58,632][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=918, unique=459) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/network.orbax-checkpoint-tmp-42/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'ea60d9def2744cfce6a8343ac2123ac5',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:27:58,633][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/network.orbax-checkpoint-tmp-42 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/network
+[2026-10-14 21:27:58,636][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/network`.
+[2026-10-14 21:27:58,636][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-14 21:27:58,636][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/obs_encoder.
+[2026-10-14 21:27:58,637][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.46
+[2026-10-14 21:27:58,638][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/obs_encoder.orbax-checkpoint-tmp-45
+[2026-10-14 21:27:58,640][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.47
+[2026-10-14 21:27:58,641][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 10.7 KiB/s (total bytes: 12 Bytes) (time elapsed: 1 millisecond) (per-host)
+[2026-10-14 21:27:58,690][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-14 21:27:58,690][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 242 Bytes/s (total bytes: 12 Bytes) (time elapsed: 49 milliseconds) (per-host)
+[2026-10-14 21:27:58,690][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-14 21:27:58,704][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/obs_encoder.orbax-checkpoint-tmp-45/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'eef36466f316ea21fe21a96a3946da95',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:27:58,705][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/obs_encoder.orbax-checkpoint-tmp-45 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/obs_encoder
+[2026-10-14 21:27:58,707][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/obs_encoder`.
+[2026-10-14 21:27:58,708][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-14 21:27:58,708][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_network.
+[2026-10-14 21:27:58,708][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.49
+[2026-10-14 21:27:58,709][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_network.orbax-checkpoint-tmp-48
+[2026-10-14 21:27:58,711][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.50
+[2026-10-14 21:27:58,718][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 151.8 GiB/s (total bytes: 962.1 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-14 21:27:58,992][absl][INFO] - ChainedFuture completed 3/3 futures in 0.27 seconds.
+[2026-10-14 21:27:58,993][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 3.3 GiB/s (total bytes: 962.1 MiB) (time elapsed: 281 milliseconds) (per-host)
+[2026-10-14 21:27:58,993][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-14 21:27:59,009][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_network.orbax-checkpoint-tmp-48/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '16fdeeaf3ca1a9893819ae29478c0ee5',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:27:59,009][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_network.orbax-checkpoint-tmp-48 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_network
+[2026-10-14 21:27:59,012][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_network`.
+[2026-10-14 21:27:59,012][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-14 21:27:59,013][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_obs_encoder.
+[2026-10-14 21:27:59,013][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.52
+[2026-10-14 21:27:59,014][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_obs_encoder.orbax-checkpoint-tmp-51
+[2026-10-14 21:27:59,016][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.53
+[2026-10-14 21:27:59,017][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 56.4 KiB/s (total bytes: 28 Bytes) (time elapsed: 485 microseconds) (per-host)
+[2026-10-14 21:27:59,039][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-14 21:27:59,039][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.2 KiB/s (total bytes: 28 Bytes) (time elapsed: 22 milliseconds) (per-host)
+[2026-10-14 21:27:59,040][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-14 21:27:59,054][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_obs_encoder.orbax-checkpoint-tmp-51/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '0c8deb8a0479ba12b3460f121dc4c09f',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:27:59,055][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_obs_encoder.orbax-checkpoint-tmp-51 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_obs_encoder
+[2026-10-14 21:27:59,057][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_obs_encoder`.
+[2026-10-14 21:27:59,058][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-14 21:27:59,058][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/vision_agentview_image.
+[2026-10-14 21:27:59,058][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.vision_agentview_image.55
+[2026-10-14 21:27:59,059][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/vision_agentview_image.orbax-checkpoint-tmp-54
+[2026-10-14 21:27:59,061][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.vision_agentview_image.56
+[2026-10-14 21:27:59,086][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 5.1 GiB/s (total bytes: 128.1 MiB) (time elapsed: 24 milliseconds) (per-host)
+[2026-10-14 21:27:59,245][absl][INFO] - ChainedFuture completed 2/2 futures in 0.15 seconds.
+[2026-10-14 21:27:59,245][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 696.6 MiB/s (total bytes: 128.1 MiB) (time elapsed: 183 milliseconds) (per-host)
+[2026-10-14 21:27:59,246][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.vision_agentview_image
+[2026-10-14 21:27:59,262][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=390, unique=195) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/vision_agentview_image.orbax-checkpoint-tmp-54/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'e2e6c68524289cd48734a695d7d5fd0b',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:27:59,262][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/vision_agentview_image.orbax-checkpoint-tmp-54 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/vision_agentview_image
+[2026-10-14 21:27:59,265][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/vision_agentview_image`.
+[2026-10-14 21:27:59,265][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.vision_agentview_image
+[2026-10-14 21:27:59,266][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_vision_agentview_image.
+[2026-10-14 21:27:59,266][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_vision_agentview_image.58
+[2026-10-14 21:27:59,267][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_vision_agentview_image.orbax-checkpoint-tmp-57
+[2026-10-14 21:27:59,269][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_vision_agentview_image.59
+[2026-10-14 21:27:59,273][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 13.2 GiB/s (total bytes: 42.7 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-14 21:27:59,349][absl][INFO] - ChainedFuture completed 3/3 futures in 0.07 seconds.
+[2026-10-14 21:27:59,349][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 534.8 MiB/s (total bytes: 42.7 MiB) (time elapsed: 79 milliseconds) (per-host)
+[2026-10-14 21:27:59,350][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_vision_agentview_image
+[2026-10-14 21:27:59,364][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=130, unique=65) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_vision_agentview_image.orbax-checkpoint-tmp-57/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'ee20ca412e025408db474a3198318c0b',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:27:59,364][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_vision_agentview_image.orbax-checkpoint-tmp-57 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_vision_agentview_image
+[2026-10-14 21:27:59,367][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/prior_vision_agentview_image`.
+[2026-10-14 21:27:59,367][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_vision_agentview_image
+[2026-10-14 21:27:59,367][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/ema.
+[2026-10-14 21:27:59,368][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.61
+[2026-10-14 21:27:59,368][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/ema.orbax-checkpoint-tmp-60
+[2026-10-14 21:27:59,370][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.62
+[2026-10-14 21:27:59,481][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 8.9 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 110 milliseconds) (per-host)
+[2026-10-14 21:27:59,774][absl][INFO] - ChainedFuture completed 2/2 futures in 0.29 seconds.
+[2026-10-14 21:27:59,775][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 2.4 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 403 milliseconds) (per-host)
+[2026-10-14 21:27:59,775][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-14 21:27:59,791][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=432, unique=216) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/ema.orbax-checkpoint-tmp-60/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '491a4d85477c48ca27079c9850b44f50',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:27:59,791][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/ema.orbax-checkpoint-tmp-60 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/ema
+[2026-10-14 21:27:59,794][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/step_500/ema`.
+[2026-10-14 21:27:59,795][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-14 21:27:59,797][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.
+[2026-10-14 21:27:59,797][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-14 21:27:59,853][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.network.64
+[2026-10-14 21:27:59,853][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.orbax-checkpoint-tmp-63
+[2026-10-14 21:27:59,855][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.network.65
+[2026-10-14 21:27:59,880][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 116.1 GiB/s (total bytes: 2.8 GiB) (time elapsed: 24 milliseconds) (per-host)
+[2026-10-14 21:28:00,888][absl][INFO] - ChainedFuture completed 2/2 futures in 1.00 seconds.
+[2026-10-14 21:28:00,889][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 2.7 GiB/s (total bytes: 2.8 GiB) (time elapsed: a second) (per-host)
+[2026-10-14 21:28:00,889][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.network
+[2026-10-14 21:28:00,906][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=918, unique=459) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.orbax-checkpoint-tmp-63/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '447f8c6872df70ac66d58795cd181a79',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:28:00,907][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network.orbax-checkpoint-tmp-63 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network
+[2026-10-14 21:28:00,910][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/network`.
+[2026-10-14 21:28:00,910][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.network
+[2026-10-14 21:28:00,910][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.
+[2026-10-14 21:28:00,911][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-14 21:28:00,917][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.obs_encoder.67
+[2026-10-14 21:28:00,918][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.orbax-checkpoint-tmp-66
+[2026-10-14 21:28:00,920][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.obs_encoder.68
+[2026-10-14 21:28:00,922][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 16.8 KiB/s (total bytes: 12 Bytes) (time elapsed: 699 microseconds) (per-host)
+[2026-10-14 21:28:00,968][absl][INFO] - ChainedFuture completed 2/2 futures in 0.05 seconds.
+[2026-10-14 21:28:00,968][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 254 Bytes/s (total bytes: 12 Bytes) (time elapsed: 47 milliseconds) (per-host)
+[2026-10-14 21:28:00,968][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.obs_encoder
+[2026-10-14 21:28:00,981][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=6, unique=3) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.orbax-checkpoint-tmp-66/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'c490868094dea699a32bbc0eb142f3d3',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:28:00,982][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder.orbax-checkpoint-tmp-66 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder
+[2026-10-14 21:28:00,984][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/obs_encoder`.
+[2026-10-14 21:28:00,984][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.obs_encoder
+[2026-10-14 21:28:00,984][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.
+[2026-10-14 21:28:00,985][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-14 21:28:01,015][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_network.70
+[2026-10-14 21:28:01,016][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.orbax-checkpoint-tmp-69
+[2026-10-14 21:28:01,017][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_network.71
+[2026-10-14 21:28:01,024][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 146.5 GiB/s (total bytes: 962.1 MiB) (time elapsed: 6 milliseconds) (per-host)
+[2026-10-14 21:28:01,295][absl][INFO] - ChainedFuture completed 3/3 futures in 0.26 seconds.
+[2026-10-14 21:28:01,296][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 3.4 GiB/s (total bytes: 962.1 MiB) (time elapsed: 277 milliseconds) (per-host)
+[2026-10-14 21:28:01,296][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_network
+[2026-10-14 21:28:01,311][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=306, unique=153) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.orbax-checkpoint-tmp-69/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'ed59c1144f0c28f6641098d4a4f0168c',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:28:01,312][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network.orbax-checkpoint-tmp-69 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network
+[2026-10-14 21:28:01,314][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_network`.
+[2026-10-14 21:28:01,315][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_network
+[2026-10-14 21:28:01,315][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.
+[2026-10-14 21:28:01,315][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-14 21:28:01,321][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_obs_encoder.73
+[2026-10-14 21:28:01,322][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-72
+[2026-10-14 21:28:01,324][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_obs_encoder.74
+[2026-10-14 21:28:01,325][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 52.2 KiB/s (total bytes: 28 Bytes) (time elapsed: 524 microseconds) (per-host)
+[2026-10-14 21:28:01,346][absl][INFO] - ChainedFuture completed 2/2 futures in 0.02 seconds.
+[2026-10-14 21:28:01,346][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 1.2 KiB/s (total bytes: 28 Bytes) (time elapsed: 21 milliseconds) (per-host)
+[2026-10-14 21:28:01,347][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_obs_encoder
+[2026-10-14 21:28:01,359][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=2, unique=1) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-72/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '104c0b884e7c7ed95bfe35e589428e68',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:28:01,360][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder.orbax-checkpoint-tmp-72 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder
+[2026-10-14 21:28:01,362][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_obs_encoder`.
+[2026-10-14 21:28:01,363][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_obs_encoder
+[2026-10-14 21:28:01,363][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.
+[2026-10-14 21:28:01,363][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-14 21:28:01,373][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.vision_agentview_image.76
+[2026-10-14 21:28:01,373][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.orbax-checkpoint-tmp-75
+[2026-10-14 21:28:01,375][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.vision_agentview_image.77
+[2026-10-14 21:28:01,385][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 14.5 GiB/s (total bytes: 128.1 MiB) (time elapsed: 8 milliseconds) (per-host)
+[2026-10-14 21:28:01,550][absl][INFO] - ChainedFuture completed 2/2 futures in 0.16 seconds.
+[2026-10-14 21:28:01,550][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 735.1 MiB/s (total bytes: 128.1 MiB) (time elapsed: 174 milliseconds) (per-host)
+[2026-10-14 21:28:01,551][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.vision_agentview_image
+[2026-10-14 21:28:01,566][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=390, unique=195) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.orbax-checkpoint-tmp-75/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'e22c1e8e184ec8ef2882c720303f405e',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:28:01,566][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image.orbax-checkpoint-tmp-75 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image
+[2026-10-14 21:28:01,570][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/vision_agentview_image`.
+[2026-10-14 21:28:01,570][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.vision_agentview_image
+[2026-10-14 21:28:01,570][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.
+[2026-10-14 21:28:01,570][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-14 21:28:01,582][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.prior_vision_agentview_image.79
+[2026-10-14 21:28:01,583][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.orbax-checkpoint-tmp-78
+[2026-10-14 21:28:01,584][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.prior_vision_agentview_image.80
+[2026-10-14 21:28:01,588][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 13.6 GiB/s (total bytes: 42.7 MiB) (time elapsed: 3 milliseconds) (per-host)
+[2026-10-14 21:28:01,669][absl][INFO] - ChainedFuture completed 3/3 futures in 0.08 seconds.
+[2026-10-14 21:28:01,669][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 509.9 MiB/s (total bytes: 42.7 MiB) (time elapsed: 83 milliseconds) (per-host)
+[2026-10-14 21:28:01,669][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.prior_vision_agentview_image
+[2026-10-14 21:28:01,682][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=130, unique=65) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.orbax-checkpoint-tmp-78/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': '6d0f2e9f34f9d057a9da36722ab44b38',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:28:01,683][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image.orbax-checkpoint-tmp-78 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image
+[2026-10-14 21:28:01,685][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/prior_vision_agentview_image`.
+[2026-10-14 21:28:01,685][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.prior_vision_agentview_image
+[2026-10-14 21:28:01,686][absl][INFO] - [process=0] Started saving checkpoint to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.
+[2026-10-14 21:28:01,686][absl][INFO] - Specified `force`: removing existing directory.
+[2026-10-14 21:28:01,710][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:pre.ema.82
+[2026-10-14 21:28:01,710][absl][INFO] - Creating tmp directory /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.orbax-checkpoint-tmp-81
+[2026-10-14 21:28:01,712][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: create_tmp_directory:post.ema.83
+[2026-10-14 21:28:01,722][absl][INFO] - [process=0] /jax/checkpoint/write/blocking_bytes_per_sec: 109.4 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 8 milliseconds) (per-host)
+[2026-10-14 21:28:02,019][absl][INFO] - ChainedFuture completed 2/2 futures in 0.29 seconds.
+[2026-10-14 21:28:02,020][absl][INFO] - [process=0] /jax/checkpoint/write/bytes_per_sec: 3.2 GiB/s (total bytes: 1004.8 MiB) (time elapsed: 306 milliseconds) (per-host)
+[2026-10-14 21:28:02,020][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:save.ema
+[2026-10-14 21:28:02,035][absl][INFO] - [process=0][thread=MainThread] Validating params (raw input=432, unique=216) in TensorStore KvStore: KvStore({
+  'base': {
+    'driver': 'file',
+    'path': '/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.orbax-checkpoint-tmp-81/',
+  },
+  'cache_pool': 'cache_pool#ocdbt',
+  'config': {
+    'compression': {'id': 'zstd'},
+    'max_decoded_node_bytes': 100000000,
+    'max_inline_value_bytes': 1024,
+    'uuid': 'f8f3ae01da1e6950eaed59ff3dc687c6',
+    'version_tree_arity_log2': 4,
+  },
+  'context': {
+    'cache_pool#ocdbt': {'total_bytes_limit': 100000000},
+    'data_copy_concurrency': {},
+    'file_io_concurrency': {'limit': 128},
+    'file_io_locking': {},
+    'file_io_mode': {},
+    'file_io_sync': True,
+    'ocdbt_coordinator': {},
+  },
+  'driver': 'ocdbt',
+  'experimental_read_coalescing_interval': '1ms',
+  'experimental_read_coalescing_merged_bytes': 500000000000,
+  'experimental_read_coalescing_threshold_bytes': 1000000,
+}).
+[2026-10-14 21:28:02,036][absl][INFO] - Renaming /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema.orbax-checkpoint-tmp-81 to /lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema
+[2026-10-14 21:28:02,039][absl][INFO] - [process=0][thread=MainThread] Finished saving checkpoint (finalized tmp dir) to `/lus/lfs1aip2/projects/u6vu/humanoid_challenge/checkpoints/FM/2026-10-14_21-12-29_fm_vision_bc_only_seed0/best/ema`.
+[2026-10-14 21:28:02,039][absl][INFO] - [process=0][thread=MainThread] Skipping global process sync, barrier name: Checkpointer:finalize.ema
+[2026-10-14T21:28:16.517] error: *** JOB 7415356 ON nid010670 CANCELLED AT 2026-10-14T21:28:16 DUE to SIGNAL Terminated ***

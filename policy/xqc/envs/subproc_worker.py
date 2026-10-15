@@ -49,7 +49,8 @@ def _get_horizon(env):
             return None
 
 
-def _worker(remote, parent_remote, env_name, seed, action_repeat, render, camera_names, horizon, dataset_path, abs_action):
+def _worker(remote, parent_remote, env_name, seed, action_repeat, render, camera_names, horizon, dataset_path, abs_action,
+            simplified_init, terminate_on_drop):
     # Deferred import: xqc.envs.envs imports SubprocEnvPool (below) at module
     # level, so importing make_env at module level here would be circular.
     # By the time this function actually runs (in the freshly spawned child),
@@ -76,6 +77,7 @@ def _worker(remote, parent_remote, env_name, seed, action_repeat, render, camera
     env = make_env(
         env_name, seed=seed, action_repeat=action_repeat, render=render, camera_names=camera_names,
         horizon=horizon, dataset_path=dataset_path, abs_action=abs_action,
+        simplified_init=simplified_init, terminate_on_drop=terminate_on_drop,
     )
 
     while True:
@@ -142,7 +144,8 @@ class SubprocEnvPool:
     (loading/compiling the MuJoCo model) is expensive enough that respawning
     per call would eat most of the benefit."""
 
-    def __init__(self, env_names, seed, action_repeat, render, camera_names, horizon=None, dataset_path=None, abs_action=False):
+    def __init__(self, env_names, seed, action_repeat, render, camera_names, horizon=None, dataset_path=None, abs_action=False,
+                 simplified_init=False, terminate_on_drop=False):
         # "spawn", not the Linux default "fork": forked children inherit a
         # *copy* of the parent's already-advanced global RNG state at fork
         # time, which would silently correlate workers' rollouts (same
@@ -156,7 +159,7 @@ class SubprocEnvPool:
                 target=_worker,
                 args=(
                     work_remote, self.remotes[i], env_name, seed + i, action_repeat, render, camera_names, horizon,
-                    dataset_path, abs_action,
+                    dataset_path, abs_action, simplified_init, terminate_on_drop,
                 ),
                 daemon=True,
             )

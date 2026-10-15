@@ -32,6 +32,7 @@ def resolve_env_benchmark(env_name: str) -> str:
 def make_env(
     env_name: str, seed: int = 0, action_repeat=1, render: bool = False, camera_names: list = None,
     horizon: int = None, dataset_path: str = None, abs_action: bool = False, render_resolution: int = None,
+    simplified_init: bool = False, terminate_on_drop: bool = False,
 ) -> gym.Env:
     benchmark = resolve_env_benchmark(env_name)
 
@@ -43,6 +44,7 @@ def make_env(
         assert abs_action, "PickPlaceBottle takes absolute end-effector actions: set agent abs_action=true"
         env = make_pick_place_env(
             env_name, dataset_path=dataset_path, render=render, camera_names=camera_names, horizon=horizon,
+            simplified_init=simplified_init, terminate_on_drop=terminate_on_drop,
         )
 
     else:
@@ -62,6 +64,7 @@ class ParallelEnv:
     def __init__(
         self, env_names: list, seed: int = 0, action_repeat=1, render: bool = False, camera_names: list = None,
         horizon: int = None, dataset_path: str = None, abs_action: bool = False, render_resolution: int = None,
+        simplified_init: bool = False, terminate_on_drop: bool = False,
     ):
         np.random.seed(seed)
         random.seed(seed)
@@ -73,6 +76,7 @@ class ParallelEnv:
             self.envs = None
             self._pool = SubprocEnvPool(
                 env_names, seed, action_repeat, render, camera_names, horizon, dataset_path, abs_action,
+                simplified_init=simplified_init, terminate_on_drop=terminate_on_drop,
             )
             obs_dims = np.array([shape[0] for shape in self._pool.obs_shapes], dtype=np.int32)
             act_dims = np.array([shape[0] for shape in self._pool.act_shapes], dtype=np.int32)
@@ -91,6 +95,7 @@ class ParallelEnv:
                         env_name, seed=seed, action_repeat=action_repeat, render=render, camera_names=camera_names,
                         horizon=horizon, dataset_path=dataset_path, abs_action=abs_action,
                         render_resolution=render_resolution,
+                        simplified_init=simplified_init, terminate_on_drop=terminate_on_drop,
                     )
                 )
                 obs_dims[i] = envs[-1].observation_space.shape[0]
@@ -262,6 +267,12 @@ class ParallelEnv:
             frame_shape = self.render(num_envs=render_num_envs).shape
             renders = np.empty((max_frames, *frame_shape), dtype=np.uint8)
             render_idx = 0
+            # Per captured frame, per rendered replica: 0 = still running,
+            # 1 = success, 2 = terminated-not-success (a drop, only reachable
+            # with env.terminate_on_drop=true), 3 = truncated (horizon hit,
+            # no success/drop) - save_eval_videos uses this to overlay which
+            # outcome ended each episode, and when.
+            render_outcomes = np.zeros((max_frames, render_num_envs), dtype=np.int8)
         i = 0
         # Opt-in only (hasattr): agents without a round_trip_error method
         # (everything except MFInvertibleLearner) are unaffected. Gated to
@@ -281,6 +292,7 @@ class ParallelEnv:
         pbar = tqdm.tqdm(total=num_episodes, desc="eval", leave=False, disable=is_slurm_job())
         prev_done = 0
         while True:
+            captured_idx = None
             if render:
                 render_active = n_rollouts[:render_num_envs].min() < render_episodes
                 if (
@@ -289,6 +301,7 @@ class ParallelEnv:
                     and render_idx < max_frames
                 ):
                     renders[render_idx] = self.render(num_envs=render_num_envs)
+                    captured_idx = render_idx
                     render_idx += 1
             # Opt-in only: agents without a camera_keys attribute (e.g. XQCLearner) are unaffected.
             if getattr(agent, "camera_keys", None):
@@ -300,6 +313,9 @@ class ParallelEnv:
             if hasattr(agent, "round_trip_error") and i % getattr(agent, "execution_horizon", 1) == 0:
                 round_trip_errors.append(np.asarray(agent.round_trip_error()))
             next_observations, rewards, terms, truncs, success = self.step(actions)
+            if captured_idx is not None:
+                t, s, tr = terms[:render_num_envs], success[:render_num_envs], truncs[:render_num_envs]
+                render_outcomes[captured_idx] = np.where(t & s, 1, np.where(t, 2, np.where(tr, 3, 0)))
             # Opt-in only: agents without this method (e.g. XQCLearner) are unaffected.
             if hasattr(agent, "reset_policy_idx"):
                 agent.reset_policy_idx(np.logical_or(terms, truncs))
@@ -377,6 +393,8 @@ class ParallelEnv:
             renders = renders[:render_idx]
             renders = np.transpose(renders, (1, 0, 4, 2, 3))
             stats["renders"] = renders
+            # (render_num_envs, frames) - same leading axis as "renders" above.
+            stats["render_outcomes"] = render_outcomes[:render_idx].T
         return stats
 
     def render(self, num_envs=None):

@@ -118,6 +118,8 @@ def main(cfg: DictConfig):
                 horizon=cfg.env.get("horizon"),
                 dataset_path=cfg.agent.get("offline_data_path"),
                 abs_action=cfg.agent.get("abs_action", False),
+                simplified_init=cfg.env.get("simplified_init", False),
+                terminate_on_drop=cfg.env.get("terminate_on_drop", False),
             )
             # render=True whenever camera_keys is set - the online training
             # loop's own rollout needs env.get_images() to work for a vision
@@ -396,11 +398,26 @@ def main(cfg: DictConfig):
             # nested inside each as a second segment, e.g. "eval/offline/goal".
             best_eval_return = {"value": float("-inf")}
 
-            def save_eval_videos(renders, step, phase):
-                """renders: (num_envs, frames, 3, H, W) uint8 RGB, from ParallelEnv.evaluate.
-                One mp4 per rendered env replica, in <save_dir>/eval_videos/step_<step>/
-                (next to the checkpoints, never pruned), or in <hydra run
-                dir>/eval_videos/step_<step>/ when save_dir is unset."""
+            # ParallelEnv.evaluate's per-frame render_outcomes code -> (label, BGR color)
+            # for save_eval_videos' overlay. 0 (still running) is intentionally
+            # absent: no overlay while an episode is ongoing.
+            _OUTCOME_LABELS = {1: ("SUCCESS", (0, 220, 0)), 2: ("DROPPED", (0, 0, 230)), 3: ("TIMEOUT", (0, 200, 230))}
+            # How many frames the label stays on screen after the terminal
+            # frame that triggered it - long enough to actually read at
+            # eval_video_fps, short enough to clear well before the next
+            # episode (in the same continuous video) gets going.
+            _OUTCOME_LABEL_HOLD_FRAMES = 10
+
+            def save_eval_videos(renders, outcomes, step, phase):
+                """renders: (num_envs, frames, 3, H, W) uint8 RGB, outcomes: (num_envs, frames)
+                int8 (see ParallelEnv.evaluate's render_outcomes), both from
+                ParallelEnv.evaluate. One mp4 per rendered env replica, in
+                <save_dir>/eval_videos/step_<step>/ (next to the checkpoints,
+                never pruned), or in <hydra run dir>/eval_videos/step_<step>/
+                when save_dir is unset. Each episode's end is overlaid with
+                SUCCESS/DROPPED/TIMEOUT depending on how it ended (outcomes is
+                None for an older ParallelEnv.evaluate that doesn't return it -
+                skips the overlay, not an error)."""
                 import cv2
                 from hydra.core.hydra_config import HydraConfig
 
@@ -409,13 +426,22 @@ def main(cfg: DictConfig):
                 video_dir.mkdir(parents=True, exist_ok=True)
                 for env_idx, frames in enumerate(renders):
                     frames = np.transpose(frames, (0, 2, 3, 1))  # (frames, H, W, 3)
+                    env_outcomes = outcomes[env_idx] if outcomes is not None else None
                     path = video_dir / f"env{env_idx}.mp4"
                     writer = cv2.VideoWriter(
                         str(path), cv2.VideoWriter_fourcc(*"mp4v"), cfg.get("eval_video_fps", 15),
                         (frames.shape[2], frames.shape[1]),
                     )
-                    for frame in frames:
-                        writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+                    label, hold = None, 0
+                    for f_idx, frame in enumerate(frames):
+                        bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+                        if env_outcomes is not None and int(env_outcomes[f_idx]) in _OUTCOME_LABELS:
+                            label, hold = _OUTCOME_LABELS[int(env_outcomes[f_idx])], _OUTCOME_LABEL_HOLD_FRAMES
+                        if hold > 0:
+                            text, color = label
+                            cv2.putText(bgr, text, (6, 22), cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
+                            hold -= 1
+                        writer.write(bgr)
                     writer.release()
                     print(f"Saved eval video {path}")
 
@@ -509,9 +535,12 @@ def main(cfg: DictConfig):
                 # uploaded to wandb (eval_video_wandb) - conf/agent/eval/default.yaml.
                 if "renders" in ema_eval_stats:
                     if cfg.get("eval_video_local", True):
-                        save_eval_videos(ema_eval_stats["renders"], step, phase)
+                        save_eval_videos(
+                            ema_eval_stats["renders"], ema_eval_stats.get("render_outcomes"), step, phase,
+                        )
                     if not cfg.get("eval_video_wandb", False):
                         ema_eval_stats.pop("renders")
+                    ema_eval_stats.pop("render_outcomes", None)
 
                 log_infos_to_wandb(step, ema_eval_stats, f"eval/{phase}_ema", cfg.get("eval_video_fps", 30))
                 log_infos_to_wandb(step, live_eval_stats, f"eval/{phase}_live", cfg.get("eval_video_fps", 30))
