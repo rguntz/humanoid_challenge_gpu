@@ -34,6 +34,9 @@ TERMINATE_ON_FALL="${TERMINATE_ON_FALL:-0}"       # 1: end an episode (reward 0)
 ROBOT_START="${ROBOT_START:-demo}"                # demo (a random demo's start) | near_home (home pose +- ROBOT_START_NOISE_DEG)
 ROBOT_START_NOISE_DEG="${ROBOT_START_NOISE_DEG:-5}"
 BOX_POSITION="${BOX_POSITION:-random}"            # random | fixed (one container position for every episode)
+TERMINATE_ON_STUCK="${TERMINATE_ON_STUCK:-0}"     # 1: end an episode (reward 0) when the robot stays still:
+STUCK_STEPS="${STUCK_STEPS:-48}"                  #    STUCK_STEPS steps with the end effector within STUCK_RADIUS (m)
+STUCK_RADIUS="${STUCK_RADIUS:-0.02}"              #    and the gripper not moving (48 / 0.02: no base-policy success cut)
 INFERENCE_ONLY="${INFERENCE_ONLY:-0}"             # 1: debug mode, base policy only (see above)
 INFERENCE_EPISODES="${INFERENCE_EPISODES:-200}"   # episodes in debug mode
 EXTRA_ARGS="${EXTRA_ARGS:-}"                      # other Hydra overrides, e.g. "algo.n_step=5 agent.actor_lr=1e-5"
@@ -69,6 +72,9 @@ uv run resfit/rl_finetuning/scripts/train_residual_td3.py \
     pick_place.robot_start="$ROBOT_START" \
     pick_place.robot_start_noise_deg="$ROBOT_START_NOISE_DEG" \
     pick_place.box_position="$BOX_POSITION" \
+    pick_place.terminate_on_stuck="$([[ "$TERMINATE_ON_STUCK" == 1 ]] && echo true || echo false)" \
+    pick_place.stuck_steps="$STUCK_STEPS" \
+    pick_place.stuck_radius="$STUCK_RADIUS" \
     inference_only_episodes="$INFERENCE_EPISODES" \
     hydra.run.dir=. hydra.output_subdir=null \
     $EXTRA_ARGS

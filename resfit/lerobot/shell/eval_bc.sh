@@ -24,6 +24,9 @@ TERMINATE_ON_FALL="${TERMINATE_ON_FALL:-0}"      # 1: end an episode when the bo
 ROBOT_START="${ROBOT_START:-demo}"               # demo (a random demo's start) | near_home (home pose +- ROBOT_START_NOISE_DEG)
 ROBOT_START_NOISE_DEG="${ROBOT_START_NOISE_DEG:-5}"
 BOX_POSITION="${BOX_POSITION:-random}"           # random | fixed (one container position for every episode)
+TERMINATE_ON_STUCK="${TERMINATE_ON_STUCK:-0}"    # 1: end an episode when the robot stays still (STUCK in the video):
+STUCK_STEPS="${STUCK_STEPS:-48}"                 #    STUCK_STEPS steps with the end effector within STUCK_RADIUS (m)
+STUCK_RADIUS="${STUCK_RADIUS:-0.02}"             #    and the gripper not moving
 # ---------------------------------------------------------------------------------
 
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
@@ -40,4 +43,5 @@ export MUJOCO_EGL_DEVICE_ID
 uv run resfit/lerobot/scripts/eval_bc.py --run "$RUN" --checkpoint "$CHECKPOINT" \
     --n_action_steps $N_ACTION_STEPS --episodes "$EPISODES" --num_envs "$NUM_ENVS" --seed "$SEED" --layouts "$LAYOUTS" \
     --terminate_on_fall "$TERMINATE_ON_FALL" --robot_start "$ROBOT_START" \
-    --robot_start_noise_deg "$ROBOT_START_NOISE_DEG" --box_position "$BOX_POSITION"
+    --robot_start_noise_deg "$ROBOT_START_NOISE_DEG" --box_position "$BOX_POSITION" \
+    --terminate_on_stuck "$TERMINATE_ON_STUCK" --stuck_steps "$STUCK_STEPS" --stuck_radius "$STUCK_RADIUS"

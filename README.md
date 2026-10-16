@@ -58,7 +58,9 @@ record and drop a video in). To produce one:
    `calibrate_camera.py` automatically picks a diverse subset of frames from the video
    (different positions, distances and tilts) to solve for the lens's focal length and
    distortion; a video where the board barely moves does not give it enough different
-   viewpoints to calibrate accurately. Then:
+   viewpoints to calibrate accurately. The calibration itself is Zhang's method
+   (OpenCV's `calibrateCamera`): it fits the pinhole camera model (intrinsic matrix and
+   lens distortion) to the checkerboard corners seen in all those frames. Then:
    `uv run calibration/calibrate_camera.py <that video>`.
 
    <p align="center"><img src="calibration/assets/calibration_example.gif" alt="Example calibration video: moving a checkerboard in front of the camera" width="300"></p>
@@ -182,15 +184,6 @@ success) and `pick_place_bottle_full` (cut to 8 steps after success - the most
 
 
 
-## Training a policy (policy)
-
-Chunked imitation-learning policies (a simple chunked BC, flow matching and Diffusion
-Policy) in JAX / Flax, ported from the xqcfd project. This was the initial training
-path for this task; **results were not as good as [ResFiT](#training-with-resfit-resfit)
-below**, which is what this repo is actually submitted with — `policy/` is kept only
-for reference. See [policy/README.md](policy/README.md) for setup and usage (it reads
-the `pick_place_bottle_base.hdf5` dataset from the conversion step above).
-
 ## Training with ResFiT (resfit)
 
 `resfit/` is a port of [ResFiT](https://github.com/amazon-science/residual-offpolicy-rl)
@@ -216,8 +209,8 @@ above for the dataset formats and versions `resfit/` trains on.
 ### Training
 
 ```sh
-# unet_bc: 48 % on 200 fresh layouts
-bash resfit/lerobot/shell/train_bc_unet_bc_absolute_6d.sh
+# legacy_bc (plain BC: ResNet18 encoder + MLP head): 48 %
+bash resfit/lerobot/shell/train_bc_legacy_bc_absolute_6d.sh
 
 # flow_matching: 49 %, best result so far
 bash resfit/lerobot/shell/train_bc_flow_matching_absolute_6d.sh
@@ -229,6 +222,24 @@ bash resfit/lerobot/shell/train_bc_smolvla_joint_regularized.sh
 bash resfit/lerobot/shell/train_bc_pi0_absolute_6d.sh
 ```
 
+Main settings of these four runs (from their `.sh` files and LeRobot's default configs):
+
+| | Unet flow matching | Plain BC | SmolVLA | π0 |
+|---|---|---|---|---|
+| Starting weights | from scratch | from scratch | pretrained (`lerobot/smolvla_base`) | pretrained (`lerobot/pi0`) |
+| What's trained | everything | everything | everything, unfrozen (vision encoder + language model + action expert) | vision encoder frozen; language model + action expert fine-tuned |
+| Vision | ResNet18, from scratch | ResNet18, from scratch | SmolVLM's vision encoder | PaliGemma's SigLIP encoder |
+| Action head | 1D Unet, flow matching | MLP 256-256, MSE loss | action expert, flow matching | action expert, flow matching |
+| Dataset | `pick_place_bottle_full` | `pick_place_bottle` | `pick_place_bottle_full` | `pick_place_bottle_full` |
+| Camera | agentview only | agentview only | agentview only | agentview only |
+| Observation frames | 2 | 2 | 1 | 1 |
+| Action | absolute, 6D rotation | absolute, 6D rotation | joint angles | absolute, 6D rotation |
+| Chunk predicted / executed | 16 / 8 | 16 / 8 | 50 / 10 | 16 / 16 |
+| Batch size | 64 | 64 | 64 | 16 |
+| Training steps | 100k | 100k | 4k | up to 100k |
+| EMA of weights | yes | yes | yes | no |
+| Success | **49 %** | 48 % | 32.8 % | 23 % |
+
 | Policy (`POLICY`) | Model |
 |---|---|
 | `act` | ResFiT's ACT: ImageNet-pretrained ResNet18 (frozen batch norm), transformer |
@@ -236,6 +247,7 @@ bash resfit/lerobot/shell/train_bc_pi0_absolute_6d.sh
 | `diffusion` | Diffusion Policy: ResNet18 from scratch (GroupNorm, spatial softmax, random crop), 1D Unet, denoising |
 | `unet_bc` | the same Unet and encoder trained by plain BC (MSE on the chunk, one pass) |
 | `flow_matching` | the same Unet and encoder trained by flow matching (10 Euler steps to sample) |
+| `legacy_bc` | plain BC: the same encoder, an MLP 256-256 head instead of the Unet (MSE on the chunk), images randomly cropped to 116 x 116 |
 | `smolvla` | LeRobot's SmolVLA vision-language-action model (450M parameters, flow-matching action expert), one observation frame, the task sentence as instruction; `PRETRAINED=lerobot/smolvla_base` starts from the pretrained model (vision-language model and action expert both trained) |
 | `pi0` | LeRobot's PI0 vision-language-action model (PaliGemma-3B backbone + flow-matching action expert), one observation frame, the task sentence as instruction; `PRETRAINED=lerobot/pi0` starts from the pretrained checkpoint (its own bf16 precision kept as released, not forced to fp32 like SmolVLA) |
 

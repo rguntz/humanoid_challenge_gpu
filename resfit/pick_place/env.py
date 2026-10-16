@@ -45,12 +45,15 @@ from rollout_physics import GRIPPER_CLOSED, GRIPPER_OPEN
 
 PICK_PLACE_ALL = ["PickPlaceBottle"]
 CAMERA_KEYS = tuple(task.CAMERAS)
+# terminate_on_stuck: largest change of the finger joints over the window for the gripper to
+# count as still (a full opening or closing changes them by ~0.04)
+STUCK_FINGER_RANGE = 0.005
 
 
 class PickPlaceBottleEnv(gym.Env):
     def __init__(self, dataset_path, horizon=None, render=False, camera_names=None, min_distance=None,
                  max_tries=1000, terminate_on_fall=False, robot_start="demo", robot_start_noise_deg=5.0,
-                 box_position="random"):
+                 box_position="random", terminate_on_stuck=False, stuck_steps=48, stuck_radius=0.02):
         """Options (defaults: the original behaviour):
           terminate_on_fall      end the episode (terminated, reward 0, info["fell"]) when the bottle
                                  has fallen: its cap touches the table while the robot does not touch
@@ -66,6 +69,12 @@ class PickPlaceBottleEnv(gym.Env):
                                  largest share of the bottle region at least min_distance away (the
                                  two regions overlap: at their centroid, almost no bottle position
                                  fits); the bottle is still random
+          terminate_on_stuck     end the episode (terminated, reward 0, info["stuck"]) when the robot
+                                 has not moved for stuck_steps steps: every end-effector position of
+                                 those steps within stuck_radius (m) of their mean, and the fingers
+                                 within STUCK_FINGER_RANGE (gripper neither opening nor closing).
+                                 48 steps / 2 cm cut ~35 % of the base policy's failures and none of
+                                 its successes (200 rollouts of the fp32 flow matching checkpoint)
         """
         if robot_start not in ("demo", "near_home"):
             raise ValueError(f"robot_start must be 'demo' or 'near_home', got {robot_start!r}")
@@ -75,6 +84,10 @@ class PickPlaceBottleEnv(gym.Env):
         self.robot_start = robot_start
         self.robot_start_noise = np.radians(robot_start_noise_deg)
         self.box_position = box_position
+        self.terminate_on_stuck = terminate_on_stuck
+        self.stuck_steps = stuck_steps
+        self.stuck_radius = stuck_radius
+        self._recent = []  # the last stuck_steps observations' end-effector position and fingers
         dataset_path = Path(dataset_path)
         with h5py.File(dataset_path, "r") as f:
             self.layouts = {k: f["layout"][k][:] for k in f["layout"]}
@@ -203,6 +216,7 @@ class PickPlaceBottleEnv(gym.Env):
         mujoco.mj_forward(m, d)
         self.q_target = q_robot[:task.ARM].copy()
         self.time_step = 0
+        self._recent = []
         return self._obs(), {}
 
     # ----------------------------------------------------------------- step
@@ -237,8 +251,22 @@ class PickPlaceBottleEnv(gym.Env):
         fell = False
         if self.terminate_on_fall and not success and not touch_robot:
             fell = self._bottle_fell()
+        obs = self._obs()
+        stuck = False
+        if self.terminate_on_stuck and not success and not fell:
+            stuck = self._robot_stuck(obs)
         truncated = self.time_step >= self.horizon
-        return self._obs(), float(success), success or fell, truncated, {"success": success, "fell": fell}
+        return obs, float(success), success or fell or stuck, truncated, \
+            {"success": success, "fell": fell, "stuck": stuck}
+
+    def _robot_stuck(self, obs):
+        """The last stuck_steps observations (this one included) are still: see terminate_on_stuck."""
+        self._recent = (self._recent + [np.concatenate([obs[0:3], obs[7:9]])])[-self.stuck_steps:]
+        if len(self._recent) < self.stuck_steps:
+            return False
+        w = np.asarray(self._recent)
+        pos_still = np.linalg.norm(w[:, :3] - w[:, :3].mean(0), axis=1).max() < self.stuck_radius
+        return bool(pos_still and np.ptp(w[:, 3:], 0).max() < STUCK_FINGER_RANGE)
 
     def _bottle_fell(self):
         """The bottle's cap touches the table, or the bottle dropped below the table top."""

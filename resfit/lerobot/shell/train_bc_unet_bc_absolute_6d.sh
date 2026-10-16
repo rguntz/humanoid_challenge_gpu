@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # Plain behaviour cloning (unet_bc: MSE on the action chunk, one forward pass, no denoising;
 # see train_bc.py), with Diffusion Policy's encoder (ResNet18 from scratch, GroupNorm, spatial
-# softmax, random crop) and the observation/action windows, optimizer and EMA of the earlier
-# JAX pipeline's own plain-BC agent. On the absolute-action dataset with 6D rotations,
-# normalized per dimension, on GPU 1. Run from anywhere:
+# softmax, random crop), 2 observation frames, chunks of 16 (8 executed), the legacy optimizer
+# and EMA. On the absolute-action dataset with 6D rotations, normalized per dimension, on GPU 1. Run from anywhere:
 #     bash resfit/lerobot/shell/train_bc_unet_bc_absolute_6d.sh
 # The W&B run (and the run folder, outputs/resfit_bc/<RUN_NAME>) is named below; the date keeps
 # every launch's name new. Other settings: see train_bc.sh.

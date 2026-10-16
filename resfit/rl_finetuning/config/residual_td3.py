@@ -298,6 +298,9 @@ class PickPlaceTaskConfig:
     robot_start: str = "demo"  # demo (a random demo's start pose) | near_home (home pose + offsets)
     robot_start_noise_deg: float = 5.0  # near_home: largest offset per arm joint
     box_position: str = "random"  # random (the demos' container region) | fixed (one position)
+    terminate_on_stuck: bool = False  # end an episode (reward 0) when the robot stays still
+    stuck_steps: int = 48  # still: stuck_steps steps with the end effector within stuck_radius (m)
+    stuck_radius: float = 0.02  # and the gripper not moving
 
 
 @dataclass

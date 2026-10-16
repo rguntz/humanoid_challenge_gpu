@@ -929,6 +929,8 @@ def main(cfg: ResidualTD3DexmgConfig):
             _hp_parts.append(f"{cfg.pick_place.robot_start}{cfg.pick_place.robot_start_noise_deg:g}deg")
         if cfg.pick_place.box_position != "random":
             _hp_parts.append(f"box{cfg.pick_place.box_position}")
+        if cfg.pick_place.terminate_on_stuck:
+            _hp_parts.append(f"stuckend{cfg.pick_place.stuck_steps}s{cfg.pick_place.stuck_radius * 100:g}cm")
 
     # Additional flags ---------------------------------------------------------
     if cfg.agent.clip_q_target_to_reward_range:

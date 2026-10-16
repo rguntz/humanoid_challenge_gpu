@@ -63,6 +63,10 @@ def parse_args():
     p.add_argument("--robot_start", default="demo", choices=["demo", "near_home"])
     p.add_argument("--robot_start_noise_deg", type=float, default=5.0)
     p.add_argument("--box_position", default="random", choices=["random", "fixed"])
+    p.add_argument("--terminate_on_stuck", type=int, default=0, choices=[0, 1],
+                   help="1: end an episode when the robot stays still (STUCK in the video)")
+    p.add_argument("--stuck_steps", type=int, default=48)
+    p.add_argument("--stuck_radius", type=float, default=0.02, help="m")
     p.add_argument("--device", default="cuda")
     args = p.parse_args()
     if args.episodes % args.num_envs:
@@ -92,7 +96,9 @@ def main():
     out_dir = run_dir / "evals_offline"
     out_dir.mkdir(exist_ok=True)
     env_options = {"terminate_on_fall": bool(args.terminate_on_fall), "robot_start": args.robot_start,
-                   "robot_start_noise_deg": args.robot_start_noise_deg, "box_position": args.box_position}
+                   "robot_start_noise_deg": args.robot_start_noise_deg, "box_position": args.box_position,
+                   "terminate_on_stuck": bool(args.terminate_on_stuck), "stuck_steps": args.stuck_steps,
+                   "stuck_radius": args.stuck_radius}
     logger.info(f"env options: {env_options}")
     env = create_vectorized_env(run_cfg["dataset"], num_envs=args.num_envs, device=args.device,
                                 env_options=env_options)
@@ -123,8 +129,9 @@ def main():
                 per_round = [sum(e["success"] for e in episode_log if e["round"] == r) / args.num_envs
                              for r in range(per_env)]
                 fell_rate = sum(e["fell"] for e in episode_log) / args.episodes
+                stuck_rate = sum(e["stuck"] for e in episode_log) / args.episodes
                 logger.info(f"n_action_steps {n:>3d}: success rate {100 * success_rate:.1f} % "
-                            f"(± {100 * se:.1f}), fell {100 * fell_rate:.1f} %, "
+                            f"(± {100 * se:.1f}), fell {100 * fell_rate:.1f} %, stuck {100 * stuck_rate:.1f} %, "
                             f"per round {[f'{100 * x:.0f} %' for x in per_round]}, "
                             f"mean length {mean_length:.0f}, {elapsed:.0f} s -> {video.name}")
                 time = f"{datetime.now():%Y-%m-%d %H:%M:%S}"
@@ -132,7 +139,7 @@ def main():
                           "layouts": args.layouts, "seed": args.seed, "env_options": env_options}
                 with open(out_dir / "results.jsonl", "a") as f:
                     f.write(json.dumps({**common, "episodes": args.episodes, "success_rate": success_rate,
-                                        "success_rate_se": se, "fell_rate": fell_rate,
+                                        "success_rate_se": se, "fell_rate": fell_rate, "stuck_rate": stuck_rate,
                                         "success_rate_per_round": per_round,
                                         "mean_episode_length": mean_length, "video": video.name}) + "\n")
                 with open(out_dir / "episodes.jsonl", "a") as f:

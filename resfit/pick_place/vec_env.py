@@ -59,11 +59,11 @@ class PickPlaceGymEnv(gym.Env):
 
     def __init__(self, source_path, action_mode, horizon=None, env_options=None):
         # env_options: PickPlaceBottleEnv's task options (terminate_on_fall, robot_start,
-        # robot_start_noise_deg, box_position); None: its defaults (the original task)
+        # robot_start_noise_deg, box_position, terminate_on_stuck, stuck_steps, stuck_radius); None: its defaults (the original task)
         self.env = PickPlaceBottleEnv(source_path, horizon=horizon, camera_names=list(CAMERA_KEYS),
                                       **(env_options or {}))
         self.task_options = {k: getattr(self.env, k) for k in
-                             ("terminate_on_fall", "robot_start", "box_position")}  # as applied (vec_env.get_attr)
+                             ("terminate_on_fall", "robot_start", "box_position", "terminate_on_stuck")}  # as applied (vec_env.get_attr)
         self.action_mode = action_mode
         self.render_mode = "rgb_array"
         # horizon: the episode length limit, read by the residual RL (train_residual_td3.py)

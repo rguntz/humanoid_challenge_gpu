@@ -37,12 +37,12 @@
 #     IMAGE_NORM stays mean_std too (a no-op here: PI0Config's own VISUAL normalization is
 #     IDENTITY by default - PI0's prepare_images already rescales images itself, same as
 #     SmolVLA) - the flow_matching run's per_dim_range/minus_one_one choices were specific to
-#     matching the original JAX pipeline's own Diffusion-Policy-style encoder, not applicable
-#     to PI0's own architecture.
+#     the Diffusion-Policy-style encoder trained from scratch, not applicable to PI0's own
+#     architecture.
 #   - OPTIMIZER=policy (PI0Config's own AdamW preset, lr=2.5e-5, betas=(0.9,0.95), cosine decay
 #     with warmup) and EMA=0 (PI0Config has no EMA support) - same choices SmolVLA's own
 #     train_bc_smolvla_absolute_6d.sh already made for the same reason (a VLM-backbone policy
-#     uses its own pretrained optimizer recipe, not the legacy JAX-matching one).
+#     uses its own pretrained optimizer recipe, not the legacy one).
 #   - GRAD_CLIP_NORM=10: SmolVLA's own choice, carried over as the closest architectural
 #     precedent (both are large pretrained-backbone VLA policies).
 #   - BATCH_SIZE=16, NOT 64 (SmolVLA's own choice, tried first): confirmed via a real run -

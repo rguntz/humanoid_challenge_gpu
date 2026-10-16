@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # Flow matching (the same Unet and encoder as diffusion, trained to predict the flow
-# instead of denoising), matching the settings of the original JAX pipeline (full fp32
-# training, legacy optimizer, per-dim-range normalization, crop + no jitter). Reached
-# 43.5 % on 200 fresh layouts (eval_bc.sh, seed 2000; policy/'s FM: 46 %).
+# instead of denoising): full fp32 training, legacy optimizer, per-dim-range normalization,
+# random crop and no colour jitter. 49 % at step 40k during training (100 episodes), 43.5 %
+# on 200 fresh layouts (eval_bc.sh, seed 2000).
 # On GPU 1. Run from anywhere:
 #     bash resfit/lerobot/shell/train_bc_flow_matching_absolute_6d.sh
 # Reads videos/task/dataset_sim/lerobot/pick_place_bottle_full_absolute_6d. Writes
 # outputs/resfit_bc/<RUN_NAME>/ (latest/, best/, evals/ with one video per evaluation) and logs
-# to the W&B project below. Each evaluation draws new random start states (EVAL_LAYOUTS=fresh), as
-# policy/ does, over 100 episodes (25 simulators, 4 each: about +-5 points instead of +-6 with 64).
+# to the W&B project below. Each evaluation draws new random start states (EVAL_LAYOUTS=fresh),
+# over 100 episodes (25 simulators, 4 each: about +-5 points instead of +-6 with 64).
 # Every evaluation's policy is kept in checkpoints/step_<N>/ (SAVE_EVERY_EVAL=1, ~1 GB each, ~10 GB
 # for the run), to choose the base policy of the residual RL afterwards with eval_bc.sh, e.g.
 #     CHECKPOINT=checkpoints/step_0040000 RUN=outputs/resfit_bc/<run> bash resfit/lerobot/shell/eval_bc.sh

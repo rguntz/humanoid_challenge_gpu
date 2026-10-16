@@ -317,11 +317,12 @@ def _font():
         return ImageFont.load_default()
 
 
-STATUS_COLOURS = {"SUCCESS": (0, 200, 0), "FAIL": (220, 0, 0), "FELL": (255, 140, 0)}
+STATUS_COLOURS = {"SUCCESS": (0, 200, 0), "FAIL": (220, 0, 0), "FELL": (255, 140, 0), "STUCK": (160, 0, 200)}
 
 
 def _annotate(frame, text, status, font):
-    """status: SUCCESS, FAIL, or FELL (ended because the bottle fell, env option terminate_on_fall)."""
+    """status: SUCCESS, FAIL, FELL (ended because the bottle fell, env option terminate_on_fall), or
+    STUCK (ended because the robot stayed still, env option terminate_on_stuck)."""
     img = Image.fromarray(frame)
     draw = ImageDraw.Draw(img)
     draw.text((4, 2), text, fill=(255, 255, 255), font=font)
@@ -371,12 +372,13 @@ def evaluate(policy, env, episodes, seed, video_path, fps, pbar=None, episode_lo
                 # Ended because the bottle fell (env option terminate_on_fall): the episode's final info
                 final = info.get("final_info", {})
                 fell = bool("fell" in final and final["_fell"][i] and final["fell"][i])
-                status = "SUCCESS" if success else "FELL" if fell else "FAIL"
+                stuck = bool("stuck" in final and final["_stuck"][i] and final["stuck"][i])
+                status = "SUCCESS" if success else "FELL" if fell else "STUCK" if stuck else "FAIL"
                 successes += success
                 lengths.append(len(frames[i]))
                 if episode_log is not None:
                     episode_log.append({"env": i, "round": int(done_count[i]), "success": success,
-                                        "fell": fell, "length": len(frames[i])})
+                                        "fell": fell, "stuck": stuck, "length": len(frames[i])})
                 n = int(done_count.sum()) + 1
                 for f in frames[i]:
                     writer.append_data(_annotate(f, f"env {i} | episode {n}/{episodes}", status, font))
