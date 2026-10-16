@@ -315,6 +315,10 @@ always at the same position (`BOX_POSITION=fixed`) and episodes ended when the b
 
 ![Residual TD3 evaluation success rate over training](resfit/assets/residual_td3_success.png)
 
+Evaluation at 150k steps (100 % success; left: agentview camera, right: wrist camera):
+
+![Residual TD3 policy at 150k steps: successful pick-and-place episodes](resfit/assets/residual_td3_success.gif)
+
 | Steps | 0 (base) | 10k | 20k | 30k | 40k | 50k | 60k | 70k | 80k | 90k | 100k | 110k | 120k | 130k | 140k | 150k |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | Success | 18 % | 60 % | 62 % | 76 % | 66 % | 82 % | 82 % | 88 % | 84 % | 90 % | 98 % | 88 % | 96 % | 98 % | 98 % | **100 %** |
