@@ -1,12 +1,10 @@
 # Humanoid challenge
 
-> **Deadline note.** The state of the repository at the deadline (October 16) is the commit
-> tagged [`submission-2026-10-16`](https://github.com/rguntz/humanoid_challenge_gpu/tree/submission-2026-10-16)
-> (`b7f4a2c`, the last commit of October 16). The commits made after midnight add: the
-> residual RL fine-tuning results (success-rate graph and video/GIF), the video presentation
-> link, clone and dataset download instructions, a stuck-robot termination option, and a
-> clean-up (removal of the unused legacy `policy/` JAX pipeline and its dependencies,
-> README and script comments).
+> **Deadline note.** The state of the repository at the deadline (October 16, UK time) is the
+> commit tagged [`submission-2026-10-16`](https://github.com/rguntz/humanoid_challenge_gpu/tree/submission-2026-10-16)
+> (`8d87bf4`, 23:56 BST). The commits made after midnight (00:25-00:29 BST) only add the
+> dataset download step and, at the end, the residual RL fine-tuning results: the
+> success-rate graph and the GIF of the fine-tuned policy.
 
 ## Video presentation
 
