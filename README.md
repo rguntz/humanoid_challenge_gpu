@@ -92,13 +92,11 @@ uv run pipeline/run_dataset.py
 ```
 
 The first run downloads the WiLoR weights (~2.6 GB, into
-`hand_tracking/pretrained_models/`) and the Panda model (into `sim/third_party/`):
-the machine needs internet access then (or copy these two folders over). For a long
-run over SSH, use `tmux` or `nohup ... &` so it survives a disconnection; it can be
-restarted at any time, finished episodes are skipped. WiLoR-mini downloads the MANO
+`hand_tracking/pretrained_models/`) and the Panda model (into `sim/third_party/`). 
+
+WiLoR-mini downloads the MANO
 hand model from a third-party mirror; MANO is licensed for non-commercial research
-(registration at mano.is.tue.mpg.de). Hand tracking is the slow step (~0.6 s per frame
-on a Mac, much faster on CUDA).
+(registration at mano.is.tue.mpg.de).
 
 For every clip in `videos/task/dataset/`, this turns the raw egocentric recording of a
 human demonstration into a simulated robot trajectory, by running:
@@ -130,8 +128,6 @@ Outputs in `videos/task/dataset_sim/`:
 | `robomimic/pick_place_bottle.hdf5` | the training dataset: successful episodes only |
 | `robomimic/pick_place_bottle_episodes.csv` | which episodes were kept or excluded, and why |
 
-**Success** (only these episodes go into the dataset): at the end of the rollout the
-bottle touches the container (floor or inside of the walls).
 
 **Dataset format** (robomimic HDF5, one `data/demo_i` per episode, recorded at 15 Hz):
 
@@ -148,21 +144,14 @@ bottle touches the container (floor or inside of the walls).
 
 ## Converting to the robot-base frame and LeRobot datasets
 
-Shared by both training paths below ([policy/](#training-a-policy-policy) and
-[resfit/](#training-with-resfit-resfit)): turns the robomimic dataset above into the
-robot-base-frame dataset `policy/`'s own environment reads, and into the LeRobot
-datasets `resfit/` trains on.
-
-**1. Convert the dataset** to the robot-base frame (once, after `run_dataset.py`):
+Each episode's scene is in its own tag frame (the robot base sits wherever that
+episode's tag placed it), so the same arm pose has different coordinates in
+different episodes. This step re-expresses every episode relative to the robot
+base instead, then writes the LeRobot datasets `resfit/` trains on:
 
 ```sh
 uv run resfit/pick_place/make_dataset.py
 ```
-
-This writes the robot-base dataset (trajectories smoothed with sigma 0.8, per-demo
-videos), then the LeRobot datasets `resfit/` trains on, one per action mode, in
-`videos/task/dataset_sim/lerobot/`. Each is checked by replaying it in the simulation;
-the replays are saved in its `check_videos/` folder.
 
 Every LeRobot dataset is named `<version>_<action mode>`. Each episode has
 `observation.state` (end-effector position, quaternion xyzw, 2 finger joints - not
@@ -176,34 +165,11 @@ joint angles), `observation.images.agentview` and `observation.images.wrist`
 | `absolute_6d` | 10 | position, rotation as the first two rows of its matrix (continuous, unlike axis-angle), gripper |
 | `joint` | 8 | the demo's recorded joint targets (7 arm joints) and gripper, executed without IK; `observation.state` is then the 7 arm joints and 2 fingers |
 
-Each episode's scene is in the tag frame, with the robot base placed behind that
-episode's workspace, so the same arm pose has different coordinates in different
-episodes. The conversion expresses everything relative to the robot base instead.
-
-It also writes the same converted demos as a robomimic-style HDF5,
-`videos/task/dataset_sim/policy/pick_place_bottle_base.hdf5`, for `policy/`'s own use
-(see [policy/README.md](policy/README.md)) — the same per-step content as the LeRobot
-datasets above, plus two things the LeRobot datasets don't have: the ground-truth
-bottle and container positions (`obs/object`), and a `layout/` table of every demo's
-start state, from which `policy/`'s evaluation env draws its random resets.
-`env_scene.xml`/`tag_texture.png` next to it are the scene that evaluation env runs.
-
-Each demo is also cut 8 steps (about 0.5 s) after its first success (bottle
-released in the container): the recordings go on until the demonstrator's hand is
-back at rest, about 3 s and 30 cm of pull-back per demo (28 % of all steps), which
-the policy never executes (an evaluation episode ends on success) and which would
-otherwise leak into every action chunk around the release. `--steps-after-success N`
-changes the 8 (`-1` keeps everything).
-
-It prints a check: the first step of every demo, re-observed from its saved MuJoCo
-state with the env's own code, must match the converted observation (~1e-7).
-
 ### Dataset versions
 
-| Version | What differs | Built by |
-|---|---|---|
-| `pick_place_bottle` | the demos as converted | `make_dataset.py` (above) |
-| `pick_place_bottle_full` | the demos' full episodes: the frames after the first success are kept, as `policy/` trains on them (behaviour cloning only) | `convert_pick_place_to_lerobot.py --full-episodes --name pick_place_bottle_full` |
+The command above writes both versions: `pick_place_bottle` (cut to 1 step after
+success) and `pick_place_bottle_full` (cut to 8 steps after success - the most
+`make_dataset.py` keeps).
 
 
 
@@ -225,6 +191,16 @@ LeRobot datasets and evaluates it in the pick-and-place MuJoCo simulation
 (`resfit/pick_place/env.py`), resetting from the recorded demos' own start states. The
 residual RL stage is ported too (see Residual RL below).
 
+![ResFiT: a frozen base policy's action chunk, corrected step by step at inference by a
+residual policy; trained in two phases, BC on offline demos then RL on top with the base
+policy frozen](resfit/assets/resfit_method.png)
+
+At inference (left), the base policy predicts a chunk of actions once; a residual policy
+then corrects each one individually as it's executed, using the current observation. Training
+(right) has two phases: the base policy is behaviour-cloned on the offline demos (Phase 1,
+this section); the residual policy is then trained by RL on top of it, frozen, using both
+the offline demos and its own rollouts (Phase 2, see Residual RL below).
+
 See [Converting to the robot-base frame and LeRobot datasets](#converting-to-the-robot-base-frame-and-lerobot-datasets)
 above for the dataset formats and versions `resfit/` trains on.
 
@@ -237,7 +213,10 @@ bash resfit/lerobot/shell/train_bc_unet_bc_absolute_6d.sh
 # flow_matching: 49 %, best result so far
 bash resfit/lerobot/shell/train_bc_flow_matching_absolute_6d.sh
 
-# pi0
+# smolvla: 32.8 %
+bash resfit/lerobot/shell/train_bc_smolvla_joint_regularized.sh
+
+# pi0: 23 %
 bash resfit/lerobot/shell/train_bc_pi0_absolute_6d.sh
 ```
 
@@ -248,7 +227,7 @@ bash resfit/lerobot/shell/train_bc_pi0_absolute_6d.sh
 | `diffusion` | Diffusion Policy: ResNet18 from scratch (GroupNorm, spatial softmax, random crop), 1D Unet, denoising |
 | `unet_bc` | the same Unet and encoder trained by plain BC (MSE on the chunk, one pass) |
 | `flow_matching` | the same Unet and encoder trained by flow matching (10 Euler steps to sample) |
-| `smolvla` | LeRobot's SmolVLA vision-language-action model (450M parameters, flow-matching action expert), one observation frame, the task sentence as instruction; `PRETRAINED=lerobot/smolvla_base` starts from the pretrained model (vision-language model frozen, action expert trained) |
+| `smolvla` | LeRobot's SmolVLA vision-language-action model (450M parameters, flow-matching action expert), one observation frame, the task sentence as instruction; `PRETRAINED=lerobot/smolvla_base` starts from the pretrained model (vision-language model and action expert both trained) |
 | `pi0` | LeRobot's PI0 vision-language-action model (PaliGemma-3B backbone + flow-matching action expert), one observation frame, the task sentence as instruction; `PRETRAINED=lerobot/pi0` starts from the pretrained checkpoint (its own bf16 precision kept as released, not forced to fp32 like SmolVLA) |
 
 | Setting | Default | Meaning |
@@ -269,7 +248,7 @@ start from) and `evals/` (one video per evaluation, both cameras side by side).
 
 ```sh
 bash resfit/lerobot/shell/eval_bc.sh             # defaults: the SmolVLA unfrozen run's best/, demo layouts, on GPU 0
-RUN=outputs/resfit_bc/<run name> N_ACTION_STEPS="16 8 4" bash resfit/lerobot/shell/eval_bc.sh
+RUN=outputs/resfit_bc/<run name> N_ACTION_STEPS="8" bash resfit/lerobot/shell/eval_bc.sh
 ```
 
 Evaluates a saved checkpoint without training, at several execution horizons, writing
@@ -287,4 +266,6 @@ policy already trained above and fine-tunes it with RL, without changing its wei
 A small actor-critic learns a correction to add on top of each of its actions (capped
 at `ACTION_SCALE`, a fraction of the action range), trained on a mix of the frozen
 policy's own rollouts and the demos. Writes to `outputs/resfit_residual/<run name>/`.
+
+
 

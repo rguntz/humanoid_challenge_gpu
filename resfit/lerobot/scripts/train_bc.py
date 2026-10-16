@@ -329,13 +329,18 @@ def _annotate(frame, text, status, font):
     return np.array(img)
 
 
-def evaluate(policy, env, episodes, seed, video_path, fps, pbar=None, episode_log=None):
+def evaluate(policy, env, episodes, seed, video_path, fps, pbar=None, episode_log=None, task=None):
     """Run `episodes` episodes, the same number in every simulator, from start states
     fixed by `seed`. Returns the success rate and the mean episode length; writes every
     counted episode to video_path. pbar (a tqdm bar, optional) advances by one per episode;
     episode_log (a list, optional) gets one dict per episode: env, round (the env's 0-based
-    episode number), success, length (frames)."""
+    episode number), success, length (frames). task (optional): the language instruction
+    to give a vision-language-action policy (SmolVLA, PI0), as a per-sample list; the
+    dataset's own task (see vec_env.dataset_env_config) if not given explicitly, so training
+    and evaluation give the policy the same sentence."""
     num_envs = env.num_envs
+    if task is None:
+        task = getattr(env, "task", None)
     per_env = episodes // num_envs
     was_training = policy.training
     policy.eval()
@@ -350,7 +355,7 @@ def evaluate(policy, env, episodes, seed, video_path, fps, pbar=None, episode_lo
     t0 = time.perf_counter()
     while (done_count < per_env).any():
         with torch.inference_mode():
-            action = policy.select_action(obs)
+            action = policy.select_action({**obs, "task": [task] * num_envs} if task is not None else obs)
         # On the CPU: a CUDA tensor sent to the env processes would start CUDA in each (~0.5 GB)
         obs, reward, terminated, truncated, info = env.step(action.float().cpu().numpy())
         # Same-step autoreset: the frame of an env whose episode just ended already

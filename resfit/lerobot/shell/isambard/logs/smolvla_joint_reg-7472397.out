@@ -1,0 +1,35 @@
+Uninstalled 1 package in 37ms
+Installed 1 package in 84ms
+Uninstalled 1 package in 47ms
+Installed 1 package in 60ms
+2026-10-16 13:50:34,764 | INFO | Cuda backend detected, using cuda.
+2026-10-16 13:50:34,764 | WARNING | Device 'None' is not available. Switching to 'cuda'.
+2026-10-16 13:50:34,765 | WARNING | 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torchvision/io/_video_deprecation_warning.py:9: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
+  warnings.warn(
+2026-10-16 13:51:33,103 | INFO | Initialized from lerobot/smolvla_base: {'loaded': 500, 'unused_in_checkpoint': 0}
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
+wandb: Currently logged in as: romainguntz (romainguntz-eth-z-rich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run f84ws0zl
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_13-49-58_smolvla_joint_agentview_chunk50_unfrozen_regularized/wandb/run-20261016_135134-f84ws0zl
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 2026-10-16_13-49-58_smolvla_joint_agentview_chunk50_unfrozen_regularized
+wandb: ⭐️ View project at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc
+wandb: 🚀 View run at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc/runs/f84ws0zl
+2026-10-16 13:51:36,234 | INFO | Run folder: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_13-49-58_smolvla_joint_agentview_chunk50_unfrozen_regularized | W&B: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc/runs/f84ws0zl
+Reducing the number of VLM layers to 16 ...
+2026-10-16 13:53:00,285 | INFO | [step     100/4000] loss 0.0953 | data 0 ms | iter 340 ms
+2026-10-16 13:53:35,121 | INFO | [step     200/4000] loss 0.0500 | data 0 ms | iter 349 ms
+2026-10-16 13:54:09,805 | INFO | [step     300/4000] loss 0.0448 | data 0 ms | iter 345 ms
+2026-10-16 13:54:44,569 | INFO | [step     400/4000] loss 0.0380 | data 0 ms | iter 347 ms
+2026-10-16 13:55:19,448 | INFO | [step     500/4000] loss 0.0443 | data 0 ms | iter 338 ms
+2026-10-16 14:03:02,932 | INFO | evaluation: 64 episodes in 463 s
+2026-10-16 14:03:02,949 | INFO | [step 500] success rate 14.1 % (best 14.1 % at step 500)
+2026-10-16 14:03:06,579 | INFO | New best: saved /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_13-49-58_smolvla_joint_agentview_chunk50_unfrozen_regularized/best
+2026-10-16 14:03:41,297 | INFO | [step     600/4000] loss 0.0317 | data 0 ms | iter 348 ms
+2026-10-16 14:04:15,914 | INFO | [step     700/4000] loss 0.0301 | data 0 ms | iter 355 ms
+2026-10-16 14:04:50,777 | INFO | [step     800/4000] loss 0.0334 | data 0 ms | iter 333 ms
+2026-10-16 14:05:25,506 | INFO | [step     900/4000] loss 0.0300 | data 0 ms | iter 346 ms
+2026-10-16 14:06:00,305 | INFO | [step    1000/4000] loss 0.0349 | data 0 ms | iter 345 ms
+[2026-10-16T14:09:59.708] error: *** JOB 7472397 ON nid010118 CANCELLED AT 2026-10-16T14:09:59 DUE to SIGNAL Terminated ***

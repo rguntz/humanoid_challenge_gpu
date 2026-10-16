@@ -38,12 +38,12 @@ from lerobot.common.policies.pi0.modeling_pi0 import PI0Policy as LeRobotPI0Poli
 from torch import Tensor
 
 DEFAULT_TASK = "pick up the pill box and place it in the container"
-# NOTE: deliberately NOT the same as convert_pick_place_to_lerobot.TASK ("pick up the bottle
-# and place it in the container", baked into the dataset's own per-episode task field at
-# conversion time) - the object is actually a small pill box, not a bottle, but this wording is
-# only used here, as this policy's own eval-time fallback when the env doesn't supply a task
-# (see the module docstring). Left mismatched from the dataset's own training-time task string
-# and from SmolVLA's own DEFAULT_TASK on purpose - explicit request, no dataset re-conversion.
+# Matches convert_pick_place_to_lerobot.TASK, baked into the dataset's own per-episode task
+# field at conversion time: this policy's own eval-time fallback, used when the env doesn't
+# supply a task (see the module docstring), must say the same thing training did. In practice
+# train_bc.evaluate() always passes the dataset's own task explicitly (vec_env.py reads it
+# from meta/info.json), so this constant is only reached for a dataset built before --task
+# existed (no "task" in its meta/info.json).
 NORMALIZATION_PREFIXES = ("normalize_inputs.", "normalize_targets.", "unnormalize_outputs.")
 
 

@@ -109,7 +109,7 @@ def main():
     out = Path(args.out) if args.out else REPO / "outputs" / "rollout_obs_check" / dataset_dir.name
     (out / "videos").mkdir(parents=True, exist_ok=True)
 
-    action_mode, source = dataset_env_config(dataset_dir)
+    action_mode, source, _task = dataset_env_config(dataset_dir)
     ds = CachedVideoLeRobotDataset(f"local/{dataset_dir.name}", root=dataset_dir)  # no augmentation
     episodes = json.loads((dataset_dir / "meta" / "source_demos.json").read_text())
     actions = torch.stack(ds.hf_dataset["action"]).numpy()

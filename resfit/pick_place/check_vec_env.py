@@ -80,7 +80,7 @@ def check(mode):
     starts, ends = ds.episode_data_index["from"].tolist(), ds.episode_data_index["to"].tolist()
     obs_keys = [k for k in ds.meta.features if k.startswith("observation.")]
 
-    action_mode, source = dataset_env_config(out)
+    action_mode, source, _task = dataset_env_config(out)
     assert action_mode == mode, (action_mode, mode)
     plain_env = PickPlaceBottleEnv(source)  # the direct replay, as in the converter
     vec_env = create_vectorized_env(out, num_envs=NUM_ENVS)

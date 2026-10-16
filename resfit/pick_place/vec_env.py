@@ -44,11 +44,12 @@ logger = logging.getLogger(__name__)
 
 
 def dataset_env_config(dataset_dir):
-    """The action mode and the robot-base source dataset (its layout/ group and
-    env_scene.xml define the simulation) of a LeRobot dataset written by
+    """The action mode, the robot-base source dataset (its layout/ group and
+    env_scene.xml define the simulation) and the language instruction (the
+    "task" the policy was trained on) of a LeRobot dataset written by
     resfit/lerobot/dataset/convert_pick_place_to_lerobot.py."""
     info = json.loads((Path(dataset_dir) / "meta" / "info.json").read_text())
-    return info["action_mode"], REPO / info["source"]
+    return info["action_mode"], REPO / info["source"], info.get("task")
 
 
 class PickPlaceGymEnv(gym.Env):
@@ -196,7 +197,7 @@ def create_vectorized_env(
 ) -> VectorizedEnvWrapper:
     """num_envs simulators matching the LeRobot dataset in dataset_dir (see the module
     docstring); debug runs them in this process, one after the other."""
-    action_mode, source_path = dataset_env_config(dataset_dir)
+    action_mode, source_path, task = dataset_env_config(dataset_dir)
     env_options = dict(env_options or {})
     env_fns = [lambda: PickPlaceGymEnv(source_path, action_mode, horizon, env_options) for _ in range(num_envs)]
     if debug:
@@ -212,5 +213,6 @@ def create_vectorized_env(
     wrapped_env = VectorizedEnvWrapper(vec_env, video_key, device)
     wrapped_env.env_name = "PickPlaceBottle"
     wrapped_env.action_mode = action_mode
+    wrapped_env.task = task
     logger.debug(f"Created {num_envs} vectorized PickPlaceBottle environments ({action_mode} actions)")
     return wrapped_env

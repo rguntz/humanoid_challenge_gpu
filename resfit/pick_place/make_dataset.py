@@ -1,9 +1,10 @@
 """Build the policy's training datasets from the merged robomimic dataset, in two
 stages, both run by this script:
   1. pick_place_bottle_base.hdf5: the demos in the robot-base frame (below);
-  2. the two LeRobot datasets ResFiT trains on, one with absolute and one with delta
-     actions, each checked by replaying it in the env, with the replays saved as
-     videos (resfit/lerobot/dataset/convert_pick_place_to_lerobot.py).
+  2. the LeRobot datasets ResFiT trains on, one per action mode (absolute, delta,
+     absolute_6d, joint), plus the same four cut less aggressively (pick_place_bottle_full_*,
+     see Dataset versions), each checked by replaying it in the env, with the replays saved
+     as videos (resfit/lerobot/dataset/convert_pick_place_to_lerobot.py).
 
 Input: videos/task/dataset_sim/robomimic/pick_place_bottle.hdf5 (pipeline/make_robomimic.py),
 whose observations and actions are in each episode's own scene (tag) frame.
@@ -21,7 +22,8 @@ Output, in --out-dir (default videos/task/dataset_sim/policy/):
   videos/<demo>_<smooth|orig>.mp4  each demo as kept, both cameras side by side
                                    (rendered replay when smoothed)
 and in --lerobot-dir (default videos/task/dataset_sim/lerobot/):
-  pick_place_bottle_absolute/, pick_place_bottle_delta/   with check_videos/ inside
+  pick_place_bottle_<mode>/, pick_place_bottle_full_<mode>/   one per action mode
+      (absolute, delta, absolute_6d, joint), each with check_videos/ inside
 
 Smoothing (on by default, --no-smooth-trajectory to turn it off): the end-effector
 position and orientation of each demo's actions are Gaussian-smoothed over time
@@ -63,6 +65,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from resfit.pick_place import task  # noqa: E402
+from resfit.lerobot.dataset.convert_pick_place_to_lerobot import TASK as DEFAULT_TASK  # noqa: E402
 
 # sim/ is on sys.path via task.py
 from replay_hand import solve_ik
@@ -87,6 +90,9 @@ def parse_args():
     p.add_argument("--save-videos", action=argparse.BooleanOptionalAction, default=True,
                    help="save per-demo mp4 videos to {out-dir}/videos/ (default: on)")
     p.add_argument("--lerobot-dir", default=str(SIM / "lerobot"), help="folder of the two LeRobot datasets")
+    p.add_argument("--task", default=DEFAULT_TASK,
+                   help="language instruction encoded in every LeRobot episode (see "
+                        "convert_pick_place_to_lerobot.py's --task)")
     return p.parse_args()
 
 
@@ -306,7 +312,8 @@ def main():
     print(f"Saved {out_dir / 'env_scene.xml'}")
 
     from resfit.lerobot.dataset.convert_pick_place_to_lerobot import convert_all
-    convert_all(out, args.lerobot_dir)
+    convert_all(out, args.lerobot_dir, task=args.task)
+    convert_all(out, args.lerobot_dir, name_prefix="pick_place_bottle_full", full_episodes=True, task=args.task)
 
 
 if __name__ == "__main__":

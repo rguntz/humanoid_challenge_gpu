@@ -13,7 +13,10 @@
 # Everything else identical (joint actions, agentview, chunk 50, batch 64, vision-language model
 # trained). On GPU 0. Run from anywhere:
 #     bash resfit/lerobot/shell/train_bc_smolvla_joint_regularized.sh
-# Reads videos/task/dataset_sim/lerobot/pick_place_bottle_joint and lerobot/smolvla_base. Writes
+# Reads videos/task/dataset_sim/lerobot/pick_place_bottle_full_joint and lerobot/smolvla_base
+# (pick_place_bottle_full, to match train_bc_pi0_absolute_6d.sh's own dataset version - the
+# 32.8 % result this script is otherwise identical to was measured on pick_place_bottle_joint,
+# the stricter 1-step-after-success cut, so a rerun here may differ slightly). Writes
 # outputs/resfit_bc/<RUN_NAME>/ (latest/, best/, evals/ with one video per evaluation) and logs
 # to the W&B project below. Other settings: see train_bc.sh.
 WANDB_PROJECT=pick-place-bc \
@@ -21,7 +24,7 @@ RUN_NAME="$(date +%Y-%m-%d_%H-%M-%S)_smolvla_joint_agentview_chunk50_unfrozen_re
 GPU=0 \
 POLICY=smolvla \
 PRETRAINED=lerobot/smolvla_base \
-DATASET=pick_place_bottle \
+DATASET=pick_place_bottle_full \
 ACTION_MODE=joint \
 NORMALIZER=mean_std \
 CAMERAS="agentview" \

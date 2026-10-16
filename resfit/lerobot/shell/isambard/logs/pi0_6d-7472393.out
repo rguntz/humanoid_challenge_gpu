@@ -1,0 +1,145 @@
+Uninstalled 1 package in 39ms
+Installed 1 package in 79ms
+Uninstalled 1 package in 35ms
+Installed 1 package in 66ms
+2026-10-16 13:50:34,548 | INFO | Cuda backend detected, using cuda.
+2026-10-16 13:50:34,548 | WARNING | Device 'None' is not available. Switching to 'cuda'.
+2026-10-16 13:50:34,548 | WARNING | 'torchcodec' is not available in your platform, falling back to 'pyav' as a default decoder
+/home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/.venv/lib/python3.12/site-packages/torchvision/io/_video_deprecation_warning.py:9: UserWarning: The video decoding and encoding capabilities of torchvision are deprecated from version 0.22 and will be removed in version 0.24. We recommend that you migrate to TorchCodec, where we'll consolidate the future decoding/encoding capabilities of PyTorch: https://github.com/pytorch/torchcodec
+  warnings.warn(
+2026-10-16 13:52:02,930 | INFO | Initialized from lerobot/pi0: {'loaded': 777, 'unused_in_checkpoint': 0}
+wandb: [wandb.login()] Loaded credentials for https://api.wandb.ai from WANDB_API_KEY.
+wandb: Currently logged in as: romainguntz (romainguntz-eth-z-rich) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: setting up run m075mtxs
+wandb: Tracking run with wandb version 0.30.0
+wandb: Run data is saved locally in /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_13-50-01_pi0_6d_agentview_Ta16_h16_policyopt/wandb/run-20261016_135203-m075mtxs
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run 2026-10-16_13-50-01_pi0_6d_agentview_Ta16_h16_policyopt
+wandb: ⭐️ View project at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc
+wandb: 🚀 View run at https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc/runs/m075mtxs
+2026-10-16 13:52:05,071 | INFO | Run folder: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_13-50-01_pi0_6d_agentview_Ta16_h16_policyopt | W&B: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc/runs/m075mtxs
+2026-10-16 13:53:28,601 | INFO | [step     100/100000] loss 0.3710 | data 0 ms | iter 256 ms
+2026-10-16 13:53:54,447 | INFO | [step     200/100000] loss 0.2453 | data 0 ms | iter 258 ms
+2026-10-16 13:54:20,318 | INFO | [step     300/100000] loss 0.1664 | data 0 ms | iter 260 ms
+2026-10-16 13:54:46,263 | INFO | [step     400/100000] loss 0.0895 | data 0 ms | iter 259 ms
+2026-10-16 13:55:12,457 | INFO | [step     500/100000] loss 0.0856 | data 0 ms | iter 261 ms
+2026-10-16 13:55:38,373 | INFO | [step     600/100000] loss 0.0688 | data 0 ms | iter 257 ms
+2026-10-16 13:56:04,308 | INFO | [step     700/100000] loss 0.0596 | data 0 ms | iter 257 ms
+2026-10-16 13:56:30,288 | INFO | [step     800/100000] loss 0.0742 | data 0 ms | iter 260 ms
+2026-10-16 13:56:56,323 | INFO | [step     900/100000] loss 0.0694 | data 0 ms | iter 258 ms
+2026-10-16 13:57:22,300 | INFO | [step    1000/100000] loss 0.0721 | data 0 ms | iter 259 ms
+2026-10-16 13:57:48,300 | INFO | [step    1100/100000] loss 0.0669 | data 0 ms | iter 260 ms
+2026-10-16 13:58:14,271 | INFO | [step    1200/100000] loss 0.0421 | data 0 ms | iter 259 ms
+2026-10-16 13:58:40,221 | INFO | [step    1300/100000] loss 0.0650 | data 0 ms | iter 261 ms
+2026-10-16 13:59:06,318 | INFO | [step    1400/100000] loss 0.0398 | data 0 ms | iter 260 ms
+2026-10-16 13:59:32,377 | INFO | [step    1500/100000] loss 0.0786 | data 0 ms | iter 261 ms
+2026-10-16 13:59:58,261 | INFO | [step    1600/100000] loss 0.0584 | data 0 ms | iter 258 ms
+2026-10-16 14:00:24,176 | INFO | [step    1700/100000] loss 0.0584 | data 0 ms | iter 261 ms
+2026-10-16 14:00:50,275 | INFO | [step    1800/100000] loss 0.0370 | data 0 ms | iter 260 ms
+2026-10-16 14:01:16,275 | INFO | [step    1900/100000] loss 0.0241 | data 0 ms | iter 259 ms
+2026-10-16 14:01:42,268 | INFO | [step    2000/100000] loss 0.0492 | data 0 ms | iter 259 ms
+2026-10-16 14:02:08,274 | INFO | [step    2100/100000] loss 0.0372 | data 0 ms | iter 261 ms
+2026-10-16 14:02:34,273 | INFO | [step    2200/100000] loss 0.0439 | data 0 ms | iter 261 ms
+2026-10-16 14:03:00,372 | INFO | [step    2300/100000] loss 0.0417 | data 0 ms | iter 260 ms
+2026-10-16 14:03:26,478 | INFO | [step    2400/100000] loss 0.0332 | data 0 ms | iter 259 ms
+2026-10-16 14:03:52,411 | INFO | [step    2500/100000] loss 0.0305 | data 0 ms | iter 259 ms
+2026-10-16 14:04:18,331 | INFO | [step    2600/100000] loss 0.0300 | data 0 ms | iter 261 ms
+2026-10-16 14:04:44,328 | INFO | [step    2700/100000] loss 0.0234 | data 0 ms | iter 259 ms
+2026-10-16 14:05:10,274 | INFO | [step    2800/100000] loss 0.0268 | data 0 ms | iter 258 ms
+2026-10-16 14:05:36,208 | INFO | [step    2900/100000] loss 0.0296 | data 0 ms | iter 260 ms
+2026-10-16 14:06:02,181 | INFO | [step    3000/100000] loss 0.0370 | data 0 ms | iter 261 ms
+2026-10-16 14:06:28,252 | INFO | [step    3100/100000] loss 0.0271 | data 0 ms | iter 259 ms
+2026-10-16 14:06:54,251 | INFO | [step    3200/100000] loss 0.0251 | data 0 ms | iter 259 ms
+2026-10-16 14:07:20,247 | INFO | [step    3300/100000] loss 0.0321 | data 0 ms | iter 261 ms
+2026-10-16 14:07:46,245 | INFO | [step    3400/100000] loss 0.0347 | data 0 ms | iter 260 ms
+2026-10-16 14:08:12,197 | INFO | [step    3500/100000] loss 0.0339 | data 0 ms | iter 259 ms
+2026-10-16 14:08:38,187 | INFO | [step    3600/100000] loss 0.0254 | data 0 ms | iter 258 ms
+2026-10-16 14:09:04,084 | INFO | [step    3700/100000] loss 0.0221 | data 0 ms | iter 260 ms
+2026-10-16 14:09:30,003 | INFO | [step    3800/100000] loss 0.0298 | data 0 ms | iter 261 ms
+2026-10-16 14:09:55,887 | INFO | [step    3900/100000] loss 0.0325 | data 0 ms | iter 256 ms
+2026-10-16 14:10:21,908 | INFO | [step    4000/100000] loss 0.0349 | data 0 ms | iter 261 ms
+2026-10-16 14:10:47,889 | INFO | [step    4100/100000] loss 0.0329 | data 0 ms | iter 259 ms
+2026-10-16 14:11:13,881 | INFO | [step    4200/100000] loss 0.0243 | data 0 ms | iter 260 ms
+2026-10-16 14:11:40,020 | INFO | [step    4300/100000] loss 0.0249 | data 0 ms | iter 261 ms
+2026-10-16 14:12:06,019 | INFO | [step    4400/100000] loss 0.0270 | data 0 ms | iter 260 ms
+2026-10-16 14:12:32,179 | INFO | [step    4500/100000] loss 0.0167 | data 0 ms | iter 260 ms
+2026-10-16 14:12:58,157 | INFO | [step    4600/100000] loss 0.0206 | data 0 ms | iter 260 ms
+2026-10-16 14:13:24,150 | INFO | [step    4700/100000] loss 0.0269 | data 0 ms | iter 259 ms
+2026-10-16 14:13:50,095 | INFO | [step    4800/100000] loss 0.0222 | data 0 ms | iter 260 ms
+2026-10-16 14:14:16,163 | INFO | [step    4900/100000] loss 0.0194 | data 0 ms | iter 260 ms
+2026-10-16 14:14:42,162 | INFO | [step    5000/100000] loss 0.0183 | data 0 ms | iter 260 ms
+2026-10-16 14:15:08,175 | INFO | [step    5100/100000] loss 0.0206 | data 0 ms | iter 261 ms
+2026-10-16 14:15:34,174 | INFO | [step    5200/100000] loss 0.0210 | data 0 ms | iter 259 ms
+2026-10-16 14:16:00,231 | INFO | [step    5300/100000] loss 0.0164 | data 0 ms | iter 258 ms
+2026-10-16 14:16:26,206 | INFO | [step    5400/100000] loss 0.0211 | data 0 ms | iter 259 ms
+2026-10-16 14:16:52,192 | INFO | [step    5500/100000] loss 0.0192 | data 0 ms | iter 260 ms
+2026-10-16 14:17:18,186 | INFO | [step    5600/100000] loss 0.0140 | data 0 ms | iter 260 ms
+2026-10-16 14:17:44,191 | INFO | [step    5700/100000] loss 0.0170 | data 0 ms | iter 261 ms
+2026-10-16 14:18:10,196 | INFO | [step    5800/100000] loss 0.0244 | data 0 ms | iter 260 ms
+2026-10-16 14:18:36,130 | INFO | [step    5900/100000] loss 0.0286 | data 0 ms | iter 257 ms
+2026-10-16 14:19:02,103 | INFO | [step    6000/100000] loss 0.0158 | data 0 ms | iter 261 ms
+2026-10-16 14:19:28,014 | INFO | [step    6100/100000] loss 0.0227 | data 0 ms | iter 258 ms
+2026-10-16 14:19:54,048 | INFO | [step    6200/100000] loss 0.0264 | data 0 ms | iter 261 ms
+2026-10-16 14:20:20,207 | INFO | [step    6300/100000] loss 0.0202 | data 0 ms | iter 261 ms
+2026-10-16 14:20:46,206 | INFO | [step    6400/100000] loss 0.0310 | data 0 ms | iter 259 ms
+2026-10-16 14:21:12,210 | INFO | [step    6500/100000] loss 0.0121 | data 0 ms | iter 262 ms
+2026-10-16 14:21:38,185 | INFO | [step    6600/100000] loss 0.0161 | data 0 ms | iter 260 ms
+2026-10-16 14:22:04,225 | INFO | [step    6700/100000] loss 0.0240 | data 0 ms | iter 260 ms
+2026-10-16 14:22:30,139 | INFO | [step    6800/100000] loss 0.0135 | data 0 ms | iter 260 ms
+2026-10-16 14:22:56,038 | INFO | [step    6900/100000] loss 0.0229 | data 0 ms | iter 258 ms
+2026-10-16 14:23:21,943 | INFO | [step    7000/100000] loss 0.0156 | data 0 ms | iter 259 ms
+2026-10-16 14:23:47,997 | INFO | [step    7100/100000] loss 0.0184 | data 0 ms | iter 260 ms
+2026-10-16 14:24:14,003 | INFO | [step    7200/100000] loss 0.0183 | data 0 ms | iter 262 ms
+2026-10-16 14:24:40,001 | INFO | [step    7300/100000] loss 0.0120 | data 0 ms | iter 261 ms
+2026-10-16 14:25:05,900 | INFO | [step    7400/100000] loss 0.0167 | data 0 ms | iter 260 ms
+2026-10-16 14:25:31,921 | INFO | [step    7500/100000] loss 0.0146 | data 0 ms | iter 261 ms
+2026-10-16 14:25:57,920 | INFO | [step    7600/100000] loss 0.0145 | data 0 ms | iter 261 ms
+2026-10-16 14:26:23,919 | INFO | [step    7700/100000] loss 0.0146 | data 0 ms | iter 260 ms
+2026-10-16 14:26:49,924 | INFO | [step    7800/100000] loss 0.0255 | data 0 ms | iter 259 ms
+2026-10-16 14:27:15,906 | INFO | [step    7900/100000] loss 0.0285 | data 0 ms | iter 257 ms
+2026-10-16 14:27:41,910 | INFO | [step    8000/100000] loss 0.0114 | data 0 ms | iter 261 ms
+2026-10-16 14:28:07,804 | INFO | [step    8100/100000] loss 0.0132 | data 0 ms | iter 256 ms
+2026-10-16 14:28:33,868 | INFO | [step    8200/100000] loss 0.0117 | data 0 ms | iter 258 ms
+2026-10-16 14:28:59,775 | INFO | [step    8300/100000] loss 0.0124 | data 0 ms | iter 260 ms
+2026-10-16 14:29:25,835 | INFO | [step    8400/100000] loss 0.0114 | data 0 ms | iter 259 ms
+2026-10-16 14:29:51,834 | INFO | [step    8500/100000] loss 0.0189 | data 0 ms | iter 259 ms
+2026-10-16 14:30:17,835 | INFO | [step    8600/100000] loss 0.0120 | data 0 ms | iter 260 ms
+2026-10-16 14:30:43,833 | INFO | [step    8700/100000] loss 0.0123 | data 0 ms | iter 261 ms
+2026-10-16 14:31:09,833 | INFO | [step    8800/100000] loss 0.0190 | data 0 ms | iter 260 ms
+2026-10-16 14:31:35,971 | INFO | [step    8900/100000] loss 0.0214 | data 0 ms | iter 260 ms
+2026-10-16 14:32:01,978 | INFO | [step    9000/100000] loss 0.0151 | data 0 ms | iter 262 ms
+2026-10-16 14:32:27,970 | INFO | [step    9100/100000] loss 0.0103 | data 0 ms | iter 261 ms
+2026-10-16 14:32:53,971 | INFO | [step    9200/100000] loss 0.0149 | data 0 ms | iter 261 ms
+2026-10-16 14:33:20,089 | INFO | [step    9300/100000] loss 0.0121 | data 0 ms | iter 260 ms
+2026-10-16 14:33:46,080 | INFO | [step    9400/100000] loss 0.0149 | data 0 ms | iter 259 ms
+2026-10-16 14:34:11,980 | INFO | [step    9500/100000] loss 0.0230 | data 0 ms | iter 260 ms
+2026-10-16 14:34:37,887 | INFO | [step    9600/100000] loss 0.0184 | data 0 ms | iter 260 ms
+2026-10-16 14:35:03,906 | INFO | [step    9700/100000] loss 0.0148 | data 0 ms | iter 259 ms
+2026-10-16 14:35:29,906 | INFO | [step    9800/100000] loss 0.0099 | data 0 ms | iter 262 ms
+2026-10-16 14:35:55,906 | INFO | [step    9900/100000] loss 0.0101 | data 0 ms | iter 260 ms
+2026-10-16 14:36:21,904 | INFO | [step   10000/100000] loss 0.0179 | data 0 ms | iter 260 ms
+2026-10-16 14:48:05,988 | INFO | evaluation: 100 episodes in 703 s
+2026-10-16 14:48:06,005 | INFO | [step 10000] success rate 22.0 % (best 22.0 % at step 10000)
+2026-10-16 14:48:18,094 | INFO | New best: saved /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_13-50-01_pi0_6d_agentview_Ta16_h16_policyopt/best
+2026-10-16 14:48:46,331 | INFO | [step   10100/100000] loss 0.0105 | data 0 ms | iter 258 ms
+2026-10-16 14:49:12,446 | INFO | [step   10200/100000] loss 0.0153 | data 0 ms | iter 260 ms
+2026-10-16 14:49:38,445 | INFO | [step   10300/100000] loss 0.0118 | data 0 ms | iter 260 ms
+2026-10-16 14:50:04,444 | INFO | [step   10400/100000] loss 0.0144 | data 0 ms | iter 260 ms
+2026-10-16 14:50:30,445 | INFO | [step   10500/100000] loss 0.0090 | data 0 ms | iter 261 ms
+2026-10-16 14:50:56,710 | INFO | [step   10600/100000] loss 0.0087 | data 0 ms | iter 260 ms
+2026-10-16 14:51:22,744 | INFO | [step   10700/100000] loss 0.0089 | data 0 ms | iter 262 ms
+2026-10-16 14:51:48,746 | INFO | [step   10800/100000] loss 0.0092 | data 0 ms | iter 262 ms
+2026-10-16 14:52:14,769 | INFO | [step   10900/100000] loss 0.0075 | data 0 ms | iter 261 ms
+2026-10-16 14:52:40,805 | INFO | [step   11000/100000] loss 0.0107 | data 0 ms | iter 261 ms
+2026-10-16 14:53:06,899 | INFO | [step   11100/100000] loss 0.0096 | data 0 ms | iter 260 ms
+2026-10-16 14:53:32,906 | INFO | [step   11200/100000] loss 0.0182 | data 0 ms | iter 260 ms
+2026-10-16 14:53:58,966 | INFO | [step   11300/100000] loss 0.0099 | data 0 ms | iter 260 ms
+2026-10-16 14:54:25,005 | INFO | [step   11400/100000] loss 0.0118 | data 0 ms | iter 260 ms
+2026-10-16 14:54:51,137 | INFO | [step   11500/100000] loss 0.0135 | data 0 ms | iter 263 ms
+2026-10-16 14:55:17,182 | INFO | [step   11600/100000] loss 0.0141 | data 0 ms | iter 258 ms
+2026-10-16 14:55:43,421 | INFO | [step   11700/100000] loss 0.0148 | data 0 ms | iter 260 ms
+2026-10-16 14:56:09,461 | INFO | [step   11800/100000] loss 0.0138 | data 0 ms | iter 259 ms
+2026-10-16 14:56:35,567 | INFO | [step   11900/100000] loss 0.0099 | data 0 ms | iter 260 ms
+2026-10-16 14:57:01,714 | INFO | [step   12000/100000] loss 0.0105 | data 0 ms | iter 260 ms
+2026-10-16 14:57:27,720 | INFO | [step   12100/100000] loss 0.0048 | data 0 ms | iter 260 ms
+2026-10-16 14:57:53,734 | INFO | [step   12200/100000] loss 0.0123 | data 0 ms | iter 261 ms

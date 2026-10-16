@@ -21,7 +21,9 @@ except for their actions, with one episode per demo at the demos' control rate (
                                        (see resfit/pick_place/action_mode.py)
   next.done                      (1)   true on the last frame of each episode
   meta/info.json                 "action_mode": the mode the actions are stored in,
-                                 "state_mode": eef or joint
+                                 "state_mode": eef or joint,
+                                 "task": the language instruction, read from here by
+                                         training and evaluation alike (--task to change it)
   meta/source_demos.json         per episode: the source demo and its row in the
                                  layout/ group (the env's reset(options={"demo": row}))
 
@@ -136,7 +138,7 @@ def episode_state(d, T, mode):
     if STATE_MODES[mode] == "joint":
         return d["states"][:T, 1:1 + ARM_JOINTS + 2].astype(np.float32)  # rows: [time, qpos, qvel]
     return np.concatenate([d["obs"][k][:T] for k in STATE_KEYS], axis=1).astype(np.float32)
-TASK = "pick up the bottle and place it in the container"
+TASK = "pick up the pill box and place it in the container"
 STEPS_AFTER_SUCCESS = 0  # frames kept after each demo's first success
 HOLD_STEPS = 8  # steps the replay check holds the last target after an episode's last action
 RENDER_TOLERANCE = 0.02  # env render vs recorded image at reset, mean abs error (pixels in [0, 1])
@@ -151,6 +153,9 @@ def parse_args():
                    help="action modes to write (default: all)")
     p.add_argument("--full-episodes", action="store_true",
                    help="keep the frames after each demo's first success (see the module docstring)")
+    p.add_argument("--task", default=TASK,
+                   help="language instruction encoded in every episode (meta/info.json's 'task'); "
+                        "training and evaluation both read it from there, so it only needs setting here")
     return p.parse_args()
 
 
@@ -158,7 +163,7 @@ def demo_names(f):
     return sorted(f["data"], key=lambda n: int(n.split("_")[1]))
 
 
-def convert(src, mode, out, repo_id, full_episodes=False):
+def convert(src, mode, out, repo_id, full_episodes=False, task=TASK):
     with h5py.File(src, "r") as f:
         names = demo_names(f)
         layout_rows = {n: i for i, n in enumerate(json.loads(f["layout"].attrs["demos"]))}
@@ -193,7 +198,7 @@ def convert(src, mode, out, repo_id, full_episodes=False):
             images = {key: d["obs"][camera][:T] for camera, key in IMAGE_KEYS.items()}
             for t in range(T):
                 ds.add_frame({"observation.state": state[t], **{k: v[t] for k, v in images.items()},
-                              "action": actions[t], "next.done": np.array([t == T - 1])}, task=TASK)
+                              "action": actions[t], "next.done": np.array([t == T - 1])}, task=task)
             ds.save_episode()
             sources.append({"episode_index": len(sources), "demo": name, "layout_row": layout_rows[name],
                             "length": T, "first_success": int(np.argmax(rewards > 0))})
@@ -203,6 +208,7 @@ def convert(src, mode, out, repo_id, full_episodes=False):
     ds.meta.info["action_mode"] = mode
     ds.meta.info["state_mode"] = STATE_MODES[mode]
     ds.meta.info["full_episodes"] = full_episodes
+    ds.meta.info["task"] = task
     ds.meta.info["source"] = str(Path(src).resolve().relative_to(REPO))
     write_info(ds.meta.info, ds.root)
     (Path(out) / "meta" / "source_demos.json").write_text(json.dumps(sources, indent=1))
@@ -332,7 +338,7 @@ def check(src, out, repo_id):
         raise SystemExit("The decoded video frames do not match the source images.")
 
 
-def convert_all(src, out_dir, modes=ACTION_MODES, name_prefix="pick_place_bottle", full_episodes=False):
+def convert_all(src, out_dir, modes=ACTION_MODES, name_prefix="pick_place_bottle", full_episodes=False, task=TASK):
     """Write and check one dataset per action mode (see the module docstring)."""
     for mode in modes:
         name = f"{name_prefix}_{mode}"
@@ -340,13 +346,13 @@ def convert_all(src, out_dir, modes=ACTION_MODES, name_prefix="pick_place_bottle
         print(f"=== {mode} actions -> {out}")
         if out.exists():
             shutil.rmtree(out)
-        convert(src, mode, out, repo_id, full_episodes)
+        convert(src, mode, out, repo_id, full_episodes, task)
         check(src, out, repo_id)
 
 
 def main():
     args = parse_args()
-    convert_all(args.src, args.out_dir, args.modes, args.name, args.full_episodes)
+    convert_all(args.src, args.out_dir, args.modes, args.name, args.full_episodes, args.task)
 
 
 if __name__ == "__main__":
