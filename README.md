@@ -21,7 +21,7 @@ cd humanoid_challenge_gpu
 **2. System packages** (Ubuntu / Debian; the libraries by OpenCV and by MuJoCo's
 headless rendering, and FFmpeg's shared libraries (version 4 to 7) by torchcodec,
 which decodes the videos of the LeRobot datasets used by `resfit/`):
-
+ 
 ```sh
 sudo apt update && sudo apt install -y curl libgl1 libglib2.0-0 libegl1 ffmpeg
 ```
@@ -50,6 +50,14 @@ uv run python -c "import sys; sys.path.insert(0, 'sim'); from build_scene import
 This sparse-clones only the `franka_emika_panda/` folder from
 [mujoco_menagerie](https://github.com/google-deepmind/mujoco_menagerie); the
 download is ~10 MB.
+
+**6. Download the datasets**: the LeRobot datasets, and the scene (`env_scene.xml`) and
+start layouts (HDF5) the simulator needs, are not in git; they are on Hugging Face
+([rguntz/humanoid_challenge_pick_place](https://huggingface.co/datasets/rguntz/humanoid_challenge_pick_place), ~730 MB):
+
+```sh
+uv run huggingface-cli download rguntz/humanoid_challenge_pick_place --repo-type dataset --local-dir videos/task/dataset_sim
+```
 
 ## Recording your own demonstrations
 
@@ -296,5 +304,21 @@ A small actor-critic learns a correction to add on top of each of its actions (c
 at `ACTION_SCALE`, a fraction of the action range), trained on a mix of the frozen
 policy's own rollouts and the demos. Writes to `outputs/resfit_residual/<run name>/`.
 
+#### Results
 
+Residual TD3 on top of the flow matching base policy (step 40k), with episodes ended when
+the bottle falls (`TERMINATE_ON_FALL=1`) or the robot stays still for 48 steps
+(`TERMINATE_ON_STUCK=1`); robot start and box position random as in the demos. W&B run
+`2026-10-16_18-25-27__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06_fallend_stuckend48s2cm__seed0`
+(project `pick-place-residual-td3`), evaluated on 50 episodes every 10k steps:
 
+![Residual TD3 evaluation success rate over training](resfit/assets/residual_td3_fallend_stuckend_success.png)
+
+| Steps | 0 (base) | 10k | 20k | 30k | 40k | 50k | 60k | 70k | 80k | 90k | 100k | 110k | 120k | 130k | 140k | 150k | 160k |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Success | 54 % | 22 % | 18 % | 32 % | 38 % | 50 % | **58 %** | 48 % | 50 % | 30 % | 40 % | 52 % | 46 % | 50 % | 52 % | 50 % | 48 % |
+
+The success rate drops during the first 20k steps (the residual actor starts learning
+after the warm-up phases), recovers to the base policy's level by 50k and peaks at 58 % at
+60k, then stays around 50 %. With 50 episodes per evaluation each point is +-7 points, so
+the fine-tuned policy is so far on par with the base policy, not clearly better.
