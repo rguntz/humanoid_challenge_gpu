@@ -47,3 +47,64 @@ Reducing the number of VLM layers to 16 ...
 2026-10-16 14:52:24,149 | INFO | [step    1800/4000] loss 0.0213 | data 0 ms | iter 340 ms
 2026-10-16 14:52:57,813 | INFO | [step    1900/4000] loss 0.0177 | data 0 ms | iter 335 ms
 2026-10-16 14:53:31,731 | INFO | [step    2000/4000] loss 0.0200 | data 0 ms | iter 333 ms
+2026-10-16 15:00:37,197 | INFO | evaluation: 64 episodes in 425 s
+2026-10-16 15:00:37,199 | INFO | [step 2000] success rate 17.2 % (best 29.7 % at step 1500)
+2026-10-16 15:01:14,603 | INFO | [step    2100/4000] loss 0.0135 | data 0 ms | iter 334 ms
+2026-10-16 15:01:47,763 | INFO | [step    2200/4000] loss 0.0159 | data 0 ms | iter 333 ms
+2026-10-16 15:02:21,324 | INFO | [step    2300/4000] loss 0.0132 | data 0 ms | iter 338 ms
+2026-10-16 15:02:54,902 | INFO | [step    2400/4000] loss 0.0178 | data 0 ms | iter 335 ms
+2026-10-16 15:03:28,539 | INFO | [step    2500/4000] loss 0.0103 | data 0 ms | iter 324 ms
+2026-10-16 15:11:00,654 | INFO | evaluation: 64 episodes in 452 s
+2026-10-16 15:11:00,656 | INFO | [step 2500] success rate 29.7 % (best 29.7 % at step 1500)
+2026-10-16 15:11:37,920 | INFO | [step    2600/4000] loss 0.0083 | data 0 ms | iter 334 ms
+2026-10-16 15:12:11,571 | INFO | [step    2700/4000] loss 0.0114 | data 0 ms | iter 326 ms
+2026-10-16 15:12:45,140 | INFO | [step    2800/4000] loss 0.0112 | data 0 ms | iter 326 ms
+2026-10-16 15:13:18,866 | INFO | [step    2900/4000] loss 0.0093 | data 0 ms | iter 331 ms
+2026-10-16 15:13:52,424 | INFO | [step    3000/4000] loss 0.0061 | data 0 ms | iter 332 ms
+2026-10-16 15:21:19,546 | INFO | evaluation: 64 episodes in 447 s
+2026-10-16 15:21:19,548 | INFO | [step 3000] success rate 31.2 % (best 31.2 % at step 3000)
+2026-10-16 15:21:23,874 | INFO | New best: saved /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_14-17-53_smolvla_joint_agentview_chunk16_unfrozen_regularized/best
+2026-10-16 15:21:57,417 | INFO | [step    3100/4000] loss 0.0075 | data 0 ms | iter 323 ms
+2026-10-16 15:22:30,930 | INFO | [step    3200/4000] loss 0.0127 | data 0 ms | iter 332 ms
+2026-10-16 15:23:04,075 | INFO | [step    3300/4000] loss 0.0118 | data 0 ms | iter 326 ms
+2026-10-16 15:23:37,790 | INFO | [step    3400/4000] loss 0.0072 | data 0 ms | iter 336 ms
+2026-10-16 15:24:11,380 | INFO | [step    3500/4000] loss 0.0115 | data 0 ms | iter 338 ms
+2026-10-16 15:31:31,802 | INFO | evaluation: 64 episodes in 440 s
+2026-10-16 15:31:31,804 | INFO | [step 3500] success rate 29.7 % (best 31.2 % at step 3000)
+2026-10-16 15:32:09,216 | INFO | [step    3600/4000] loss 0.0055 | data 0 ms | iter 333 ms
+2026-10-16 15:32:42,947 | INFO | [step    3700/4000] loss 0.0040 | data 0 ms | iter 339 ms
+2026-10-16 15:33:16,812 | INFO | [step    3800/4000] loss 0.0039 | data 0 ms | iter 337 ms
+2026-10-16 15:33:50,561 | INFO | [step    3900/4000] loss 0.0064 | data 0 ms | iter 336 ms
+2026-10-16 15:34:24,372 | INFO | [step    4000/4000] loss 0.0042 | data 0 ms | iter 335 ms
+2026-10-16 15:41:53,719 | INFO | evaluation: 64 episodes in 449 s
+2026-10-16 15:41:53,720 | INFO | [step 4000] success rate 28.1 % (best 31.2 % at step 3000)
+wandb: updating run metadata
+wandb: uploading output.log; uploading wandb-summary.json; uploading config.yaml
+wandb: 
+wandb: Run history:
+wandb:   eval/best_success_rate ▁▂▇▇▇███
+wandb: eval/mean_episode_length █▇▁█▂▁▁▃
+wandb:        eval/success_rate ▁▂▇▁▇█▇▆
+wandb:             time/data_ms ▂▂▄▆▇▆▇▇▇▄▃▁▃▇▇▇▇▅▇▇▇▁▂▂▆██▇▇▇▅▆▂▂▃██▅▇▅
+wandb:              time/eval_s ▁▂█▃▇▆▅▇
+wandb:             time/iter_ms █▆▆▅▂▄▂▅▅▆█▆▇▁▅█▂█▆▅▅▅▇▆▁▆▂▂▄▅▁▅▂▆▇▅█▇▆▆
+wandb:          train/grad_norm █▆▇▆▇▅▅▆▇▅▇▅▄▄▄▃▃▃▃▃▃▂▃▃▂▂▂▂▂▂▁▃▂▂▃▁▁▁▂▁
+wandb:               train/loss █▅▅▄▄▄▄▄▄▃▃▃▄▃▃▃▂▂▂▂▂▂▂▂▂▁▂▂▁▁▁▂▂▁▂▁▁▁▁▁
+wandb:                 train/lr ▂▂▃▄▅▆▆▇██▇▇▇▇▆▆▆▆▅▅▅▄▄▄▃▃▃▃▂▂▂▂▂▁▁▁▁▁▁▁
+wandb: 
+wandb: Run summary:
+wandb:   eval/best_success_rate 0.3125
+wandb: eval/mean_episode_length 201.32812
+wandb:        eval/success_rate 0.28125
+wandb:             time/data_ms 0.34866
+wandb:              time/eval_s 448.97211
+wandb:             time/iter_ms 335.43283
+wandb:          train/grad_norm 0.10516
+wandb:               train/loss 0.00419
+wandb:                 train/lr 0.0
+wandb: 
+wandb: 🚀 View run 2026-10-16_14-17-53_smolvla_joint_agentview_chunk16_unfrozen_regularized at: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc/runs/bh3ih1d8
+wandb: ⭐️ View project at: https://wandb.ai/romainguntz-eth-z-rich/pick-place-bc
+wandb: Synced 5 W&B file(s), 0 media file(s), 0 artifact file(s) and 0 other file(s)
+wandb: Find logs at: ./outputs/resfit_bc/2026-10-16_14-17-53_smolvla_joint_agentview_chunk16_unfrozen_regularized/wandb/run-20261016_141934-bh3ih1d8/logs
+2026-10-16 15:42:01,412 | INFO | Training finished. Best success rate 31.2 % at step 3000: /home/u6vu/rguntz.u6vu/Desktop/humanoid_challenge_gpu/outputs/resfit_bc/2026-10-16_14-17-53_smolvla_joint_agentview_chunk16_unfrozen_regularized/best

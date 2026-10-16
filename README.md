@@ -52,21 +52,23 @@ record and drop a video in). To produce one:
 1. Print the fiducial tag (`tag/tag_5x5_id0_150mm.png`, already sized to 150 mm) and
    place it flat on the table in view of the camera: it is how the pipeline later
    recovers the camera/table pose for each episode.
-2. `calibration/camera_intrinsics.json` is already in the repository, calibrated for
-   the phone this task was recorded with. If you record with a different phone,
-   recalibrate it first: print `tag/checkerboard_10x7_20mm_A4.pdf`, then film it with
-   that phone for at least some tens of seconds while continuously moving it around,
+2. Calibrate your phone's camera: print `tag/checkerboard_10x7_20mm_A4.pdf`, then
+   film it with that phone for at least some tens of seconds while continuously moving it around,
    varying its position in frame, its distance from the camera, and its tilt/angle.
    `calibrate_camera.py` automatically picks a diverse subset of frames from the video
    (different positions, distances and tilts) to solve for the lens's focal length and
    distortion; a video where the board barely moves does not give it enough different
    viewpoints to calibrate accurately. Then:
    `uv run calibration/calibrate_camera.py <that video>`.
+
+   <p align="center"><img src="calibration/assets/calibration_example.gif" alt="Example calibration video: moving a checkerboard in front of the camera" width="300"></p>
 3. Record one continuous egocentric video of as many pick-and-place demonstrations as
    you want, back to back, resetting the bottle and container between each. Start and
    end every single demonstration with about 1 s completely still, tag visible and
    hand flat on the table: the tag-pose and hand-tracking steps of the pipeline rely
    on that still moment to calibrate against.
+
+   <p align="center"><img src="assets/egocentric_task_example.gif" alt="Example egocentric recording of one pick-and-place episode" width="300"></p>
 4. Save the video into `videos/task/dataset/`.
 
 Then use the episode cutter below to split it into individual episode clips.
@@ -81,9 +83,8 @@ per-episode clips in `videos/task/dataset/`.
 uv run video_editing/server.py
 ```
 
-A local dashboard opens at http://localhost:8765 (use Chrome or Safari: the phone
-videos are HEVC, which Firefox cannot play). Mark each episode's start/end in the
-timeline, then export; the tool is self-explanatory from there.
+A local dashboard opens at http://localhost:8765 (use Chrome or Safari). Mark each episode's start/end in the
+timeline, then export. 
 
 ## From episode videos to a robomimic dataset (pipeline)
 
@@ -104,8 +105,12 @@ human demonstration into a simulated robot trajectory, by running:
 1. **Tag pose**: in the real video's first still frame, locate the fiducial marker
    printed on the table to recover the phone camera's pose relative to it. This real-
    world camera/table pose is what the simulated scene (step 5) is then built to match.
+
+   <p align="center"><img src="assets/tag_axes.png" alt="Detected tag outline and recovered pose axes in the first still frame" width="300"></p>
 2. **Hand tracking (WiLoR)**: track the hand's 3D pose and finger articulation frame
    by frame from the video alone.
+
+   <p align="center"><img src="assets/hand_tracking_example.gif" alt="Example WiLoR hand tracking output, frame by frame" width="300"></p>
 3. **Virtual gripper**: turn the tracked hand into an equivalent parallel-jaw gripper
    pose and open/close state (humans don't have a gripper, so this is a mapping, not
    a direct reading).
