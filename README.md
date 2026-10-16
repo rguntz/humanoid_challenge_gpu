@@ -306,19 +306,19 @@ policy's own rollouts and the demos. Writes to `outputs/resfit_residual/<run nam
 
 #### Results
 
-Residual TD3 on top of the flow matching base policy (step 40k), with episodes ended when
-the bottle falls (`TERMINATE_ON_FALL=1`) or the robot stays still for 48 steps
-(`TERMINATE_ON_STUCK=1`); robot start and box position random as in the demos. W&B run
-`2026-10-16_18-25-27__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06_fallend_stuckend48s2cm__seed0`
+Residual TD3 on top of the flow matching base policy (step 40k), on the simplified task:
+robot started near its home pose (+-5 deg per joint, `ROBOT_START=near_home`), the box
+always at the same position (`BOX_POSITION=fixed`) and episodes ended when the bottle falls
+(`TERMINATE_ON_FALL=1`); the bottle position stays random. W&B run
+`2026-10-15_11-56-32__PickPlaceBottle_n3_utd4_buf200000_off59ep_lr1e-06_fallend_near_home5deg_boxfixed__seed0`
 (project `pick-place-residual-td3`), evaluated on 50 episodes every 10k steps:
 
-![Residual TD3 evaluation success rate over training](resfit/assets/residual_td3_fallend_stuckend_success.png)
+![Residual TD3 evaluation success rate over training](resfit/assets/residual_td3_success.png)
 
-| Steps | 0 (base) | 10k | 20k | 30k | 40k | 50k | 60k | 70k | 80k | 90k | 100k | 110k | 120k | 130k | 140k | 150k | 160k |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Success | 54 % | 22 % | 18 % | 32 % | 38 % | 50 % | **58 %** | 48 % | 50 % | 30 % | 40 % | 52 % | 46 % | 50 % | 52 % | 50 % | 48 % |
+| Steps | 0 (base) | 10k | 20k | 30k | 40k | 50k | 60k | 70k | 80k | 90k | 100k | 110k | 120k | 130k | 140k | 150k |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| Success | 18 % | 60 % | 62 % | 76 % | 66 % | 82 % | 82 % | 88 % | 84 % | 90 % | 98 % | 88 % | 96 % | 98 % | 98 % | **100 %** |
 
-The success rate drops during the first 20k steps (the residual actor starts learning
-after the warm-up phases), recovers to the base policy's level by 50k and peaks at 58 % at
-60k, then stays around 50 %. With 50 episodes per evaluation each point is +-7 points, so
-the fine-tuned policy is so far on par with the base policy, not clearly better.
+The base policy alone succeeds 18 % of the time on this task (its start poses and box
+position differ from the demos'); the residual RL brings it to 60 % within 10k steps and
+to 96-100 % from 120k steps on, without changing the base policy's weights.
