@@ -114,6 +114,8 @@ human demonstration into a simulated robot trajectory, by running:
 3. **Virtual gripper**: turn the tracked hand into an equivalent parallel-jaw gripper
    pose and open/close state (humans don't have a gripper, so this is a mapping, not
    a direct reading).
+
+   <p align="center"><img src="assets/virtual_gripper_example.gif" alt="Example virtual gripper mapped from the tracked hand" width="300"></p>
 4. **Depth correction**: the monocular hand pose is depth-ambiguous; this corrects it
    using the known table plane and object contact.
 5. **MuJoCo scene**: build the simulated scene for this episode (table, Panda arm,
@@ -122,6 +124,8 @@ human demonstration into a simulated robot trajectory, by running:
    the virtual gripper's tracked trajectory.
 7. **Physics rollout**: actually simulate the resulting joint trajectory in MuJoCo,
    producing the robot/object states and observations that become the dataset.
+
+   <p align="center"><img src="assets/physics_rollout_example.gif" alt="Example physics rollout of the converted episode in MuJoCo" width="400"></p>
 
 Outputs in `videos/task/dataset_sim/`:
 
