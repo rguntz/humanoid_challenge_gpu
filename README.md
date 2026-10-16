@@ -7,7 +7,12 @@ Tested setup: Ubuntu-like Linux, x86_64, NVIDIA driver recent enough for CUDA 12
 (below) uses the GPU automatically if there is one; rendering is headless (MuJoCo uses
 EGL when there is no display).
 
-**1. Get the project**: clone this repository.
+**1. Get the project**: clone this repository (the `main` branch):
+
+```sh
+git clone https://github.com/rguntz/humanoid_challenge_gpu.git
+cd humanoid_challenge_gpu
+```
 
 **2. System packages** (Ubuntu / Debian; the libraries by OpenCV and by MuJoCo's
 headless rendering, and FFmpeg's shared libraries (version 4 to 7) by torchcodec,
@@ -24,10 +29,9 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 source $HOME/.local/bin/env        # or open a new terminal
 ```
 
-**4. Create the environment**, from the project folder:
+**4. Create the environment**, from the project folder (`humanoid_challenge_gpu/`):
 
 ```sh
-cd Humanoid_challenge
 uv sync
 ```
 
