@@ -205,12 +205,7 @@ state with the env's own code, must match the converted observation (~1e-7).
 | `pick_place_bottle` | the demos as converted | `make_dataset.py` (above) |
 | `pick_place_bottle_full` | the demos' full episodes: the frames after the first success are kept, as `policy/` trains on them (behaviour cloning only) | `convert_pick_place_to_lerobot.py --full-episodes --name pick_place_bottle_full` |
 
-Joint actions replay every demo of `pick_place_bottle` (59/59, 55 at the recorded step and 4
-one step later): they are the recording's own control, and need no IK.
 
-Delta actions applied from the live pose drift in `pick_place_bottle` (26/59 replays
-succeed: the simulator reaches targets through IK, the demos were recorded with joint
-targets).
 
 ## Training a policy (policy)
 
@@ -236,14 +231,15 @@ above for the dataset formats and versions `resfit/` trains on.
 ### Training
 
 ```sh
-bash resfit/lerobot/shell/train_bc.sh                       # defaults: ACT, absolute actions
-POLICY=smolvla ACTION_MODE=absolute_6d GPU=1 bash resfit/lerobot/shell/train_bc.sh
-bash resfit/lerobot/shell/train_bc_pi0_absolute_6d.sh       # a ready-made setup
-```
+# unet_bc: 48 % on 200 fresh layouts
+bash resfit/lerobot/shell/train_bc_unet_bc_absolute_6d.sh
 
-`train_bc.sh` takes every setting as a variable (see its header); the other
-`train_bc_*.sh` files are ready-made setups that set them. W&B logging is required
-(`uv run wandb login` once per machine); only metrics and the config go to W&B.
+# flow_matching: 49 %, best result so far
+bash resfit/lerobot/shell/train_bc_flow_matching_absolute_6d.sh
+
+# pi0
+bash resfit/lerobot/shell/train_bc_pi0_absolute_6d.sh
+```
 
 | Policy (`POLICY`) | Model |
 |---|---|
@@ -264,20 +260,10 @@ bash resfit/lerobot/shell/train_bc_pi0_absolute_6d.sh       # a ready-made setup
 | `N_ACTION_STEPS` | 8 | execution horizon: actions executed per call |
 | `NORMALIZER` | `mean_std` | `per_dim_range`: state and position actions mapped to [-1, 1] per dimension, quaternion / rotation / gripper unchanged |
 
-Every other setting (batch size, optimizer, precision, logging, evaluation cadence, ...)
-is documented in `train_bc.sh`'s own header comments.
-
 Each run writes to `outputs/resfit_bc/<run name>/`: `latest/` (to resume), `best/` (the
 best evaluation so far, with EMA its averaged weights: the policy the residual RL will
 start from) and `evals/` (one video per evaluation, both cameras side by side).
 
-Each run takes about 28 GB of RAM (data workers and evaluation simulators). On a shared
-machine, systemd-oomd kills the whole user session (tmux included) when memory runs out:
-check `free -g` before starting several runs.
-
-Checks: `resfit/pick_place/check_vec_env.py` (the vectorized env against the datasets)
-and `resfit/pick_place/check_rollout_obs.py` (the simulator's observations against the
-dataset's along every replayed demo).
 
 ### Evaluating a checkpoint
 
@@ -296,8 +282,9 @@ policy `train_bc.py` saves.
 bash resfit/rl_finetuning/shell/train_residual_td3.sh
 ```
 
-ResFiT's residual TD3 (`resfit/rl_finetuning/scripts/train_residual_td3.py`): a small
-actor-critic adds a correction of at most `ACTION_SCALE` on top of a frozen `train_bc.py`
-policy's action, trained on a mix of its own transitions and the demos'. Writes to
-`outputs/resfit_residual/<run name>/`.
+ResFiT's residual TD3 (`resfit/rl_finetuning/scripts/train_residual_td3.py`): takes a
+policy already trained above and fine-tunes it with RL, without changing its weights.
+A small actor-critic learns a correction to add on top of each of its actions (capped
+at `ACTION_SCALE`, a fraction of the action range), trained on a mix of the frozen
+policy's own rollouts and the demos. Writes to `outputs/resfit_residual/<run name>/`.
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SmolVLA (LeRobot's vision-language-action model, resfit/lerobot/policies/smolvla/), started from
 # the pretrained lerobot/smolvla_base and fine-tuned on absolute end-effector actions with 6D
-# rotations, as train_bc_legacy_bc_absolute_6d.sh (pick_place_bottle_absolute_6d: position,
+# rotations, as train_bc_unet_bc_absolute_6d.sh (pick_place_bottle_absolute_6d: position,
 # rotation as two rows of its matrix, gripper; state: end-effector position, quaternion and
 # fingers), with the agentview camera and the task sentence. Otherwise the same as
 # train_bc_smolvla_joint.sh: one observation frame, chunks of 50 actions all executed, SmolVLA's

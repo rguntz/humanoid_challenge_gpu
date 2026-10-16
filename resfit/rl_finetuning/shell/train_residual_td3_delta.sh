@@ -7,9 +7,8 @@
 # come from the demos (episodes ending at the first success, which is rewarded). Edit the
 # settings below, then run from anywhere:
 #     bash resfit/rl_finetuning/shell/train_residual_td3_delta.sh
-# Reads BASE_POLICY (a policy folder saved by train_bc.py, default: the delta flow-matching
-# run's best/, 35 % success at step 10000, see
-# resfit/lerobot/shell/train_bc_flow_matching_jax_match_fp32_delta.sh) and DATASET (the LeRobot
+# Reads BASE_POLICY (a policy folder saved by train_bc.py, default: a delta flow-matching
+# run's best/, 35 % success at step 10000) and DATASET (the LeRobot
 # dataset: offline transitions, action/state normalization, and the env's action mode and
 # scene - pick_place_bottle_delta, not the _full_ variant, since episodes must end at the
 # first success for the offline reward to be correct). Writes outputs/resfit_residual/<run

@@ -2,7 +2,7 @@
 # PI0 (LeRobot's VLA: PaliGemma VLM backbone + flow-matching action expert,
 # resfit/lerobot/policies/pi0/), started from the pretrained lerobot/pi0 and fine-tuned on
 # absolute end-effector actions with 6D rotations, matching
-# train_bc_flow_matching_jax_match_fp32.sh (DATASET=pick_place_bottle_full,
+# train_bc_flow_matching_absolute_6d.sh (DATASET=pick_place_bottle_full,
 # ACTION_MODE=absolute_6d, CAMERAS=agentview, same EVAL_LAYOUTS=fresh/EVAL_EPISODES=100/
 # EVAL_NUM_ENVS=25/SAVE_EVERY_EVAL=1) for a comparison against that run (43.5 % on 200 fresh
 # layouts) - same action/observation space, same eval methodology, EXCEPT the action chunking
