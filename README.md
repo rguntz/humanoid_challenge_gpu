@@ -1,5 +1,9 @@
 # Humanoid challenge
 
+## Video presentation
+
+[▶ Watch the 10-minute video](https://drive.google.com/file/d/1lyb6cUt7S83LL_LUJ9ZpNbfaVt7oz11a/view?usp=drive_link)
+
 ## Setup
 
 Tested setup: Ubuntu-like Linux, x86_64, NVIDIA driver recent enough for CUDA 12.8
